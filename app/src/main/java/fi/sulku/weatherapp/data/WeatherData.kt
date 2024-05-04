@@ -1,17 +1,36 @@
 package fi.sulku.weatherapp.data
 
 data class WeatherData(
-    //Daily, current, hourly
-    private val daily: Daily,
-    private val current: Current,
-    private val hourly: Hourly,
+    val daily: Daily,
+    val current: Current,
+    val hourly: Hourly,
     val lastUpdated: Long
 ) {
-
     // Tracks if data needs to be updated
     fun needsUpdate(): Boolean {
         return System.currentTimeMillis() - lastUpdated > 5 * 60 * 1000 //10min
     }
+
+    // Override and equals methods to iqnote LastUpdated time
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is WeatherData) return false
+        if (daily != other.daily) return false
+        if (current != other.current) return false
+        if (hourly != other.hourly) return false
+        return true
+    }
+
+    // X 31 because of some prime stuff //todo
+    override fun hashCode(): Int {
+        var result = daily.hashCode()
+        result = 31 * result + current.hashCode()
+        result = 31 * result + hourly.hashCode()
+        return result
+    }
+}
+
+/*
     // Shortcut Methods to get data from WeatherData
     //Current
     fun getCurrentTemp(): Double = current.temperature_2m
@@ -36,22 +55,4 @@ data class WeatherData(
     fun getHourlyTemp(): List<Double> = hourly.temperature_2m
     fun getHourlyApparentTemp(): List<Double> = hourly.apparent_temperature
     fun getHourlyWeatherCode(): List<Int> = hourly.weather_code
-
-    // Override and equals methods to iqnote LastUpdated time
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is WeatherData) return false
-        if (daily != other.daily) return false
-        if (current != other.current) return false
-        if (hourly != other.hourly) return false
-        return true
-    }
-
-    // X 31 because of some prime stuff //todo
-    override fun hashCode(): Int {
-        var result = daily.hashCode()
-        result = 31 * result + current.hashCode()
-        result = 31 * result + hourly.hashCode()
-        return result
-    }
-}
+ */
