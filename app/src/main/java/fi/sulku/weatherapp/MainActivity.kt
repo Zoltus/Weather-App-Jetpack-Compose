@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -81,6 +82,27 @@ fun Current() {
                 Text(text = "☃ Snow Chance: 0%")
                 Text(text = "\uD83D\uDD7A Feels Like: 14.1℃")
             }
+        }
+    }
+}
+@Composable
+fun Hourly() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .background(
+                color = Color(0xFFBFDBFE),
+                shape = RoundedCornerShape(16.dp) // Rounded corners
+            )
+    ) {
+        Text("HOURLY FORECAST")
+        Row {
+            HourlyCard()
+            HourlyCard()
+            HourlyCard()
+            HourlyCard()
+            HourlyCard()
         }
     }
 }
