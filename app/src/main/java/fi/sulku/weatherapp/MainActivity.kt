@@ -11,12 +11,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.components.Current
 import fi.sulku.weatherapp.components.Daily
+import fi.sulku.weatherapp.components.Details
 import fi.sulku.weatherapp.components.Hourly
+import fi.sulku.weatherapp.components.Search
 import fi.sulku.weatherapp.ui.theme.WeatherAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -46,3 +49,20 @@ fun App() {
     }
 }
 
+@Composable
+fun WeatherSection() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .background(
+                color = Color(0xFF93C5FD),
+                shape = RoundedCornerShape(16.dp)
+            )
+    ) {
+        Current()
+        Hourly()
+        Daily()
+        Details()
+    }
+}
