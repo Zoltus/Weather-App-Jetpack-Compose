@@ -51,6 +51,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.cio)
