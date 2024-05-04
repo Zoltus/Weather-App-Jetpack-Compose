@@ -50,7 +50,7 @@ fun App() {
                 shape = RoundedCornerShape(16.dp)
             )
     ) {
-        //Current()
+        Current()
         //Hourly()
         //Daily()
     }
@@ -82,5 +82,14 @@ fun Current() {
                 Text(text = "\uD83D\uDD7A Feels Like: 14.1℃")
             }
         }
+    }
+}
+
+@Composable
+fun HourlyCard() {
+    Column {
+        Text("12:00")
+        Text("☀️")
+        Text("15℃")
     }
 }
