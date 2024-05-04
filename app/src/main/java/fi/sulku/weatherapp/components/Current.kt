@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.Coordinates
 import fi.sulku.weatherapp.data.WeatherViewModel
-import fi.sulku.weatherapp.data.WeatherViewModel.weatherData
 import java.util.Date
 
 @Composable
@@ -38,19 +37,19 @@ fun Current() {
                     Text("\uD83D\uDCCDLahti")
                     Text("Last update: ${Date(weather.lastUpdated)}")
                     Text(text = "<ConditionIcon>")
-                    Text(text = weather.weather.current.temperature_2m.toString()) // Current temp
-                    Text(text = "Weather Code: ${weather.weather.current.weather_code}")
+                    Text(text = "${weather.getCurrentTemp()}℃") // Current temp
+                    Text(text = "Weather Code: ${weather.getCurrentWeatherCode()}")
 
-                    Text("Sunny") // This should be replaced with actual weather condition
-                    Text("↑${weather.weather.daily.temperature_2m_max[0]}℃ ↓${weather.weather.daily.temperature_2m_min[0]}℃")
+                    Text("Sunny")
+                    Text("↑${weather.getDailyMaxTemps()[0]}℃ ↓${weather.getDailyMinTemps()[0]}℃")
                 }
             }
             item {
                 Column(horizontalAlignment = Alignment.End) {
-                    Box(modifier = Modifier.height(100.dp)) //Empty space on the right
-                    Text("☔ Rain Chance: ${weather.weather.daily.precipitation_probability_max[0]}%")
-                    Text(text = "☃ Snow Chance: 0%") // This should be replaced with actual snow chance
-                    Text(text = "\uD83D\uDD7A Feels Like: ${weather.weather.current.apparent_temperature}℃")
+                    Box(modifier = Modifier.height(100.dp))
+                    Text("☔ Rain Chance: ${weather.getDailyPrecipitationProbabilitys()[0]}%")
+                    Text(text = "☃ Snow Chance: 0%")
+                    Text(text = "\uD83D\uDD7A Feels Like: ${weather.getCurrentApparentTemp()}℃")
                 }
             }
         }

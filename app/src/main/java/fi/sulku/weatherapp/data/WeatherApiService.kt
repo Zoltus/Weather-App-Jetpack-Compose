@@ -51,7 +51,7 @@ object WeatherApiService {
 
         val weather: WeatherResponse = weatherAsync.await()
         val hourly: HourlyResponse = hourlyAsync.await()
-        return WeatherData(weather, hourly, System.currentTimeMillis())
+        return WeatherData(weather.daily, weather.current, hourly.hourly, System.currentTimeMillis())
     }
 }
 
