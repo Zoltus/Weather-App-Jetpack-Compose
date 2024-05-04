@@ -52,8 +52,8 @@ fun App() {
             )
     ) {
         Current()
-        //Hourly()
-        //Daily()
+        Hourly()
+        Daily()
     }
 }
 
@@ -113,5 +113,40 @@ fun HourlyCard() {
         Text("12:00")
         Text("☀️")
         Text("15℃")
+    }
+}
+
+@Composable
+fun Daily() {
+    Text("DAILY CHART")
+}
+
+@Composable
+fun Details() {
+    Text("DETAILS")
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp)
+    ) {
+        item {
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+        }
+        item {
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+            Text("DETAILS")
+        }
     }
 }
