@@ -63,7 +63,7 @@ data class WeatherData(
     val lastUpdated: Long
 ) {
     fun needsUpdate(): Boolean {
-        return System.currentTimeMillis() - lastUpdated > 15 * 60 * 1000 //15min
+        return System.currentTimeMillis() - lastUpdated > 5 * 60 * 1000 //10min
     }
 
 
