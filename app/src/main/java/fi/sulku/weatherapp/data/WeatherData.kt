@@ -11,6 +11,26 @@ data class WeatherData(
         return System.currentTimeMillis() - lastUpdated > 5 * 60 * 1000 //10min
     }
 
+    fun weatherCodeToText(weatherCode : Int) : String {
+        return when (weatherCode) {
+            0 -> "Selkeää"
+            in 1..3 -> "Puolipilvistä"
+            in 45..48 -> "Sumua"
+            in 51..55 -> "Tihkusadetta"
+            in 56..57 -> "Jäätävää tihkua"
+            in 61..65 -> "Sadetta"
+            in 66..67 -> "Jäätävää sadetta"
+            in 71..75 -> "Lumisadetta"
+            77 -> "Lumirakeita"
+            in 80..82 -> "Sadekuuroja"
+            in 85..86 -> "Lumikuuroja"
+            in 95..96 -> "Ukkosta"
+            99 -> "Voimakasta ukkosta"
+            else -> "Tuntematon"
+        }
+    }
+
+
     // Override and equals methods to iqnote LastUpdated time
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -31,28 +51,33 @@ data class WeatherData(
 }
 
 /*
-    // Shortcut Methods to get data from WeatherData
-    //Current
-    fun getCurrentTemp(): Double = current.temperature_2m
-    fun getCurrentTime(): String = current.time
-    fun getCurrentHumidity(): Int = current.relative_humidity_2m
-    fun getCurrentApparentTemp(): Double = current.apparent_temperature
-    fun getCurrentPrecipitation(): Double = current.precipitation
-    fun getCurrentWeatherCode(): Int = current.weather_code
-    fun getCurrentWindSpeed(): Double = current.wind_speed_10m
-    //Daily
-    fun getDailyTimes(): List<String> = daily.time
-    fun getDailyWeatherCodes(): List<Int> = daily.weather_code
-    fun getDailyMaxTemps(): List<Double> = daily.temperature_2m_max
-    fun getDailyMinTemps(): List<Double> = daily.temperature_2m_min
-    fun getDailySunrises(): List<String> = daily.sunrise
-    fun getDailySunsets(): List<String> = daily.sunset
-    fun getDailyUVIndexes(): List<Double> = daily.uv_index_max
-    fun getDailyPrecipitationSums(): List<Double> = daily.precipitation_sum
-    fun getDailyPrecipitationProbabilitys(): List<Int> = daily.precipitation_probability_max
-    //Hourly
-    fun getHourlyTime(): List<String> = hourly.time
-    fun getHourlyTemp(): List<Double> = hourly.temperature_2m
-    fun getHourlyApparentTemp(): List<Double> = hourly.apparent_temperature
-    fun getHourlyWeatherCode(): List<Int> = hourly.weather_code
- */
+0	Clear sky
+1, 2, 3	Mainly clear, partly cloudy, and overcast
+45, 48	Fog and depositing rime fog
+51, 53, 55	Drizzle: Light, moderate, and dense intensity
+56, 57	Freezing Drizzle: Light and dense intensity
+61, 63, 65	Rain: Slight, moderate and heavy intensity
+66, 67	Freezing Rain: Light and heavy intensity
+71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
+77	Snow grains
+80, 81, 82	Rain showers: Slight, moderate, and violent
+85, 86	Snow showers slight and heavy
+95 *	Thunderstorm: Slight or moderate
+96, 99 *	Thunderstorm with slight and heavy hail
+*/
+
+/*
+0 -> "Clear sky"
+in 1..3 -> "Partly cloudy"
+in 45..48 -> "Fog"
+in 51..55 -> "Drizzle"
+in 56..57 -> "Freezing Drizzle"
+in 61..65 -> "Rain"
+in 66..67 -> "Freezing Rain"
+in 71..75 -> "Snow"
+77 -> "Snow grains"
+in 80..82 -> "Rain showers"
+in 85..86 -> "Snow showers"
+in 95..96 -> "Thunderstorm"
+99 -> "Heavy hail"
+else -> "Unknown"*/
