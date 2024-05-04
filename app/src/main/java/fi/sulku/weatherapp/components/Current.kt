@@ -27,6 +27,9 @@ fun Current() {
     val weather = weatherData[lahtiCoordinates]
 
     if (weather != null) {
+        val daily = weather.daily
+        val current = weather.current
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(8.dp)
@@ -37,19 +40,17 @@ fun Current() {
                     Text("\uD83D\uDCCDLahti")
                     Text("Last update: ${Date(weather.lastUpdated)}")
                     Text(text = "<ConditionIcon>")
-                    Text(text = "${weather.current.temp}℃") // Current temp
-                    Text(text = "Weather Code: ${weather.current.weather_code}")
-
-                    Text("Sunny")
-                    Text("↑${weather.daily.maxTemps[0]}℃ ↓${weather.daily.minTemps[0]}℃")
+                    Text(text = "${current.temp}℃") // Current temp
+                    Text(weather.getCurrentCondition())
+                    Text("↑${daily.maxTemps[0]}℃ ↓${daily.minTemps[0]}℃")
                 }
             }
             item {
                 Column(horizontalAlignment = Alignment.End) {
                     Box(modifier = Modifier.height(100.dp))
-                    Text("☔ Rain Chance: ${weather.daily.rainChance[0]}%")
-                    Text(text = "☃ Snow Chance: 0%")
-                    Text(text = "\uD83D\uDD7A Feels Like: ${weather.current.feelsLike}℃")
+                    Text("☔ Rain Chance: ${daily.rainChance[0]}%")
+                    Text(text = "☃ Snow Chance: -11%")
+                    Text(text = "\uD83D\uDD7A Feels Like: ${current.feelsLike}℃")
                 }
             }
         }

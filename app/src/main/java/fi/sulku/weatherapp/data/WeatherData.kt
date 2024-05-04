@@ -11,7 +11,11 @@ data class WeatherData(
         return System.currentTimeMillis() - lastUpdated > 5 * 60 * 1000 //10min
     }
 
-    fun weatherCodeToText(weatherCode : Int) : String {
+    fun getCurrentCondition() : String {
+        return getCondition(current.weather_code)
+    }
+
+    fun getCondition(weatherCode : Int) : String {
         return when (weatherCode) {
             0 -> "Selkeää"
             in 1..3 -> "Puolipilvistä"
