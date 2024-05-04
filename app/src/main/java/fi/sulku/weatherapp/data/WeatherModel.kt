@@ -15,7 +15,7 @@ data class Current(
     val temperature_2m: Double,
     val relative_humidity_2m: Int,
     val apparent_temperature: Double,
-    val precipitation: Int,
+    val precipitation: Double,
     val weather_code: Int,
     val wind_speed_10m: Double
 )
@@ -42,7 +42,7 @@ data class HourlyResponse(
 @Serializable
 data class Hourly(
     val time: List<String>,
-    val temp2M: List<Double>,
-    val apparentTemp: List<Double>,
-    val weatherCode: List<Int>
+    val temperature_2m: List<Double>,
+    val apparent_temperature: List<Double>,
+    val weather_code: List<Int>
 )
