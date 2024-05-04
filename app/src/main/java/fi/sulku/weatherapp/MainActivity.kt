@@ -38,17 +38,11 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun App() {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .background(
-                color = Color(0xFF93C5FD),
-                shape = RoundedCornerShape(16.dp)
-            )
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Current()
-        Hourly()
-        Daily()
+        Search()
+        WeatherSection()
     }
 }
 
