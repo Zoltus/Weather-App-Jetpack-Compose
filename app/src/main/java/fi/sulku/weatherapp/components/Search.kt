@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 fun Search() {
     Text(text = "Check Weather")
     Row {
-        AskLocation()
+        GpsLocButton()
         TextField(value = "", onValueChange = {}, placeholder = { Text("City name") })
     }
 }
