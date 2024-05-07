@@ -22,9 +22,8 @@ import java.util.Date
 fun Current() {
     val vm : WeatherViewModel = viewModel()
     val weatherData by vm.weatherData.collectAsState()
-
-    val lahtiCoordinates = Coordinates(61.49911f, 23.78712f)
-    val weather = weatherData[lahtiCoordinates]
+    val currentLoc by vm.currentLocation.collectAsState()
+    val weather = weatherData[currentLoc]
 
     if (weather != null) {
         val daily = weather.daily
