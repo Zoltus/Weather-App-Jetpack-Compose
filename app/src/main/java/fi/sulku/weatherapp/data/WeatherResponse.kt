@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WeatherResponse(
     val current: Current,
-    val daily: Daily
+    val daily: Daily,
+    val hourly: Hourly
 )
-//todo with 1 request, click day to change details, bookmark citys?
 
 @Serializable
 data class Current(
@@ -40,12 +40,6 @@ data class Daily(
     val rainAmount: List<Double>,
     @SerialName("precipitation_probability_max") //Todo if its right
     val rainChance: List<Int>
-)
-
-//For hourly data:
-@Serializable
-data class HourlyResponse(
-    val hourly: Hourly
 )
 
 @Serializable
