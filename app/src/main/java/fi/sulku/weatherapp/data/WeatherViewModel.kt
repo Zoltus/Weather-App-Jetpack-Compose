@@ -14,24 +14,22 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.tasks.await
+import android.location.Location as LocationAndroid
 
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
+    //todo val isfetching for loading indicator?
+    //private val _isFetching = MutableStateFlow(false)
+    //val isFetching: StateFlow<Boolean> = _isFetching.asStateFlow()
     private val app: Application = application
-
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
-
     private val _selectedLocation = MutableStateFlow<Location?>(null)
     //val selectedLocation: StateFlow<Location?> = _selectedLocation.asStateFlow()
-
     //Gets the weather data from the cache based on the selected location
     val weather: StateFlow<WeatherData?> = _selectedLocation
         .combine(_weatherCache) { loc, weatherCache -> weatherCache[loc] }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    //todo val isfetching for loading indicator?
-    //private val _isFetching = MutableStateFlow(false)
-    //val isFetching: StateFlow<Boolean> = _isFetching.asStateFlow()
-    fun updateWeather(loc: Location, data: WeatherData) {
+    fun setWeather(loc: Location, data: WeatherData) {
         _selectedLocation.value = loc //Set selected location to new location
         //Copy map and set new stuff so its thread safe
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data}
@@ -53,18 +51,17 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             val locationProvider = LocationServices.getFusedLocationProviderClient(app)
-            val location: android.location.Location =
-                locationProvider.lastLocation.await() // Get last location
-
-            //location.distanceTo(android.location.Location("Tampere"))
-            //Fetch weather if needed
-            WeatherApiService.getWeather(
-                this,
-                Location(location.latitude.toFloat(), location.longitude.toFloat()),
-                viewModelScope
-            )
+            val location: LocationAndroid = locationProvider.lastLocation.await() // Get last location
+            val fLocation = Location(location.latitude.toFloat(), location.longitude.toFloat())
+            WeatherApiService.updateWeather(this, fLocation, viewModelScope)
         } else {
             Log.d("Location", "Not granted!")
         }
     }
 }
+
+//getFromLocationName
+// val fromLocation: Unit =
+//  Geocoder(app).getFromLocation(location.latitude, location.longitude, 1) {
+// }
+//location.distanceTo(android.location.Location("Tampere"))

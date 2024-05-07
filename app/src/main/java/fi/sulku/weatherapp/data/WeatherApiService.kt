@@ -21,7 +21,7 @@ object WeatherApiService {
         }
     }
 
-    suspend fun getWeather(viewModel: WeatherViewModel, location: Location, scope: CoroutineScope): WeatherData {
+    suspend fun updateWeather(viewModel: WeatherViewModel, location: Location, scope: CoroutineScope): WeatherData {
         println("Getting weather data for $location")
         val weatherData = viewModel.getWeather(location)
         // If weatherdata exist or doesnt need update return it
@@ -30,7 +30,7 @@ object WeatherApiService {
         }
         // Updates/gets new weather data and updates viewmodel
         return fetchWeather(location, scope).also {
-            viewModel.updateWeather(location, it)
+            viewModel.setWeather(location, it)
         }
     }
 
