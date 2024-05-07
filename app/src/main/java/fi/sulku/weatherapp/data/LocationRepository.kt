@@ -30,6 +30,7 @@ class LocationRepository(private val context: Context) {
                 LocationServices.getFusedLocationProviderClient(context)
             val locationRequest = LocationRequest.Builder(10000L)
                 .setPriority(Priority.PRIORITY_HIGH_ACCURACY)
+                .setMinUpdateDistanceMeters(200f)
                 .setIntervalMillis(5000L)
                 .build()
 
