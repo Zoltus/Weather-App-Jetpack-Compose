@@ -20,23 +20,23 @@ object WeatherApiService {
         }
     }
 
-    suspend fun getWeather(coords: Coordinates, scope: CoroutineScope): WeatherData {
-        println("Getting weather data for $coords")
-        val weatherData = WeatherViewModel.weatherData.value[coords]
+    suspend fun getWeather(location: Location, scope: CoroutineScope): WeatherData {
+        println("Getting weather data for $location")
+        val weatherData = WeatherViewModel.weatherData.value[location]
         // If weatherdata exist or doesnt need update return it
         if (weatherData != null && !weatherData.needsUpdate()) {
             return weatherData
         }
         // Updates/gets new weather data and updates viewmodel
-        return fetchWeather(coords, scope).also {
-            WeatherViewModel.updateWeather(coords, it)
+        return fetchWeather(location, scope).also {
+            WeatherViewModel.updateWeather(location, it)
         }
     }
 
-    private suspend fun fetchWeather(coords: Coordinates, scope: CoroutineScope): WeatherData {
-        println("Fetching weather data for $coords")
-        val latitude = coords.latitude
-        val longitude = coords.longitude
+    private suspend fun fetchWeather(location: Location, scope: CoroutineScope): WeatherData {
+        println("Fetching weather data for $location")
+        val latitude = location.latitude
+        val longitude = location.longitude
 
         val weatherUrl =
             "https://api.open-meteo.com/v1/forecast?latitude=$latitude&longitude=$longitude&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,precipitation_probability_max&timezone=auto&forecast_days=14"
@@ -55,5 +55,5 @@ object WeatherApiService {
     }
 }
 
-data class Coordinates(val latitude: Float, val longitude: Float)
+data class Location(val latitude: Float, val longitude: Float)
 

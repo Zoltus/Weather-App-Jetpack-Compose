@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fi.sulku.weatherapp.data.Coordinates
 import fi.sulku.weatherapp.data.WeatherViewModel
 import java.util.Date
 
@@ -22,7 +21,7 @@ import java.util.Date
 fun Current() {
     val vm : WeatherViewModel = viewModel()
     val weatherData by vm.weatherData.collectAsState()
-    val currentLoc by vm.currentLocation.collectAsState()
+    val currentLoc by vm.selectedLocation.collectAsState()
     val weather = weatherData[currentLoc]
 
     if (weather != null) {
