@@ -8,6 +8,7 @@ data class WeatherResponse(
     val current: Current,
     val daily: Daily
 )
+//todo with 1 request, click day to change details, bookmark citys?
 
 @Serializable
 data class Current(
