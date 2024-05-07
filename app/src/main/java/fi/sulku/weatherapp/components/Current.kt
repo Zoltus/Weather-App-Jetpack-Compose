@@ -24,13 +24,9 @@ fun Current() {
     val weatherState by vm.weather.collectAsState()
     val weather = weatherState;
 
-    Text(text = "Current weather")
-
     if (weather != null) {
         val daily = weather.daily
         val current = weather.current
-        Text(text = "Bbbbbbbbbb")
-
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(8.dp)
@@ -38,7 +34,7 @@ fun Current() {
             item {
                 //Left side items:
                 Column(horizontalAlignment = Alignment.Start) {
-                    Text("\uD83D\uDCCDLahti")
+                    Text("\uD83D\uDCCD${vm.getCity()}")
                     Text("Last update: ${Date(weather.lastUpdated)}")
                     Text(text = "<ConditionIcon>")
                     Text(text = "${current.temp}℃") // Current temp
