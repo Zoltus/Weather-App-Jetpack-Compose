@@ -1,7 +1,5 @@
 package fi.sulku.weatherapp.data
 
-
-//todo should WeatherData also have Location?
 data class WeatherData(
     val daily: Daily,
     val current: Current,

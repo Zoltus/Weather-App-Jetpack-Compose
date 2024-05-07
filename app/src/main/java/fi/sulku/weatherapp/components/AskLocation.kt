@@ -40,7 +40,6 @@ fun AskLocation() {
         }
     )
 
-    //todo ask location when app starts. and on button press, default loc to tampere?
     Button(onClick = {
         //Ask permission
         permissionLauncher.launch(

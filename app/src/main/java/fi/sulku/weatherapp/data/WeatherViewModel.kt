@@ -17,7 +17,6 @@ import kotlinx.coroutines.tasks.await
 import android.location.Location as LocationAndroid
 
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
-    //todo val isfetching for loading indicator?
     //private val _isFetching = MutableStateFlow(false)
     //val isFetching: StateFlow<Boolean> = _isFetching.asStateFlow()
     private val app: Application = application
