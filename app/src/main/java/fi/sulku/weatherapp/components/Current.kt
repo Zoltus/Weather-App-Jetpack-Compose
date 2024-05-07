@@ -17,16 +17,19 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.WeatherViewModel
 import java.util.Date
 
+
 @Composable
 fun Current() {
     val vm : WeatherViewModel = viewModel()
-    val weatherData by vm.weatherData.collectAsState()
-    val currentLoc by vm.selectedLocation.collectAsState()
-    val weather = weatherData[currentLoc]
+    val weatherState by vm.weather.collectAsState()
+    val weather = weatherState;
+
+    Text(text = "Current weather")
 
     if (weather != null) {
         val daily = weather.daily
         val current = weather.current
+        Text(text = "Bbbbbbbbbb")
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(2),

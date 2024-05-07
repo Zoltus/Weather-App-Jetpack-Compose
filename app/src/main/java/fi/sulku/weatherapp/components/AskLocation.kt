@@ -14,39 +14,33 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fi.sulku.weatherapp.data.LocationViewModel
+import fi.sulku.weatherapp.data.WeatherViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun AskLocation() {
-    val lv: LocationViewModel = viewModel()
-    val location = lv.location.collectAsState()
+    val weatherVm: WeatherViewModel = viewModel()
     val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
-
+    val scope = rememberCoroutineScope()
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
-            // Check if all requested permissions have been granted
-            val allPermissionsGranted = permissions.entries.all { it.value }
-            if (allPermissionsGranted) {
-                //if granted start location updates
-                lv.startLocationUpdates()
-            } else {
-                //if denied show dialog
-                showDialog.value = true
+            scope.launch {
+                // Check if all requested permissions have been granted
+                val allPermissionsGranted = permissions.entries.all { it.value }
+                if (allPermissionsGranted) {
+                    weatherVm.setCurrentLocation() //if granted start location updates
+                } else {
+                    showDialog.value = true //if denied show dialog
+                }
             }
         }
     )
 
-    if (location.value == null) {
-        Text(text = "Location: Not available")
-    }
-
-    location.value?.let {
-        Text(text = "Location: ${it.latitude}, ${it.longitude}")
-    }
-
+    //todo ask location when app starts. and on button press, default loc to tampere?
     Button(onClick = {
         //Ask permission
         permissionLauncher.launch(

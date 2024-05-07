@@ -10,6 +10,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.serialization.json.Json
+import kotlin.math.round
 
 object WeatherApiService {
     private val client = HttpClient {
@@ -20,16 +21,16 @@ object WeatherApiService {
         }
     }
 
-    suspend fun getWeather(location: Location, scope: CoroutineScope): WeatherData {
+    suspend fun getWeather(viewModel: WeatherViewModel, location: Location, scope: CoroutineScope): WeatherData {
         println("Getting weather data for $location")
-        val weatherData = WeatherViewModel.weatherData.value[location]
+        val weatherData = viewModel.getWeather(location)
         // If weatherdata exist or doesnt need update return it
         if (weatherData != null && !weatherData.needsUpdate()) {
             return weatherData
         }
         // Updates/gets new weather data and updates viewmodel
         return fetchWeather(location, scope).also {
-            WeatherViewModel.updateWeather(location, it)
+            viewModel.updateWeather(location, it)
         }
     }
 
@@ -55,5 +56,18 @@ object WeatherApiService {
     }
 }
 
-data class Location(val latitude: Float, val longitude: Float)
+
+//todo round to closest 500m?
+data class Location(var latitude: Float, var longitude: Float) {
+    init {
+        latitude = roundtoClosest500m(latitude)
+        longitude = roundtoClosest500m(longitude)
+    }
+    //Round to closest 500m to save cache and requests
+    private fun roundtoClosest500m(coordinate: Float): Float {
+        val coordinateInMeters = coordinate * 111139 // Convert to meters
+        val roundedCoordinate = round(coordinateInMeters / 500) * 500 // Round to nearest 500 meters
+        return roundedCoordinate / 111139 // Convert back to degrees
+    }
+}
 
