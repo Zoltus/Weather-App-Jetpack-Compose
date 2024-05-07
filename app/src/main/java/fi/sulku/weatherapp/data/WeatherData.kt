@@ -1,5 +1,7 @@
 package fi.sulku.weatherapp.data
 
+
+//todo should WeatherData also have Location?
 data class WeatherData(
     val daily: Daily,
     val current: Current,
@@ -32,25 +34,6 @@ data class WeatherData(
             99 -> "Voimakasta ukkosta"
             else -> "Tuntematon"
         }
-    }
-
-
-    // Override and equals methods to iqnote LastUpdated time
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is WeatherData) return false
-        if (daily != other.daily) return false
-        if (current != other.current) return false
-        if (hourly != other.hourly) return false
-        return true
-    }
-
-    // X 31 because of some prime stuff //todo
-    override fun hashCode(): Int {
-        var result = daily.hashCode()
-        result = 31 * result + current.hashCode()
-        result = 31 * result + hourly.hashCode()
-        return result
     }
 }
 
