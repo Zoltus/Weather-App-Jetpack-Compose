@@ -1,2 +1,21 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/yzg6oRFh)
-# jetpack-compose-template
+# WeatherApp
+
+Best weather app there is for android!
+
+## About The Project
+
+Awesome weatherapp project for android made with power of jetpack compose!
+
+### Documentation website:
+
+Url: https://zoltus.github.io/weatherapp-docs/
+
+## Docs
+
+To build docs run:
+   ```sh
+    gradle dokkaHtml
+   ```
+
+## Contact
+Noa Tuiskula - noa.tuiskula@gmail.com
