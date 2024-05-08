@@ -12,9 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import fi.sulku.weatherapp.data.WeatherData
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @Composable
-fun Hourly() {
+fun Hourly(weather: WeatherData) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
