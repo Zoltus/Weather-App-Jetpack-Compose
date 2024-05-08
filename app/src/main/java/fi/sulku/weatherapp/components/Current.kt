@@ -25,7 +25,7 @@ fun Current(weatherVm: WeatherViewModel, weather: WeatherData) {
     ) {
         item {
             //Left side items:
-            Column(horizontalAlignment = Alignment.Start) {
+            Column {
                 Text("\uD83D\uDCCD${weatherVm.getCity()}")
                 Text("Last update: ${weather.getLastUpdated()}")
                 //Text(text = "<ConditionIcon>")
