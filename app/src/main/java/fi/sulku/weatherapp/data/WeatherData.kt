@@ -61,7 +61,9 @@ data class Current(
     val precipitation: Double,
     val weather_code: Int,
     @SerialName("wind_speed_10m")
-    val windSpeed: Double
+    val windSpeed: Double,
+    @SerialName("surface_pressure")
+    val pressure: Double
 )
 
 @Serializable
