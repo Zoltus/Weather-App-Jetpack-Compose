@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -33,26 +34,26 @@ fun Details(weather: WeatherData) {
         ) {
             item {
                 Column {
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
+                    Text("Rain")
+                    Text(weather.daily.rainAmount[1].toString())
+                    Text("Humidity")
+                    Text(weather.current.humidity.toString())
+                    Text("UV")
+                    Text(weather.daily.uv_index_max[1].toString())
+                    Text("Sunrise")
+                    Text(weather.getDateAsClockTime(weather.daily.sunrise[1]))
                 }
             }
             item {
-                Column {
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
-                    Text("DETAILS")
+                Column(horizontalAlignment = Alignment.End) {
+                    Text("Wind Speed")
+                    Text(weather.current.windSpeed.toString())
+                    //Text("Visibility")
+                    //Text("")
+                    Text("Pressure")
+                    Text( "${weather.current.pressure} hPa")
+                    Text("SunSet")
+                    Text(weather.getDateAsClockTime(weather.daily.sunset[1]))
                 }
             }
         }
