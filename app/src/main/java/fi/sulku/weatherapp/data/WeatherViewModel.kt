@@ -94,7 +94,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
             val location: LocationAndroid =
                 locationProvider.lastLocation.await() // Get last location
             val fLocation = Location(location.latitude.toFloat(), location.longitude.toFloat())
-            WeatherApiService.updateWeather(this, fLocation, viewModelScope)
+            WeatherApiService.updateWeather(this, fLocation)
         } else {
             Log.d("Location", "Not granted!")
         }

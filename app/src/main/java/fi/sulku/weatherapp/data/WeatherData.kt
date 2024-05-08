@@ -14,7 +14,7 @@ data class WeatherData(
     // Checks if 15min is passed since last update
     fun needsUpdate(): Boolean {
         val date = LocalDateTime.parse(current.time).plusMinutes(15)
-        val now = LocalDateTime.now()
+        val now: LocalDateTime = LocalDateTime.now()
         return now.isAfter(date)
     }
 
