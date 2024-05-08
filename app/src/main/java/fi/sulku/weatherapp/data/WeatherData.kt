@@ -29,7 +29,20 @@ data class WeatherData(
         return getCondition(current.weather_code)
     }
 
-    fun getCondition(weatherCode: Int): String {
+    fun getDateAsClockTime(time: String): String {
+        val currentTime = LocalDateTime.now()
+        val date = LocalDateTime.parse(time)
+        println("IsSameHour: " + currentTime.hour + " Other: " + date.hour)
+        val isSameHour = currentTime.hour == date.hour
+        return if (isSameHour) {
+            "Now"
+        } else {
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
+            date.format(formatter)
+        }
+    }
+
+    private fun getCondition(weatherCode: Int): String {
         return when (weatherCode) {
             0 -> "Clear sky"
             in 1..3 -> "Partly cloudy"
