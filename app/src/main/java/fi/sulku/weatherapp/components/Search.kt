@@ -2,6 +2,7 @@ package fi.sulku.weatherapp.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -12,13 +13,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.WeatherApiService
+import fi.sulku.weatherapp.data.WeatherViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun Search() {
+    val vm: WeatherViewModel = viewModel()
+    val scope = rememberCoroutineScope()
+    //vm.getWeather("City")
+    //vm.getWeather()
     var input by remember { mutableStateOf("") }
 
     Text(text = "Check Weather")
@@ -31,8 +40,9 @@ fun Search() {
             placeholder = { Text("City name") }
         )
     }
-    Button(onClick = {
-
+    Button(modifier = Modifier.fillMaxWidth(),
+        onClick = {
+        scope.launch { vm.getWeather(input) }
     }) {
         Text("Get Weather")
     }

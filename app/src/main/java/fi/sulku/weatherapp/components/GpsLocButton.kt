@@ -24,6 +24,8 @@ fun GpsLocButton() {
     val weatherVm: WeatherViewModel = viewModel()
     val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
+    //vm.getWeather("City")
+    //vm.getWeather()
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
@@ -31,7 +33,7 @@ fun GpsLocButton() {
                 // Check if all requested permissions have been granted
                 val allPermissionsGranted = permissions.entries.all { it.value }
                 if (allPermissionsGranted) {
-                    weatherVm.setCurrentLocation() //if granted start location updates
+                   weatherVm.getWeather()
                 } else {
                     showDialog.value = true //if denied show dialog
                 }

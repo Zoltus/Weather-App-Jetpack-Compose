@@ -7,9 +7,11 @@ import java.time.format.DateTimeFormatter
 
 @Serializable
 data class WeatherData(
+    val latitude: Float,
+    val longitude: Float, //todo ?
     val daily: Daily,
     val current: Current,
-    val hourly: Hourly
+    val hourly: Hourly,
 ) {
     // Checks if 15min is passed since last update
     fun needsUpdate(): Boolean {
