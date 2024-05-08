@@ -66,11 +66,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-    private fun getNewAndroidGeo(
-        geocoder: Geocoder,
-        latitude: Double,
-        longitude: Double
-    ): Address? {
+    private fun getNewAndroidGeo(geocoder: Geocoder, latitude: Double, longitude: Double): Address? {
         var address: Address? = null
         geocoder.getFromLocation(latitude, longitude, 1) {
             address = it.firstOrNull()
@@ -79,72 +75,10 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     }
 
     @Suppress("deprecation")
-    private fun getOldAndroidGeo(
-        geocoder: Geocoder,
-        latitude: Double,
-        longitude: Double
-    ): Address? {
+    private fun getOldAndroidGeo(geocoder: Geocoder, latitude: Double, longitude: Double): Address? {
         return geocoder.getFromLocation(latitude, longitude, 1)?.firstOrNull()
     }
 
-
-    /*
-        @SuppressLint("MissingPermission")
-    fun fetchLocation() {
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-        fusedLocationClient.lastLocation.addOnSuccessListener { location ->
-            location ?: return@addOnSuccessListener
-
-            val geocoder = Geocoder(context, Locale.getDefault())
-
-            if (Build.VERSION.SDK_INT >= 33)
-            {
-                geocoder.getFromLocation(location.latitude, location.longitude, 1) { addresses ->
-                    val address = addresses.firstOrNull()
-                    val place = address?.locality ?: address?.subAdminArea ?: address?.adminArea
-                    ?: address?.countryName
-                    uiState = uiState.copy(place = place)
-                }
-            }
-            else {
-                val address =
-                    geocoder.getFromLocation(location.latitude, location.longitude, 1)?.firstOrNull()
-                        ?: return@addOnSuccessListener
-                val place =
-                    address.locality ?: address.subAdminArea ?: address.adminArea ?: address.countryName
-                    ?: return@addOnSuccessListener
-
-                uiState = uiState.copy(place = place)
-            }
-        }
-    }
-     */
-    /*
-        private fun getAddressName(lat: Double, lon: Double): String? {
-            var addressName: String? = null
-            val geocoder = Geocoder(this@MapsActivity, Locale.getDefault())
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                geocoder.getFromLocation(lat, lon, 1) { list ->
-                    if (list.size != 0) {
-                        addressName = list[0].getAddressLine(0)
-                        Log.d(TAG, "getAddressName: $addressName")
-                        //show Marker
-                    }
-                }
-            } else {
-                try {
-                    val list = geocoder.getFromLocation(lat, lon, 1)
-                    if (list != null && list.size != 0) {
-                        addressName = list[0].getAddressLine(0)
-                        Log.d(TAG, "getAddressName: $addressName")
-                    }
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-            }
-            return addressName
-        }
-    */
     suspend fun setCurrentLocation() {
         // Check if location permissions are given
         if (ContextCompat.checkSelfPermission(

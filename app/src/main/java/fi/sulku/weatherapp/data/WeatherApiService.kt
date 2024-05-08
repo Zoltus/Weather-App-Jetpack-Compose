@@ -35,9 +35,9 @@ object WeatherApiService {
     private suspend fun fetchWeather(location: Location, scope: CoroutineScope): WeatherData {
         println("Fetching weather data for $location")
         val url = createUrl(location)
-        val weatherAsync = scope.async { client.get(url).body<WeatherResponse>() }
-        val weather: WeatherResponse = weatherAsync.await()
-        return WeatherData(weather.daily, weather.current, weather.hourly, System.currentTimeMillis())
+        val weatherAsync = scope.async { client.get(url).body<WeatherData>() }
+        val weather: WeatherData = weatherAsync.await()
+        return WeatherData(weather.daily, weather.current, weather.hourly)
     }
 
     private fun createUrl(location: Location) : String {

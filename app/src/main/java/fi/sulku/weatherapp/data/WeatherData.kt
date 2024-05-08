@@ -1,21 +1,26 @@
 package fi.sulku.weatherapp.data
 
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
+@Serializable
 data class WeatherData(
     val daily: Daily,
     val current: Current,
-    val hourly: Hourly,
-    val lastUpdated: Long
+    val hourly: Hourly
 ) {
     // Tracks if data needs to be updated
     fun needsUpdate(): Boolean {
         return System.currentTimeMillis() - lastUpdated > 5 * 60 * 1000 //10min
     }
 
-    fun getCurrentCondition() : String {
+    fun getCurrentCondition(): String {
         return getCondition(current.weather_code)
     }
 
-    fun getCondition(weatherCode : Int) : String {
+    fun getCondition(weatherCode: Int): String {
         return when (weatherCode) {
             0 -> "Selkeää"
             in 1..3 -> "Puolipilvistä"
@@ -35,34 +40,44 @@ data class WeatherData(
     }
 }
 
-/*
-0	Clear sky
-1, 2, 3	Mainly clear, partly cloudy, and overcast
-45, 48	Fog and depositing rime fog
-51, 53, 55	Drizzle: Light, moderate, and dense intensity
-56, 57	Freezing Drizzle: Light and dense intensity
-61, 63, 65	Rain: Slight, moderate and heavy intensity
-66, 67	Freezing Rain: Light and heavy intensity
-71, 73, 75	Snow fall: Slight, moderate, and heavy intensity
-77	Snow grains
-80, 81, 82	Rain showers: Slight, moderate, and violent
-85, 86	Snow showers slight and heavy
-95 *	Thunderstorm: Slight or moderate
-96, 99 *	Thunderstorm with slight and heavy hail
-*/
+@Serializable
+data class Current(
+    val time: String,
+    @SerialName("temperature_2m")
+    val temp: Double,
+    @SerialName("relative_humidity_2m")
+    val humidity: Int,
+    @SerialName("apparent_temperature")
+    val feelsLike: Double,
+    val precipitation: Double,
+    val weather_code: Int,
+    @SerialName("wind_speed_10m")
+    val windSpeed: Double
+)
 
-/*
-0 -> "Clear sky"
-in 1..3 -> "Partly cloudy"
-in 45..48 -> "Fog"
-in 51..55 -> "Drizzle"
-in 56..57 -> "Freezing Drizzle"
-in 61..65 -> "Rain"
-in 66..67 -> "Freezing Rain"
-in 71..75 -> "Snow"
-77 -> "Snow grains"
-in 80..82 -> "Rain showers"
-in 85..86 -> "Snow showers"
-in 95..96 -> "Thunderstorm"
-99 -> "Heavy hail"
-else -> "Unknown"*/
+@Serializable
+data class Daily(
+    val time: List<String>,
+    val weather_code: List<Int>,
+    @SerialName("temperature_2m_max")
+    val maxTemps: List<Double>,
+    @SerialName("temperature_2m_min")
+    val minTemps: List<Double>,
+    val sunrise: List<String>,
+    val sunset: List<String>,
+    val uv_index_max: List<Double>,
+    @SerialName("precipitation_sum")
+    val rainAmount: List<Double>,
+    @SerialName("precipitation_probability_max") //Todo if its right
+    val rainChance: List<Int>
+)
+
+@Serializable
+data class Hourly(
+    val time: List<String>,
+    @SerialName("temperature_2m")
+    val temps: List<Double>,
+    @SerialName("apparent_temperature")
+    val feelsLike: List<Double>,
+    val weather_code: List<Int>
+)
