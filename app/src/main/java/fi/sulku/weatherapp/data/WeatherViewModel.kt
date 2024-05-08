@@ -61,18 +61,16 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      */
     suspend fun selectCity(city: String) {
         val location: Location? = locationService.getLocation(city)
-        return getOrUpdateWeather(location)
+        checkWeatherUpdates(location)
     }
 
-    suspend fun fetchWeather(): WeatherData? {
-        return getOrUpdateWeather(locationService.getCurrentLocation())
     /**
      * Update the weather data for the current location.
      */
+    suspend fun selectCurrentCity() {
+        checkWeatherUpdates(locationService.getCurrentLocation())
     }
 
-    private suspend fun getOrUpdateWeather(loc: Location?): WeatherData? {
-        if (loc == null) return null;
     /**
      * Check if weatherdata is up to date for given location.
      * If the weather data is already in the cache and it is up to date do nothing.
@@ -81,13 +79,14 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      *
      * @param loc Location to fetch the weather data for.
      */
+    private suspend fun checkWeatherUpdates(loc: Location?) {
+        if (loc == null) return
         val weatherData: WeatherData? = _weatherCache.value[loc]
         if (weatherData != null && !weatherData.needsUpdate()) {
-            return weatherData
+            setWeather(loc, weatherData)
         } else {
             val newWeather = weatherApiService.fetchWeather(loc)
             setWeather(loc, newWeather)
-            return newWeather
         }
     }
 }
