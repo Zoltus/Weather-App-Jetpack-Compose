@@ -19,7 +19,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.WeatherViewModel
 import kotlinx.coroutines.launch
 
@@ -55,15 +54,15 @@ fun Search(weatherVm: WeatherViewModel) {
             )
         }
 
-        Button(modifier = Modifier.fillMaxWidth()
+        Button(modifier = Modifier
+            .fillMaxWidth()
             .padding(top = 16.dp),
             shape = RoundedCornerShape(20),
             onClick = {
-                scope.launch { vm.fetchWeather(input) }
+                scope.launch { weatherVm.selectCity(input) }
             }) {
             Text("Get Weather")
         }
     }
-
 }
 

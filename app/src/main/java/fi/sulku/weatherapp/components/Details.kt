@@ -49,7 +49,7 @@ fun Details(weather: WeatherData) {
                     Text("UV")
                     Text(weather.daily.uv_index_max[1].toString())
                     Text("Sunrise")
-                    Text(weather.getDateAsClockTime(weather.daily.sunrise[1]))
+                    Text(weather.convertToClockTime(weather.daily.sunrise[1]))
                 }
             }
             item {
@@ -61,7 +61,7 @@ fun Details(weather: WeatherData) {
                     Text("Pressure")
                     Text( "${weather.current.pressure} hPa")
                     Text("SunSet")
-                    Text(weather.getDateAsClockTime(weather.daily.sunset[1]))
+                    Text(weather.convertToClockTime(weather.daily.sunset[1]))
                 }
             }
         }

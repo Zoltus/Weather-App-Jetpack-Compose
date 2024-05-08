@@ -15,7 +15,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.data.WeatherData
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 /**
  * Horizontal scrollable hourly forecast component.
@@ -65,7 +64,7 @@ fun CreateHourlyCards(weather: WeatherData) {
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
             println("Time: " + weather.hourly.time[it])
-            val timeString = weather.getDateAsClockTime(weather.hourly.time[it])
+            val timeString = weather.convertToClockTime(weather.hourly.time[it])
             HourlyCard(
                 time = timeString,
                 temp = weather.hourly.temps[it],

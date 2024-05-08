@@ -41,7 +41,7 @@ fun GpsLocButton() {
                 // Check if all requested permissions have been granted
                 val allPermissionsGranted = permissions.entries.all { it.value }
                 if (allPermissionsGranted) {
-                   weatherVm.fetchWeather()
+                   weatherVm.selectCurrentCity()
                 } else {
                     showDialog.value = true //if denied show dialog
                 }

@@ -52,6 +52,12 @@ class LocationService(private val app: Application) {
      * @param location Location to get the city name from.
      * @return City name of the location.
      */
+    fun getCity(location: Location?): String? {
+        return location?.let {
+            getAddressFromLocation(it.latitude.toDouble(), it.longitude.toDouble())?.locality
+        }
+    }
+
     /**
      * Get the location from the city name.
      *
