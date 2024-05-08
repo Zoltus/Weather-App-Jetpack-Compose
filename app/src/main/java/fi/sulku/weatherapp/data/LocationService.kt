@@ -11,15 +11,22 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.tasks.await
 
+/**
+ * Service for handling location operations.
+ *
+ * @param app Application context.
+ */
 class LocationService(private val app: Application) {
     private val geocoder = Geocoder(app)
 
-    fun getCity(location: Location?): String? {
-        return location?.let {
-            getAddressFromLocation(it.latitude.toDouble(), it.longitude.toDouble())?.locality
-        }
-    }
-
+    /**
+     * Get the current location.
+     *
+     * Ask for location permissions.
+     * If the permissions are granted, get the current location.
+     *
+     * @return Location object of the current location.
+     */
     suspend fun getCurrentLocation(): Location? {
         return if (ContextCompat.checkSelfPermission(
                 app,
@@ -39,11 +46,31 @@ class LocationService(private val app: Application) {
         }
     }
 
+    /**
+     * Get the city name from the location.
+     *
+     * @param location Location to get the city name from.
+     * @return City name of the location.
+     */
+    /**
+     * Get the location from the city name.
+     *
+     * @param city City name to get the location from.
+     * @return Location object of the city.
+     */
     fun getLocation(city: String): Location? {
         if (city.trim().isEmpty()) return null
         return getAddressFromCity(city)?.let { Location(it.latitude.toFloat(), it.longitude.toFloat()) }
     }
 
+    /**
+     * Get the address from latitude and longitude.
+     * Gets address differently based on the android version.
+     *
+     * @param latitude Latitude of the location.
+     * @param longitude Longitude of the location.
+     * @return Address object of the location.
+     */
     private fun getAddressFromLocation(latitude: Double, longitude: Double): Address? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             var address: Address? = null
@@ -55,6 +82,13 @@ class LocationService(private val app: Application) {
         }
     }
 
+    /**
+     * Get the address from city name.
+     * Gets address differently based on the android version.
+     *
+     * @param city City name to get the location from.
+     * @return Address object of the location.
+     */
     private fun getAddressFromCity(city: String): Address? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             var address: Address? = null

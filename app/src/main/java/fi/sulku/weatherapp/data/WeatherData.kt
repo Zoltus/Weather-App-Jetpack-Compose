@@ -5,6 +5,16 @@ import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Ktor serializable class for the weather data.
+ *
+ * Contains the daily, current and hourly weather data
+ * and helper methods to get weather information.
+ *
+ * @property daily The daily weather data.
+ * @property current The current weather data.
+ * @property hourly The hourly weather data.
+ */
 @Serializable
 data class WeatherData(
     val latitude: Float,
@@ -13,35 +23,41 @@ data class WeatherData(
     val current: Current,
     val hourly: Hourly,
 ) {
-    // Checks if 15min is passed since last update
+    /**
+     * Checks if weather data needs to be updated.
+     *
+     * @return True if 15 minutes have passed since the last update.
+     */
     fun needsUpdate(): Boolean {
         val date = LocalDateTime.parse(current.time).plusMinutes(15)
         val now: LocalDateTime = LocalDateTime.now()
         return now.isAfter(date)
     }
 
+    /**
+     * Get weathers last updated time.
+     *
+     * @return The time of the last update in HH:mm format.
+     */
     fun getLastUpdated(): String {
         val date = LocalDateTime.parse(current.time)
         return date.format(DateTimeFormatter.ofPattern("HH:mm"))
     }
 
+    /**
+     * Get the current weather condition.
+     *
+     * @return The current weather condition text.
+     */
     fun getCurrentCondition(): String {
         return getCondition(current.weather_code)
     }
 
-    fun getDateAsClockTime(time: String): String {
-        val currentTime = LocalDateTime.now()
-        val date = LocalDateTime.parse(time)
-        println("IsSameHour: " + currentTime.hour + " Other: " + date.hour)
-        val isSameHour = currentTime.hour == date.hour
-        return if (isSameHour) {
-            "Now"
-        } else {
-            val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            date.format(formatter)
-        }
-    }
-
+    /**
+     * Get the weather condition for the given weather code.
+     *
+     * @return The weather condition text.
+     */
     private fun getCondition(weatherCode: Int): String {
         return when (weatherCode) {
             0 -> "Clear sky"
@@ -60,8 +76,43 @@ data class WeatherData(
             else -> "Unknown"
         }
     }
+
+    /**
+     * Convert the given time to a clock time.
+     * If the time is the same as the current hour, return "Now".
+     * Otherwise, return the time in HH:mm format.
+     *
+     * @param time The time to convert.
+     * @return The time in clock time format.
+     */
+    fun convertToClockTime(time: String): String {
+        val currentTime = LocalDateTime.now()
+        val date = LocalDateTime.parse(time)
+        println("IsSameHour: " + currentTime.hour + " Other: " + date.hour)
+        val isSameHour = currentTime.hour == date.hour
+        return if (isSameHour) {
+            "Now"
+        } else {
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
+            date.format(formatter)
+        }
+    }
 }
 
+
+/**
+ * Ktor serializable class for the weather data.
+ * Contains the current weather data.
+ *
+ * @property time The time of the weather data.
+ * @property temp The temperature in Celsius.
+ * @property humidity The relative humidity in percentage.
+ * @property feelsLike The apparent temperature in Celsius.
+ * @property precipitation The precipitation amount in mm.
+ * @property weather_code The weather condition code.
+ * @property windSpeed The wind speed in m/s.
+ * @property pressure The surface pressure in hPa.
+ */
 @Serializable
 data class Current(
     val time: String,
@@ -79,6 +130,21 @@ data class Current(
     val pressure: Double
 )
 
+/**
+ * Ktor serializable class for the daily weather data.
+ *
+ * Contains the daily weather information for the next 14 days.
+ *
+ * @property time The time of the weather data.
+ * @property weather_code The weather condition code.
+ * @property maxTemps The maximum temperature in Celsius.
+ * @property minTemps The minimum temperature in Celsius.
+ * @property sunrise The sunrise time.
+ * @property sunset The sunset time.
+ * @property uv_index_max The maximum UV index.
+ * @property rainAmount The precipitation amount in mm.
+ * @property rainChance The precipitation probability in percentage.
+ */
 @Serializable
 data class Daily(
     val time: List<String>,
@@ -96,6 +162,16 @@ data class Daily(
     val rainChance: List<Int>
 )
 
+/**
+ * Ktor serializable class for the hourly weather data.
+ *
+ * Contains the hourly weather information for the 15 days. 1 past day and 14 forecast days.
+ *
+ * @property time The time of the weather data.
+ * @property temps The temperature in Celsius.
+ * @property feelsLike The apparent temperature in Celsius.
+ * @property weather_code The weather condition code.
+ */
 @Serializable
 data class Hourly(
     val time: List<String>,

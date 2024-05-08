@@ -23,6 +23,16 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.WeatherViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * Search component.
+ *
+ * Allows user to get weather by his location. (User needs to allow location permissions)
+ * If user denies the permission, a dialog will be shown to inform the user how to enable the permission.
+ * User can also search by city name and then click the button to get the weather.
+ *
+ * @param weatherVm The WeatherViewModel to access the weather data.
+ * @see GpsLocButton
+ */
 @Composable
 fun Search() {
     val vm: WeatherViewModel = viewModel()

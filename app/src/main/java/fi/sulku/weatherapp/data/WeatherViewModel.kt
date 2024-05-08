@@ -9,6 +9,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
+/**
+ * ViewModel for weather data.
+ *
+ * Handles the weather data and location data.
+ *
+ * @param application Application context.
+ */
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
     //private val _isFetching = MutableStateFlow(false)
     //val isFetching: StateFlow<Boolean> = _isFetching.asStateFlow()
@@ -26,29 +33,54 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         .combine(_weatherCache) { loc, weatherCache -> weatherCache[loc] }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
-    //todo check if location is rounded?
-    //Copy map and set new stuff so its thread safe
+    /**
+     * Set the weather data to the cache.
+     * If the location is already in the cache, update the data.
+     *
+     * @param loc Location of the weather data.
+     * @param data Weather data to be set.
+     */
     private fun setWeather(loc: Location, data: WeatherData) {
         println("SetWerahter@@@@@@@@@@@")
         _selectedLocation.value = loc //Set selected location to new location
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
     }
 
+
+    /**
+     * Get the city name from the selected location.
+     *
+     * @return City name of the selected location.
+     */
     fun getCity(): String? {
         return locationService.getCity(_selectedLocation.value)
     }
 
-    suspend fun fetchWeather(city: String): WeatherData? {
+    /**
+     * Update the weather data for the given city.
+     */
+    suspend fun selectCity(city: String) {
         val location: Location? = locationService.getLocation(city)
         return getOrUpdateWeather(location)
     }
 
     suspend fun fetchWeather(): WeatherData? {
         return getOrUpdateWeather(locationService.getCurrentLocation())
+    /**
+     * Update the weather data for the current location.
+     */
     }
 
     private suspend fun getOrUpdateWeather(loc: Location?): WeatherData? {
         if (loc == null) return null;
+    /**
+     * Check if weatherdata is up to date for given location.
+     * If the weather data is already in the cache and it is up to date do nothing.
+     * If its out of date or not in the cache, fetch the new data
+     * and set it to the cache and variables
+     *
+     * @param loc Location to fetch the weather data for.
+     */
         val weatherData: WeatherData? = _weatherCache.value[loc]
         if (weatherData != null && !weatherData.needsUpdate()) {
             return weatherData

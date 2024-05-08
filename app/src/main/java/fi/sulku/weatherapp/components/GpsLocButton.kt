@@ -19,6 +19,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.WeatherViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * A button to fetch the weather data based on the GPS location.
+ * When clicked, it asks for the location permission.
+ * If the permission is denied, it shows a dialog to inform the user
+ * and tell them how to enable the permission.
+ *
+ * @see GpsPermissionDialog
+ */
 @Composable
 fun GpsLocButton() {
     val weatherVm: WeatherViewModel = viewModel()

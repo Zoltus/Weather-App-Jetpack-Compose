@@ -17,6 +17,14 @@ import fi.sulku.weatherapp.data.WeatherData
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+/**
+ * Horizontal scrollable hourly forecast component.
+ *
+ * Displays the hourly forecast for the next 24 hours.
+ *
+ * @param weather The WeatherData to access the hourly weather information.
+ * @see CreateHourlyCards
+ */
 @Composable
 fun Hourly(weather: WeatherData) {
     Column(
@@ -39,6 +47,15 @@ fun Hourly(weather: WeatherData) {
     }
 }
 
+/**
+ * Create hourly cards for the hourly forecast.
+ *
+ * Filters the hourly weather information to display only the next 24 hours
+ * and then creates a HourlyCard for each hour.
+ *
+ * @param weather The WeatherData to access the hourly weather information.
+ * @see HourlyCard
+ */
 @Composable
 fun CreateHourlyCards(weather: WeatherData) {
     val currentTime = LocalDateTime.now().minusHours(1)

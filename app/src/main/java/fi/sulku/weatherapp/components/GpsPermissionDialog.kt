@@ -10,6 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 
+/**
+ * A dialog that informs the user that the app needs location permissions
+ * to get the current location.
+ * If the user clicks "Open Settings", the app opens the settings where the user can grant the permissions.
+ * If the user clicks "Dismiss", the dialog is dismissed. And user can use search by city name.
+ *
+ * @param showDialog State of dialog to control the visibility of it
+ */
 @Composable
 fun GpsPermissionDialog(showDialog: MutableState<Boolean>) {
     val context = LocalContext.current

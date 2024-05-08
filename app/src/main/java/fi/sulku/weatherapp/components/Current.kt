@@ -14,7 +14,15 @@ import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.data.WeatherData
 import fi.sulku.weatherapp.data.WeatherViewModel
 
-
+/**
+ * A component to display the current weather information.
+ *
+ * Creates Vertical Grid with 2 columns to display the current weather basic information.
+ * Half on the left and half on the right side.
+ *
+ * @param weatherVm ViewModel to access the city name.
+ * @param weather The WeatherData to access the current weather information.
+ */
 @Composable
 fun Current(weatherVm: WeatherViewModel, weather: WeatherData) {
     val daily = weather.daily

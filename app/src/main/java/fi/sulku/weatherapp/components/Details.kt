@@ -16,6 +16,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.data.WeatherData
 
+/**
+ * A component to display the weather details.
+ *
+ * Creates Vertical Grid with 2 columns to display the weather details.
+ * Half on the left and half on the right side.
+ *
+ * @param weather The WeatherData to access the weather details.
+ */
 @Composable
 fun Details(weather: WeatherData) {
     Column(
