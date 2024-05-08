@@ -35,7 +35,7 @@ fun Current() {
                 //Left side items:
                 Column(horizontalAlignment = Alignment.Start) {
                     Text("\uD83D\uDCCD${vm.getCity()}")
-                    Text("Last update: ${Date(weather.lastUpdated)}")
+                    Text("Last update: ${weather.getUpdateTime()}")
                     Text(text = "<ConditionIcon>")
                     Text(text = "${current.temp}℃") // Current temp
                     Text(weather.getCurrentCondition())
@@ -46,7 +46,7 @@ fun Current() {
                 Column(horizontalAlignment = Alignment.End) {
                     Box(modifier = Modifier.height(100.dp))
                     Text("☔ Rain Chance: ${daily.rainChance[0]}%")
-                    Text(text = "☃ Snow Chance: -11%")
+                    //Text(text = "☃ Snow Chance: -11%")
                     Text(text = "\uD83D\uDD7A Feels Like: ${current.feelsLike}℃")
                 }
             }

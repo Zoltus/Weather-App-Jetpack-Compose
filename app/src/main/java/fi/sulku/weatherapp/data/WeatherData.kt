@@ -11,9 +11,16 @@ data class WeatherData(
     val current: Current,
     val hourly: Hourly
 ) {
-    // Tracks if data needs to be updated
+    // Checks if 15min is passed since last update
     fun needsUpdate(): Boolean {
-        return System.currentTimeMillis() - lastUpdated > 5 * 60 * 1000 //10min
+        val date = LocalDateTime.parse(current.time).plusMinutes(15)
+        val now = LocalDateTime.now()
+        return now.isAfter(date)
+    }
+
+    fun getUpdateTime(): String {
+        val date = LocalDateTime.parse(current.time)
+        return date.format(DateTimeFormatter.ofPattern("HH:mm"))
     }
 
     fun getCurrentCondition(): String {
