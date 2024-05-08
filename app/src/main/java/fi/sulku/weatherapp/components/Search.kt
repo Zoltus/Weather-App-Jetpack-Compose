@@ -34,15 +34,10 @@ import kotlinx.coroutines.launch
  * @see GpsLocButton
  */
 @Composable
-fun Search() {
-    val vm: WeatherViewModel = viewModel()
+fun Search(weatherVm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
-    //vm.getWeather("City")
-    //vm.getWeather()
     var input by remember { mutableStateOf("") }
-
     Text(text = "Check Weather")
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
