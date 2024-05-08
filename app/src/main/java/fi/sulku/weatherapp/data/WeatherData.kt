@@ -20,7 +20,7 @@ data class WeatherData(
         return now.isAfter(date)
     }
 
-    fun getUpdateTime(): String {
+    fun getLastUpdated(): String {
         val date = LocalDateTime.parse(current.time)
         return date.format(DateTimeFormatter.ofPattern("HH:mm"))
     }
