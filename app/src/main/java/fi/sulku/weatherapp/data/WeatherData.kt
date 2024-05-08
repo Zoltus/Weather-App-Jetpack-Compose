@@ -86,7 +86,6 @@ data class WeatherData(
     fun convertToClockTime(time: String): String {
         val currentTime = LocalDateTime.now()
         val date = LocalDateTime.parse(time)
-        println("IsSameHour: " + currentTime.hour + " Other: " + date.hour)
         val isSameHour = currentTime.hour == date.hour
         return if (isSameHour) {
             "Now"

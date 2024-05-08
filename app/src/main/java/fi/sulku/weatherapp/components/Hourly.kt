@@ -63,7 +63,6 @@ fun CreateHourlyCards(weather: WeatherData) {
         val time = LocalDateTime.parse(weather.hourly.time[it])
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
-            println("Time: " + weather.hourly.time[it])
             val timeString = weather.convertToClockTime(weather.hourly.time[it])
             HourlyCard(
                 time = timeString,

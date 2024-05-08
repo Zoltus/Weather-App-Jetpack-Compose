@@ -41,7 +41,6 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      * @param data Weather data to be set.
      */
     private fun setWeather(loc: Location, data: WeatherData) {
-        println("SetWerahter@@@@@@@@@@@")
         _selectedLocation.value = loc //Set selected location to new location
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
     }

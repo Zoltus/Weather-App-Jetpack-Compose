@@ -31,7 +31,6 @@ class WeatherApiService {
      * @return WeatherData object containing the weather data.
      */
     suspend fun fetchWeather(location: Location): WeatherData {
-        println("Fetching weather data for $location")
         val url = createUrl(location)
         return client.get(url).body<WeatherData>()
     }
