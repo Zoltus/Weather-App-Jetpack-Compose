@@ -31,20 +31,20 @@ data class WeatherData(
 
     fun getCondition(weatherCode: Int): String {
         return when (weatherCode) {
-            0 -> "Selkeää"
-            in 1..3 -> "Puolipilvistä"
-            in 45..48 -> "Sumua"
-            in 51..55 -> "Tihkusadetta"
-            in 56..57 -> "Jäätävää tihkua"
-            in 61..65 -> "Sadetta"
-            in 66..67 -> "Jäätävää sadetta"
-            in 71..75 -> "Lumisadetta"
-            77 -> "Lumirakeita"
-            in 80..82 -> "Sadekuuroja"
-            in 85..86 -> "Lumikuuroja"
-            in 95..96 -> "Ukkosta"
-            99 -> "Voimakasta ukkosta"
-            else -> "Tuntematon"
+            0 -> "Clear sky"
+            in 1..3 -> "Partly cloudy"
+            in 45..48 -> "Fog"
+            in 51..55 -> "Drizzle"
+            in 56..57 -> "Freezing Drizzle"
+            in 61..65 -> "Rain"
+            in 66..67 -> "Freezing Rain"
+            in 71..75 -> "Snow"
+            77 -> "Snow grains"
+            in 80..82 -> "Rain showers"
+            in 85..86 -> "Snow showers"
+            in 95..96 -> "Thunderstorm"
+            99 -> "Heavy hail"
+            else -> "Unknown"
         }
     }
 }
