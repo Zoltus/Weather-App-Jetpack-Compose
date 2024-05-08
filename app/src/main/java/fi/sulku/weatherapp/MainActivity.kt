@@ -11,15 +11,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.components.Current
-import fi.sulku.weatherapp.components.Daily
-import fi.sulku.weatherapp.components.Details
-import fi.sulku.weatherapp.components.Hourly
 import fi.sulku.weatherapp.components.Search
 import fi.sulku.weatherapp.ui.theme.WeatherAppTheme
 
@@ -63,9 +59,9 @@ fun WeatherSection() {
             )
     ) {
         Current()
-        Hourly()
-        Daily()
-        Details()
+        //Hourly()
+        //Daily()
+        //Details()
     }
 
 
