@@ -22,7 +22,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
 
     //Gets the weather data from the cache based on the selected location
-    val weather: StateFlow<WeatherData?> = _selectedLocation
+    val selectedWeather: StateFlow<WeatherData?> = _selectedLocation
         .combine(_weatherCache) { loc, weatherCache -> weatherCache[loc] }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -38,12 +38,12 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         return locationService.getCity(_selectedLocation.value)
     }
 
-    suspend fun getWeather(city: String): WeatherData? {
+    suspend fun fetchWeather(city: String): WeatherData? {
         val location: Location? = locationService.getLocation(city)
         return getOrUpdateWeather(location)
     }
 
-    suspend fun getWeather(): WeatherData? {
+    suspend fun fetchWeather(): WeatherData? {
         return getOrUpdateWeather(locationService.getCurrentLocation())
     }
 
