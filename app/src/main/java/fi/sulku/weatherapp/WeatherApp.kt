@@ -56,8 +56,8 @@ fun App() {
 
 @Composable
 fun WeatherSection(vm: WeatherViewModel) {
-    val weatherState by vm.selectedWeather.collectAsState()
-    weatherState?.let { weather ->
+    val selectedWeather by vm.selectedWeather.collectAsState()
+    selectedWeather?.let { weather ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

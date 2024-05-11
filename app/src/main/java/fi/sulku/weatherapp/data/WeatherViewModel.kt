@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
@@ -24,6 +25,9 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     private val locationService: LocationService = LocationService(app)
     private val weatherApiService: WeatherApiService = WeatherApiService()
     private val _selectedLocation = MutableStateFlow<Location?>(null)
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
 
     //todo sure has locs only min 500m apart
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
@@ -84,8 +88,10 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         if (weatherData != null && !weatherData.needsUpdate()) {
             setWeather(loc, weatherData)
         } else {
+            _isLoading.value = true
             val newWeather = weatherApiService.fetchWeather(loc)
             setWeather(loc, newWeather)
+            _isLoading.value = false
         }
     }
 }
