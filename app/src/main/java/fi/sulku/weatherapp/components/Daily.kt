@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.data.WeatherViewModel
 
 @Composable
-fun Daily(weatherVm: WeatherViewModel) {
+fun Daily(vm: WeatherViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

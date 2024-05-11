@@ -29,11 +29,11 @@ import kotlinx.coroutines.launch
  * If user denies the permission, a dialog will be shown to inform the user how to enable the permission.
  * User can also search by city name and then click the button to get the weather.
  *
- * @param weatherVm The WeatherViewModel to access the weather data.
+ * @param vm The WeatherViewModel to access the weather data.
  * @see LocationButton
  */
 @Composable
-fun Search(weatherVm: WeatherViewModel) {
+fun Search(vm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
     var input by remember { mutableStateOf("") }
     Text(text = "Check Weather")
@@ -43,23 +43,22 @@ fun Search(weatherVm: WeatherViewModel) {
             .padding(start = 16.dp, end = 16.dp),
     ) {
         Row {
-            LocationButton()
+            LocationButton(vm)
             Spacer(modifier = Modifier.width(8.dp))
             TextField(modifier = Modifier
                 .height(50.dp)
                 .fillMaxWidth(),
                 shape = RoundedCornerShape(20),
-                value = input, onValueChange = { input = it },
-                placeholder = { Text("City name") }
-            )
+                value = input,
+                onValueChange = { input = it },
+                placeholder = { Text("City name") })
         }
-
         Button(modifier = Modifier
             .fillMaxWidth()
             .padding(top = 16.dp),
             shape = RoundedCornerShape(20),
             onClick = {
-                scope.launch { weatherVm.selectCity(input) }
+                scope.launch { vm.selectCity(input) }
             }) {
             Text("Get Weather")
         }

@@ -44,23 +44,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App() {
-    val weatherVm : WeatherViewModel = viewModel()
+    val vm: WeatherViewModel = viewModel()
     Column(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Search(weatherVm)
-        WeatherSection(weatherVm)
+        Search(vm)
+        WeatherSection(vm)
     }
 }
 
 @Composable
-fun WeatherSection(weatherVm: WeatherViewModel) {
-    val weatherState by weatherVm.selectedWeather.collectAsState()
-    val weather = weatherState
-    if (weather == null) {
-        return
-    } else {
+fun WeatherSection(vm: WeatherViewModel) {
+    val weatherState by vm.selectedWeather.collectAsState()
+    weatherState?.let { weather ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -70,7 +67,7 @@ fun WeatherSection(weatherVm: WeatherViewModel) {
                     shape = RoundedCornerShape(16.dp)
                 )
         ) {
-            Current(weatherVm, weather)
+            Current(vm, weather)
             Hourly(weather)
             //Daily()
             Details(weather)

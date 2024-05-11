@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.data.WeatherViewModel
 import kotlinx.coroutines.launch
 
@@ -29,23 +28,20 @@ import kotlinx.coroutines.launch
  * @see PermissionDialog
  */
 @Composable
-fun LocationButton() {
-    val weatherVm: WeatherViewModel = viewModel()
-    val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
+fun LocationButton(vm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
-
+    val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
     val perms = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
     )
-
     val permLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
             scope.launch {
                 val hasPermissions = permissions.entries.all { it.value }
                 if (hasPermissions) {
-                    weatherVm.selectCurrentCity()
+                    vm.selectCurrentCity()
                 } else {
                     showDialog.value = true
                 }
