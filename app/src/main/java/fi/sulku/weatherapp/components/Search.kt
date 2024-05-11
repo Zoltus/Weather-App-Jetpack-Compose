@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
  * User can also search by city name and then click the button to get the weather.
  *
  * @param weatherVm The WeatherViewModel to access the weather data.
- * @see GpsLocButton
+ * @see LocationButton
  */
 @Composable
 fun Search(weatherVm: WeatherViewModel) {
@@ -43,7 +43,7 @@ fun Search(weatherVm: WeatherViewModel) {
             .padding(start = 16.dp, end = 16.dp),
     ) {
         Row {
-            GpsLocButton()
+            LocationButton()
             Spacer(modifier = Modifier.width(8.dp))
             TextField(modifier = Modifier
                 .height(50.dp)

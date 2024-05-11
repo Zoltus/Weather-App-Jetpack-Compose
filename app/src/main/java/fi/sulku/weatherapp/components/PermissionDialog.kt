@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
  * @param showDialog State of dialog to control the visibility of it
  */
 @Composable
-fun GpsPermissionDialog(showDialog: MutableState<Boolean>) {
+fun PermissionDialog(showDialog: MutableState<Boolean>) {
     val context = LocalContext.current
     AlertDialog(
         onDismissRequest = { showDialog.value = false },

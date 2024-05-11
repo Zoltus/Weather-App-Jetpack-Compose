@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,25 +26,28 @@ import kotlinx.coroutines.launch
  * If the permission is denied, it shows a dialog to inform the user
  * and tell them how to enable the permission.
  *
- * @see GpsPermissionDialog
+ * @see PermissionDialog
  */
 @Composable
-fun GpsLocButton() {
+fun LocationButton() {
     val weatherVm: WeatherViewModel = viewModel()
     val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    //vm.getWeather("City")
-    //vm.getWeather()
-    val permissionLauncher = rememberLauncherForActivityResult(
+
+    val perms = arrayOf(
+        Manifest.permission.ACCESS_FINE_LOCATION,
+        Manifest.permission.ACCESS_COARSE_LOCATION
+    )
+
+    val permLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
         onResult = { permissions ->
             scope.launch {
-                // Check if all requested permissions have been granted
-                val allPermissionsGranted = permissions.entries.all { it.value }
-                if (allPermissionsGranted) {
-                   weatherVm.selectCurrentCity()
+                val hasPermissions = permissions.entries.all { it.value }
+                if (hasPermissions) {
+                    weatherVm.selectCurrentCity()
                 } else {
-                    showDialog.value = true //if denied show dialog
+                    showDialog.value = true
                 }
             }
         }
@@ -52,20 +56,17 @@ fun GpsLocButton() {
     Button(modifier = Modifier.size(50.dp),
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(20),
-        onClick = {
-        //Ask permission
-        permissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        )
-    }) {
+        onClick = { permLauncher.launch(perms) }
+    ) {
         Text("📍")
     }
 
     if (showDialog.value) {
-        GpsPermissionDialog(showDialog)
+        PermissionDialog(showDialog)
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        permLauncher.launch(perms)
     }
 }
 
