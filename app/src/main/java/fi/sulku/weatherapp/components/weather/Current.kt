@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
@@ -35,7 +37,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
             //Left side items:
             Column {
                 Text("\uD83D\uDCCD${vm.getCity()}")
-                Text("Last update: ${weather.getLastUpdated()}")
+                Text("${stringResource(R.string.last_updated)}: ${weather.getLastUpdated()}")
                 //Text(text = "<ConditionIcon>")
                 Text(text = "${current.temp}℃") // Current temp
                 Text(weather.getCurrentCondition())
@@ -45,9 +47,9 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
         item {
             Column(horizontalAlignment = Alignment.End) {
                 Box(modifier = Modifier.height(100.dp))
-                Text("☔ Rain Chance: ${daily.rainChance[0]}%")
+                Text("☔ ${stringResource(R.string.rain_chance)}: ${daily.rainChance[0]}%")
                 //Text(text = "☃ Snow Chance: -11%")
-                Text(text = "\uD83D\uDD7A Feels Like: ${current.feelsLike}℃")
+                Text(text = "\uD83D\uDD7A ${stringResource(R.string.rain_chance)}: ${current.feelsLike}℃")
             }
         }
     }

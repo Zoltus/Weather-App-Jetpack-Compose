@@ -1,10 +1,11 @@
-package fi.sulku.weatherapp.components.search
+package fi.sulku.weatherapp.components.bar
 
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
  * @see PermissionDialog
  */
 @Composable
-fun GpsButton(vm: WeatherViewModel) {
+fun LocationButton(vm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
     val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
     val perms = arrayOf(
@@ -50,9 +51,12 @@ fun GpsButton(vm: WeatherViewModel) {
         }
     )
 
-    Button(modifier = Modifier.size(50.dp),
+    Button(
+        modifier = Modifier
+            .fillMaxHeight()
+            .aspectRatio(1f),
         contentPadding = PaddingValues(0.dp),
-        shape = RoundedCornerShape(20),
+        shape = RoundedCornerShape(10),
         onClick = { permLauncher.launch(perms) }
     ) {
         Text("📍")
