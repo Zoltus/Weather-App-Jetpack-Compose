@@ -29,7 +29,6 @@ import fi.sulku.weatherapp.services.LocationService
 import fi.sulku.weatherapp.ui.theme.WeatherAppTheme
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -67,18 +66,8 @@ fun WeatherApp(vm: WeatherViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Button(onClick = {
-            val locale = SettingsRepository.locale.value
-            if (locale.language == "fi") {
-                val localee = Locale("en")
-                SettingsRepository.setLocale(localee)
-            } else {
-                val localee = Locale("fi")
-                SettingsRepository.setLocale(localee)
-            }
-
-            val isDarkTheme = SettingsRepository.isDarkTheme.value
-            SettingsRepository.setDarkTheme(!isDarkTheme)
-
+            SettingsRepository.switchLocale()
+            SettingsRepository.switchDarkTheme()
         }) {
             Text(text = "Settings")
         }

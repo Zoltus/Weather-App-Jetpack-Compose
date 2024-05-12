@@ -18,23 +18,28 @@ object SettingsRepository {
 
     fun initialize(preferences: SharedPreferences) {
         this.preferences = preferences
-        _isDarkTheme.value = preferences.getBoolean("isDarkTheme", false)
-        _isFahrenheit.value = preferences.getBoolean("isFahrenheit", false)
-        _locale.value = Locale(preferences.getString("locale", "en") ?: "en")
+        this._isDarkTheme.value = preferences.getBoolean("isDarkTheme", false)
+        this._isFahrenheit.value = preferences.getBoolean("isFahrenheit", false)
+        this._locale.value = Locale(preferences.getString("locale", "en") ?: "en")
     }
 
-    fun setDarkTheme(isDarkTheme: Boolean) {
-        _isDarkTheme.value = isDarkTheme
-        preferences.edit().putBoolean("isDarkTheme", isDarkTheme).apply()
+    fun switchDarkTheme() {
+        _isDarkTheme.value = !_isDarkTheme.value
+        preferences.edit().putBoolean("isDarkTheme", _isDarkTheme.value).apply()
     }
 
-    fun setLocale(locale: Locale) {
+    fun switchLocale() {
+        val locale = if (_locale.value.language == "fi") {
+            Locale("en")
+        } else {
+            Locale("fi")
+        }
         _locale.value = locale
         preferences.edit().putString("locale", locale.toString()).apply()
     }
 
-    fun setFahrenheit(isFahrenheit: Boolean) {
-        _isFahrenheit.value = isFahrenheit
-        preferences.edit().putBoolean("isFahrenheit", isFahrenheit).apply()
+    fun switchFahrenheit() {
+        _isFahrenheit.value = !_isFahrenheit.value
+        preferences.edit().putBoolean("isFahrenheit", isFahrenheit.value).apply()
     }
 }
