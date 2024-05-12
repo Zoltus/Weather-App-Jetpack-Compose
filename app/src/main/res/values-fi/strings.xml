@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="weather">sää</string>
-    <string name="locale">kieli</string>
+    <string name="city">Kaupunki</string>
+    <string name="settings">Asetukset</string>
+    <string name="language_selection">Suomi - Englanti</string>
+    <string name="apply">Käytä</string>
+    <string name="cancel">Sulje</string>
+    <string name="last_updated">Viimeisin päivitys</string>
+    <string name="rain_chance">Sateen mahdollisuus</string>
+    <string name="feels_like">Tuntuu kuin</string>
 </resources>
