@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.services
 
 import android.Manifest
 import android.app.Application
@@ -9,15 +9,26 @@ import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
+import fi.sulku.weatherapp.models.Location
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 
 /**
  * Service for handling location operations.
  *
  * @param app Application context.
  */
-class LocationService(private val app: Application) {
-    private val geocoder = Geocoder(app)
+object LocationService {
+    private lateinit var app: Application
+    private lateinit var geocoder: Geocoder
+
+    fun initialize(application: Application) {
+        app = application
+        geocoder = Geocoder(app)
+    }
+    fun setLocale(locale: Locale) {
+        geocoder = Geocoder(app, locale)
+    }
 
     /**
      * Get the current location.

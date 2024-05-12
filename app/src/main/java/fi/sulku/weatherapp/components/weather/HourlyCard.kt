@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.components
+package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

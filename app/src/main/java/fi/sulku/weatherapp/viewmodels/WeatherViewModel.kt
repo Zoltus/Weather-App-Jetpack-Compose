@@ -1,11 +1,15 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import fi.sulku.weatherapp.models.Location
+import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.services.LocationService
+import fi.sulku.weatherapp.services.WeatherApiService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
@@ -14,22 +18,20 @@ import kotlinx.coroutines.flow.stateIn
  *
  * Handles the weather data and location data.
  *
- * @param application Application context.
  */
-class WeatherViewModel(application: Application) : AndroidViewModel(application) {
-    //private val _isFetching = MutableStateFlow(false)
-    //val isFetching: StateFlow<Boolean> = _isFetching.asStateFlow()
-    //val selectedLocation: StateFlow<Location?> = _selectedLocation.asStateFlow()
-    private val app: Application = application
-    private val locationService: LocationService = LocationService(app)
-    private val weatherApiService: WeatherApiService = WeatherApiService()
-    private val _selectedLocation = MutableStateFlow<Location?>(null)
+class WeatherViewModel : ViewModel() {
+    private val weatherApiService = WeatherApiService()
+
+    private val selectedLocation = MutableStateFlow<Location?>(null)
+    private val _isLoading = MutableStateFlow(false)
 
     //todo sure has locs only min 500m apart
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
 
+    val isLoading = _isLoading.asStateFlow()
+
     //Gets the weather data from the cache based on the selected location
-    val selectedWeather: StateFlow<WeatherData?> = _selectedLocation
+    val selectedWeather: StateFlow<WeatherData?> = selectedLocation
         .combine(_weatherCache) { loc, weatherCache -> weatherCache[loc] }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -41,10 +43,9 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      * @param data Weather data to be set.
      */
     private fun setWeather(loc: Location, data: WeatherData) {
-        _selectedLocation.value = loc //Set selected location to new location
+        selectedLocation.value = loc //Set selected location to new location
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
     }
-
 
     /**
      * Get the city name from the selected location.
@@ -52,14 +53,14 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      * @return City name of the selected location.
      */
     fun getCity(): String? {
-        return locationService.getCity(_selectedLocation.value)
+        return LocationService.getCity(selectedLocation.value)
     }
 
     /**
      * Update the weather data for the given city.
      */
     suspend fun selectCity(city: String) {
-        val location: Location? = locationService.getLocation(city)
+        val location: Location? = LocationService.getLocation(city)
         checkWeatherUpdates(location)
     }
 
@@ -67,7 +68,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      * Update the weather data for the current location.
      */
     suspend fun selectCurrentCity() {
-        checkWeatherUpdates(locationService.getCurrentLocation())
+        checkWeatherUpdates(LocationService.getCurrentLocation())
     }
 
     /**
@@ -80,6 +81,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
      */
     private suspend fun checkWeatherUpdates(loc: Location?) {
         if (loc == null) return
+        _isLoading.value = true
         val weatherData: WeatherData? = _weatherCache.value[loc]
         if (weatherData != null && !weatherData.needsUpdate()) {
             setWeather(loc, weatherData)
@@ -87,5 +89,6 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
             val newWeather = weatherApiService.fetchWeather(loc)
             setWeather(loc, newWeather)
         }
+        _isLoading.value = false
     }
 }
