@@ -1,6 +1,10 @@
 package fi.sulku.weatherapp.viewmodels
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.content.res.Configuration
+import android.content.res.Resources
+import fi.sulku.weatherapp.services.LocationService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.util.Locale
@@ -23,23 +27,33 @@ object SettingsRepository {
         this._locale.value = Locale(preferences.getString("locale", "en") ?: "en")
     }
 
-    fun switchDarkTheme() {
-        _isDarkTheme.value = !_isDarkTheme.value
-        preferences.edit().putBoolean("isDarkTheme", _isDarkTheme.value).apply()
+    fun setDarkTheme(isDarkTheme: Boolean) {
+        _isDarkTheme.value = isDarkTheme
+        preferences.edit().putBoolean("isDarkTheme", isDarkTheme).apply()
     }
 
-    fun switchLocale() {
-        val locale = if (_locale.value.language == "fi") {
-            Locale("en")
-        } else {
-            Locale("fi")
-        }
+    fun setLocale(locale: Locale) {
+        println("Set Locale: $locale")
+        println("Locale was: ${_locale.value}")
+        LocationService.setLocale(locale)
         _locale.value = locale
         preferences.edit().putString("locale", locale.toString()).apply()
     }
 
-    fun switchFahrenheit() {
-        _isFahrenheit.value = !_isFahrenheit.value
-        preferences.edit().putBoolean("isFahrenheit", isFahrenheit.value).apply()
+
+    fun reloadConfig(context: Context) {
+        val configuration = context.resources.configuration
+        val resources = context.resources
+        context.resources.updateConfiguration(
+            context.resources.configuration,
+            context.resources.displayMetrics
+        )
+        configuration.setLocale(_locale.value)
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+    }
+
+    fun setFahrenheit(isFahrenheit: Boolean) {
+        _isFahrenheit.value = isFahrenheit
+        preferences.edit().putBoolean("isFahrenheit", isFahrenheit).apply()
     }
 }

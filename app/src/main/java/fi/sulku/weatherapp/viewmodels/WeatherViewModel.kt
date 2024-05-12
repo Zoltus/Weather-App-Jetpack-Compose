@@ -81,14 +81,14 @@ class WeatherViewModel : ViewModel() {
      */
     private suspend fun checkWeatherUpdates(loc: Location?) {
         if (loc == null) return
+        _isLoading.value = true
         val weatherData: WeatherData? = _weatherCache.value[loc]
         if (weatherData != null && !weatherData.needsUpdate()) {
             setWeather(loc, weatherData)
         } else {
-            _isLoading.value = true
             val newWeather = weatherApiService.fetchWeather(loc)
             setWeather(loc, newWeather)
-            _isLoading.value = false
         }
+        _isLoading.value = false
     }
 }

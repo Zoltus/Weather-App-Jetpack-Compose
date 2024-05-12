@@ -29,7 +29,7 @@ import kotlinx.coroutines.launch
  * @see PermissionDialog
  */
 @Composable
-fun GpsButton(vm: WeatherViewModel) {
+fun LocationButton(vm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
     val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
     val perms = arrayOf(

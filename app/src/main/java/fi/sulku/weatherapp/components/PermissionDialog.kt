@@ -16,18 +16,18 @@ import androidx.compose.ui.platform.LocalContext
  * If the user clicks "Open Settings", the app opens the settings where the user can grant the permissions.
  * If the user clicks "Dismiss", the dialog is dismissed. And user can use search by city name.
  *
- * @param showDialog State of dialog to control the visibility of it
+ * @param permissionDialog State of dialog to control the visibility of it
  */
 @Composable
-fun PermissionDialog(showDialog: MutableState<Boolean>) {
+fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
     val context = LocalContext.current
     AlertDialog(
-        onDismissRequest = { showDialog.value = false },
+        onDismissRequest = { permissionDialog.value = false },
         title = { Text("Permission required") },
         text = { Text("To get your current location the app needs location permissions. Please grant the permissions or search by city name.") },
         confirmButton = {
             Button(onClick = {
-                showDialog.value = false
+                permissionDialog.value = false
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 val uri: Uri = Uri.fromParts("package", context.packageName, null)
                 intent.data = uri
@@ -37,7 +37,7 @@ fun PermissionDialog(showDialog: MutableState<Boolean>) {
             }
         },
         dismissButton = {
-            Button(onClick = { showDialog.value = false }) {
+            Button(onClick = { permissionDialog.value = false }) {
                 Text("Dismiss")
             }
         }
