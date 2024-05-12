@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.services
 
 import android.Manifest
 import android.app.Application
@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
+import fi.sulku.weatherapp.models.Location
 import kotlinx.coroutines.tasks.await
 
 /**

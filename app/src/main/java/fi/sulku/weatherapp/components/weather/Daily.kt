@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.components
+package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fi.sulku.weatherapp.data.WeatherViewModel
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
 @Composable
 fun Daily(vm: WeatherViewModel) {

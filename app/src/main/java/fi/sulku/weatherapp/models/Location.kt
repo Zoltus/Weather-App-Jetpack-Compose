@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.models
 
 import kotlin.math.round
 

@@ -1,8 +1,12 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import fi.sulku.weatherapp.models.Location
+import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.services.LocationService
+import fi.sulku.weatherapp.services.WeatherApiService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -18,9 +22,6 @@ import kotlinx.coroutines.flow.stateIn
  * @param application Application context.
  */
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
-    //private val _isFetching = MutableStateFlow(false)
-    //val isFetching: StateFlow<Boolean> = _isFetching.asStateFlow()
-    //val selectedLocation: StateFlow<Location?> = _selectedLocation.asStateFlow()
     private val app: Application = application
     private val locationService: LocationService = LocationService(app)
     private val weatherApiService: WeatherApiService = WeatherApiService()

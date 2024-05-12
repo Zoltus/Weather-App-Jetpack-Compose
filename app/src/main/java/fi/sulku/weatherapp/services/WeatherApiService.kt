@@ -1,5 +1,7 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.services
 
+import fi.sulku.weatherapp.models.Location
+import fi.sulku.weatherapp.models.WeatherData
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation

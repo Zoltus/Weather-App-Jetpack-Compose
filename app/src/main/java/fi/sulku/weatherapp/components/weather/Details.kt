@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.components
+package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import fi.sulku.weatherapp.data.WeatherData
+import fi.sulku.weatherapp.models.WeatherData
 
 /**
  * A component to display the weather details.

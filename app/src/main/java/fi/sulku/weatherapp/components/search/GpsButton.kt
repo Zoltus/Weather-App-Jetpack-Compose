@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.components
+package fi.sulku.weatherapp.components.search
 
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -16,7 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fi.sulku.weatherapp.data.WeatherViewModel
+import fi.sulku.weatherapp.components.PermissionDialog
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import kotlinx.coroutines.launch
 
 /**
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
  * @see PermissionDialog
  */
 @Composable
-fun LocationButton(vm: WeatherViewModel) {
+fun GpsButton(vm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
     val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
     val perms = arrayOf(

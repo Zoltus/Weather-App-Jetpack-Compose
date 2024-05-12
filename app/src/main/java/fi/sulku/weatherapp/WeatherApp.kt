@@ -18,11 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import fi.sulku.weatherapp.components.Current
-import fi.sulku.weatherapp.components.Details
-import fi.sulku.weatherapp.components.Hourly
-import fi.sulku.weatherapp.components.Search
-import fi.sulku.weatherapp.data.WeatherViewModel
+import fi.sulku.weatherapp.components.weather.Current
+import fi.sulku.weatherapp.components.weather.Details
+import fi.sulku.weatherapp.components.weather.Hourly
+import fi.sulku.weatherapp.components.search.SearchBar
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import fi.sulku.weatherapp.ui.theme.WeatherAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -49,7 +49,7 @@ fun App() {
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Search(vm)
+        SearchBar(vm)
         WeatherSection(vm)
     }
 }

@@ -1,4 +1,4 @@
-package fi.sulku.weatherapp.data
+package fi.sulku.weatherapp.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
