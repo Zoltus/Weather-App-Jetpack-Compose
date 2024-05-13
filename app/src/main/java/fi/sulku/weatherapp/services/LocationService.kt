@@ -65,7 +65,10 @@ object LocationService {
      */
     fun getCity(location: Location?): String? {
         return location?.let {
-            getAddressFromLocation(it.latitude.toDouble(), it.longitude.toDouble())?.locality
+            val address = getAddressFromLocation(it.latitude.toDouble(), it.longitude.toDouble())
+            val city = address?.locality
+            val country = city ?: address?.countryName
+            return country
         }
     }
 
@@ -112,8 +115,7 @@ object LocationService {
             geocoder.getFromLocationName(city, 1) { address = it.firstOrNull() }
             return address
         } else { //Older android
-            @Suppress("deprecation")
-            geocoder.getFromLocationName(city, 1)?.firstOrNull()
+           geocoder.getFromLocationName(city, 1)?.firstOrNull()
         }
     }
 }
