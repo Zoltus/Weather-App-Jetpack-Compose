@@ -5,11 +5,11 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -55,7 +55,6 @@ class MainActivity : ComponentActivity() {
                     WeatherApp(weatherVm)
                 }
             }
-
         }
     }
 }
@@ -80,8 +79,10 @@ fun WeatherSection(vm: WeatherViewModel) {
                 .padding(16.dp)
         ) {
             Current(vm, weather)
+            Spacer(modifier = Modifier.padding(10.dp))
             Hourly(weather)
             //Daily()
+            Spacer(modifier = Modifier.padding(10.dp))
             Details(weather)
         }
     }

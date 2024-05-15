@@ -1,5 +1,7 @@
 package fi.sulku.weatherapp.models
 
+import android.content.Context
+import fi.sulku.weatherapp.R
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -47,8 +49,8 @@ data class WeatherData(
      *
      * @return The current weather condition text.
      */
-    fun getCurrentCondition(): String {
-        return getCondition(current.weather_code)
+    fun getCurrentCondition(context: Context): String {
+        return getCondition(context, current.weather_code)
     }
 
     /**
@@ -56,23 +58,24 @@ data class WeatherData(
      *
      * @return The weather condition text.
      */
-    private fun getCondition(weatherCode: Int): String {
-        return when (weatherCode) {
-            0 -> "Clear sky"
-            in 1..3 -> "Partly cloudy"
-            in 45..48 -> "Fog"
-            in 51..55 -> "Drizzle"
-            in 56..57 -> "Freezing Drizzle"
-            in 61..65 -> "Rain"
-            in 66..67 -> "Freezing Rain"
-            in 71..75 -> "Snow"
-            77 -> "Snow grains"
-            in 80..82 -> "Rain showers"
-            in 85..86 -> "Snow showers"
-            in 95..96 -> "Thunderstorm"
-            99 -> "Heavy hail"
-            else -> "Unknown"
+    private fun getCondition(context: Context, weatherCode: Int): String {
+        val translationId = when (weatherCode) {
+            0 -> R.string.condition_clear_sky
+            in 1..3 -> R.string.condition_partly_cloudy
+            in 45..48 -> R.string.condition_fog
+            in 51..55 -> R.string.condition_drizzle
+            in 56..57 -> R.string.condition_freezing_drizzle
+            in 61..65 -> R.string.condition_rain
+            in 66..67 -> R.string.condition_freezing_rain
+            in 71..75 -> R.string.condition_snow
+            77 -> R.string.condition_snow_grains
+            in 80..82 -> R.string.condition_rain_showers
+            in 85..86 -> R.string.condition_snow_showers
+            in 95..96 -> R.string.condition_thunderstorm
+            99 -> R.string.condition_heavy_hail
+            else -> R.string.condition_unknown
         }
+        return context.getString(translationId)
     }
 
     /**
@@ -83,12 +86,13 @@ data class WeatherData(
      * @param time The time to convert.
      * @return The time in clock time format.
      */
-    fun convertToClockTime(time: String): String {
+    fun convertToClockTime(context: Context, time: String): String {
         val currentTime = LocalDateTime.now()
         val date = LocalDateTime.parse(time)
         val isSameHour = currentTime.hour == date.hour
+
         return if (isSameHour) {
-            "Now"
+            context.getString(R.string.weather_now)
         } else {
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
             date.format(formatter)
