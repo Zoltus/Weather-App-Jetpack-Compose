@@ -12,6 +12,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
+/**
+ * Daily forecast
+ *
+ * Displays the daily forecast for the next 14 days.
+ *
+ * @param vm The WeatherViewModel to access the daily weather information.
+ */
 @Composable
 fun Daily(vm: WeatherViewModel) {
     Column(

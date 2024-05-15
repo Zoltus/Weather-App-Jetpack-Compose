@@ -26,6 +26,14 @@ import androidx.compose.ui.window.Dialog
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 
+/**
+ * A dialog to display the settings.
+ *
+ * Displays the settings to change the theme, temperature unit and language.
+ * When user changes the settings, the changes are applied when the user clicks apply.
+ *
+ * @param viewSettings The State to control the visibility of the dialog.
+ */
 @Composable
 fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     val context = LocalContext.current
@@ -75,7 +83,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     }
 }
 
-
+/*
 @Composable
 private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
     Row(
@@ -88,5 +96,5 @@ private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
             onCheckedChange = { toggle.value = it }
         )
     }
-}
+}*/
 

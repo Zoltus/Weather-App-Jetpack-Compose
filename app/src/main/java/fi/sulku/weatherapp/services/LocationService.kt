@@ -15,17 +15,27 @@ import java.util.Locale
 
 /**
  * Service for handling location operations.
- *
- * @param app Application context.
  */
 object LocationService {
     private lateinit var app: Application
     private lateinit var geocoder: Geocoder
 
+    /**
+     * Initialize the location service.
+     * Needs to be called before using the location service.
+     *
+     * @param application Application to initialize the location service.
+     */
     fun initialize(application: Application) {
         app = application
         geocoder = Geocoder(app)
     }
+
+    /**
+     * Set the locale for the geocoder.
+     *
+     * @param locale Locale to set for the geocoder.
+     */
     fun setLocale(locale: Locale) {
         geocoder = Geocoder(app, locale)
     }

@@ -26,6 +26,14 @@ import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import java.util.Locale
 
+/**
+ * A dropdown menu to select the language.
+ *
+ * Displays the selected language and opens a dropdown menu to change the language.
+ * The current language is not displayed in the dropdown menu as its selected.
+ *
+ * @param selectedLocale The selected locale to change the language.
+ */
 @Composable
 fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
     val context = LocalContext.current
@@ -70,6 +78,12 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
     }
 }
 
+/**
+ * Translates the locale to the corresponding language for the dropdown text.
+ *
+ * @param context The context to access the resources.
+ * @param locale The locale to translate.
+ */
 private fun translateLocale(context : Context, locale: Locale): String {
     return when (locale.displayName) {
         "English" -> context.getString(R.string.english)
