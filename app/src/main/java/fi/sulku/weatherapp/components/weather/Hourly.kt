@@ -2,6 +2,7 @@ package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
@@ -29,22 +31,26 @@ import java.time.LocalDateTime
  */
 @Composable
 fun Hourly(weather: WeatherData) {
-    Column(
+    Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
             .background(
                 color = Color(0xFFBFDBFE),
                 shape = RoundedCornerShape(16.dp) // Rounded corners
             )
     ) {
-        Text(stringResource(id = R.string.weather_hourly_forecast))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .horizontalScroll(rememberScrollState())
+        Column(
+            modifier = Modifier.padding(16.dp)
         ) {
-            CreateHourlyCards(weather)
+            Text(stringResource(id = R.string.weather_hourly_forecast), fontWeight = FontWeight.Bold)
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState())
+            ) {
+                CreateHourlyCards(weather)
+            }
         }
     }
 }

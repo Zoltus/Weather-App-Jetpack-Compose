@@ -75,6 +75,7 @@ data class WeatherData(
             99 -> R.string.condition_heavy_hail
             else -> R.string.condition_unknown
         }
+        return context.getString(translationId)
     }
 
     /**
