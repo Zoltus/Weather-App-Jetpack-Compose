@@ -25,16 +25,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
-import java.util.Locale
 
 @Composable
 fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     val context = LocalContext.current
     val settings = SettingsRepository
+    //Settings
     val isDarkTheme = settings.isDarkTheme
     val isFahrenheit = settings.isFahrenheit
+    //Locales
     val locale by settings.locale.collectAsState()
-    val isEnglish = remember { mutableStateOf(locale == Locale.ENGLISH) }
+    val selectedLocale = remember { mutableStateOf(locale) }
 
     Dialog(onDismissRequest = { viewSettings.value = false }) {
         Column(
@@ -47,7 +48,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
 
             //Setting(text = "Dark Theme", isDarkTheme)
             //Setting(text = "Fahrenheit", isFahrenheit)
-            Setting(text = stringResource(R.string.language_selection), isEnglish)
+            LanguageDropdown(selectedLocale)
 
             Spacer(modifier = Modifier.padding(6.dp))
 
@@ -76,6 +77,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
         }
     }
 }
+
 
 @Composable
 private fun Setting(text: String, toggle: MutableState<Boolean>) {
