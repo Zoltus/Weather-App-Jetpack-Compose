@@ -38,4 +38,5 @@
     <string name="condition_thunderstorm">Åska</string>
     <string name="condition_heavy_hail">Kraftigt hagel</string>
     <string name="condition_unknown">Okänd</string>
+    <string name="weather_daily_forecast">XXX</string>
 </resources>
