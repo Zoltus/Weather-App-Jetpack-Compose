@@ -12,7 +12,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
 import java.time.LocalDateTime
 
@@ -35,7 +38,7 @@ fun Hourly(weather: WeatherData) {
                 shape = RoundedCornerShape(16.dp) // Rounded corners
             )
     ) {
-        Text("HOURLY FORECAST")
+        Text(stringResource(id = R.string.weather_hourly_forecast))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -57,13 +60,14 @@ fun Hourly(weather: WeatherData) {
  */
 @Composable
 fun CreateHourlyCards(weather: WeatherData) {
+    val context = LocalContext.current
     val currentTime = LocalDateTime.now().minusHours(1)
     val nextDayTime = currentTime.plusDays(1)
     List(weather.hourly.temps.size) {
         val time = LocalDateTime.parse(weather.hourly.time[it])
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
-            val timeString = weather.convertToClockTime(weather.hourly.time[it])
+            val timeString = weather.convertToClockTime(context, weather.hourly.time[it])
             HourlyCard(
                 time = timeString,
                 temp = weather.hourly.temps[it],

@@ -36,8 +36,8 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
         item {
             //Left side items:
             Column {
-                Text("\uD83D\uDCCD${vm.getCity()}")
-                Text("${stringResource(R.string.last_updated)}: ${weather.getLastUpdated()}")
+                Text("\uD83D\uDCCD${vm.getCity()}") //todo change getcity method
+                Text("${stringResource(R.string.weather_last_updated)}: ${weather.getLastUpdated()}")
                 //Text(text = "<ConditionIcon>")
                 Text(text = "${current.temp}℃") // Current temp
                 Text(weather.getCurrentCondition())
@@ -47,9 +47,9 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
         item {
             Column(horizontalAlignment = Alignment.End) {
                 Box(modifier = Modifier.height(100.dp))
-                Text("☔ ${stringResource(R.string.rain_chance)}: ${daily.rainChance[0]}%")
+                Text("☔ ${stringResource(R.string.weather_rain_chance)}: ${daily.rainChance[0]}%")
                 //Text(text = "☃ Snow Chance: -11%")
-                Text(text = "\uD83D\uDD7A ${stringResource(R.string.rain_chance)}: ${current.feelsLike}℃")
+                Text(text = "\uD83D\uDD7A ${stringResource(R.string.weather_rain_chance)}: ${current.feelsLike}℃")
             }
         }
     }

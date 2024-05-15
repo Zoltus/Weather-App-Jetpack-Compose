@@ -1,5 +1,7 @@
 package fi.sulku.weatherapp.models
 
+import android.content.Context
+import fi.sulku.weatherapp.R
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -83,12 +85,13 @@ data class WeatherData(
      * @param time The time to convert.
      * @return The time in clock time format.
      */
-    fun convertToClockTime(time: String): String {
+    fun convertToClockTime(context: Context, time: String, ): String {
         val currentTime = LocalDateTime.now()
         val date = LocalDateTime.parse(time)
         val isSameHour = currentTime.hour == date.hour
+
         return if (isSameHour) {
-            "Now"
+            context.getString(R.string.weather_now)
         } else {
             val formatter = DateTimeFormatter.ofPattern("HH:mm")
             date.format(formatter)
