@@ -2,8 +2,6 @@ package fi.sulku.weatherapp.viewmodels
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.content.res.Configuration
-import android.content.res.Resources
 import fi.sulku.weatherapp.services.LocationService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,9 +12,20 @@ object SettingsRepository {
 
     private val _isDarkTheme = MutableStateFlow(false)
     private val _isFahrenheit = MutableStateFlow(false)
-    private val _locale = MutableStateFlow(Locale("en"))
 
+    private val _locales = listOf(
+        Locale("en"),
+        Locale("fi"),
+        Locale("sv")
+    )
+
+    val locales: List<Locale> get() = _locales.toList()
+
+    private val defaultLocale = locales[2]
+
+    private val _locale = MutableStateFlow(defaultLocale)
     val locale = _locale.asStateFlow()
+
     val isFahrenheit = _isFahrenheit.asStateFlow()
     val isDarkTheme = _isDarkTheme.asStateFlow()
 
@@ -24,7 +33,10 @@ object SettingsRepository {
         this.preferences = preferences
         this._isDarkTheme.value = preferences.getBoolean("isDarkTheme", false)
         this._isFahrenheit.value = preferences.getBoolean("isFahrenheit", false)
-        this._locale.value = Locale(preferences.getString("locale", "en") ?: "en")
+        this._locale.value =
+            Locale(preferences.getString("locale", defaultLocale.toString()) ?: defaultLocale.toString())
+
+        println("Locale: " + _locale.value)
     }
 
     fun setDarkTheme(isDarkTheme: Boolean) {

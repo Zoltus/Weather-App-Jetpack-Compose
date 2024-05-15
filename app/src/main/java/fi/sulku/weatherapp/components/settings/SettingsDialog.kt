@@ -52,6 +52,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
 
             Spacer(modifier = Modifier.padding(6.dp))
 
+            // Apply & Cancel Buttons
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -59,11 +60,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
                 Button(onClick = {
                     viewSettings.value = false
                     settings.setDarkTheme(isDarkTheme.value)
-                    if (isEnglish.value) {
-                        settings.setLocale(Locale.ENGLISH)
-                    } else {
-                        settings.setLocale(Locale("fi"))
-                    }
+                    settings.setLocale(selectedLocale.value)
                     settings.setFahrenheit(isFahrenheit.value)
                     //Reload configs
                     settings.reloadConfig(context)
@@ -80,7 +77,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
 
 
 @Composable
-private fun Setting(text: String, toggle: MutableState<Boolean>) {
+private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -91,6 +88,5 @@ private fun Setting(text: String, toggle: MutableState<Boolean>) {
             onCheckedChange = { toggle.value = it }
         )
     }
-
 }
 

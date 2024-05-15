@@ -9,6 +9,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import fi.sulku.weatherapp.R
 
 /**
  * A dialog that informs the user that the app needs location permissions
@@ -21,10 +23,11 @@ import androidx.compose.ui.platform.LocalContext
 @Composable
 fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
     val context = LocalContext.current
+
     AlertDialog(
         onDismissRequest = { permissionDialog.value = false },
-        title = { Text("Permission required") },
-        text = { Text("To get your current location the app needs location permissions. Please grant the permissions or search by city name.") },
+        title = { Text(stringResource(id = R.string.permission_required)) },
+        text = { Text(stringResource(id = R.string.permission_message)) },
         confirmButton = {
             Button(onClick = {
                 permissionDialog.value = false
@@ -33,12 +36,12 @@ fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
                 intent.data = uri
                 context.startActivity(intent)
             }) {
-                Text("Open Settings")
+                Text(stringResource(id = R.string.open_settings))
             }
         },
         dismissButton = {
             Button(onClick = { permissionDialog.value = false }) {
-                Text("Dismiss")
+                Text(stringResource(id = R.string.dismiss))
             }
         }
     )
