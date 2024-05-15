@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="city">Stad</string>
+    <string name="settings">Inställningar</string>
+    <string name="apply">Tillämpa</string>
+    <string name="cancel">Avbryt</string>
+    <string name="weather_last_updated">Senast uppdaterad</string>
+    <string name="weather_rain_chance">Regnchans</string>
+    <string name="weather_feels_like">Känns som</string>
+    <string name="finnish">Finska</string>
+    <string name="english">Engelska</string>
+    <string name="swedish">Svenska</string>
+    <string name="permission_required">Tillstånd krävs</string>
+    <string name="permission_message">För att få din nuvarande plats behöver appen platsbehörigheter. Vänligen bevilja behörigheterna eller sök efter stadens namn.</string>
+    <string name="open_settings">Öppna inställningar</string>
+    <string name="dismiss">Avvisa</string>
+    <string name="weather_rain_amount">Regn</string>
+    <string name="weather_humidity">Luftfuktighet</string>
+    <string name="weather_sunrise">Soluppgång</string>
+    <string name="weather_wind_speed">Vindhastighet</string>
+    <string name="weather_visibility">Synlighet</string>
+    <string name="weather_sunset">Solnedgång</string>
+    <string name="weather_air_pressure">Tryck</string>
+    <string name="weather_details">DETALJER</string>
+    <string name="weather_hourly_forecast">TIMVIS PROGNOS</string>
+    <string name="weather_now">Nu</string>
+    <string name="condition_clear_sky">Klart</string>
+    <string name="condition_partly_cloudy">Delvis molnigt</string>
+    <string name="condition_fog">Dimma</string>
+    <string name="condition_drizzle">Duggregn</string>
+    <string name="condition_freezing_drizzle">Underkylt duggregn</string>
+    <string name="condition_rain">Regn</string>
+    <string name="condition_freezing_rain">Underkylt regn</string>
+    <string name="condition_snow">Snö</string>
+    <string name="condition_snow_grains">Snökorn</string>
+    <string name="condition_rain_showers">Regnskurar</string>
+    <string name="condition_snow_showers">Snöbyar</string>
+    <string name="condition_thunderstorm">Åska</string>
+    <string name="condition_heavy_hail">Kraftigt hagel</string>
+    <string name="condition_unknown">Okänd</string>
+</resources>
