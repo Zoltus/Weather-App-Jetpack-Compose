@@ -7,9 +7,9 @@
     <string name="weather_last_updated">Päivitetty</string>
     <string name="weather_rain_chance">Sateen madh.</string>
     <string name="weather_feels_like">Tuntuu</string>
-    <string name="finnish">Suomi</string>
-    <string name="english">Englanti</string>
-    <string name="swedish">Ruotsi</string>
+    <string name="lang_finnish">🇫🇮 Suomi</string>
+    <string name="lang_english">🇬🇧 Englanti</string>
+    <string name="lang_swedish">🇸🇪 Ruotsi</string>
     <string name="permission_required">Oikeuksia vaaditaan</string>
     <string name="permission_message">fi</string>
     <string name="open_settings">Avaa Asetukset</string>

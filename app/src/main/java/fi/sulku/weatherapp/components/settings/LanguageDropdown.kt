@@ -86,9 +86,9 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
  */
 private fun translateLocale(context : Context, locale: Locale): String {
     return when (locale.displayName) {
-        "English" -> context.getString(R.string.english)
-        "Finnish" -> context.getString(R.string.finnish)
-        "Swedish" -> context.getString(R.string.swedish)
-        else -> context.getString(R.string.english)
+        "English" -> context.getString(R.string.lang_english)
+        "Finnish" -> context.getString(R.string.lang_finnish)
+        "Swedish" -> context.getString(R.string.lang_swedish)
+        else -> context.getString(R.string.lang_english)
     }
 }
