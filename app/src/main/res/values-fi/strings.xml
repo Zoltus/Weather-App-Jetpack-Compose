@@ -4,9 +4,9 @@
     <string name="settings">Asetukset</string>
     <string name="apply">Käytä</string>
     <string name="cancel">Sulje</string>
-    <string name="weather_last_updated">Viimeisin päivitys</string>
-    <string name="weather_rain_chance">Sateen mahdollisuus</string>
-    <string name="weather_feels_like">Tuntuu kuin</string>
+    <string name="weather_last_updated">Päivitetty</string>
+    <string name="weather_rain_chance">Sateen madh.</string>
+    <string name="weather_feels_like">Tuntuu</string>
     <string name="finnish">Suomi</string>
     <string name="english">Englanti</string>
     <string name="swedish">Ruotsi</string>
@@ -22,7 +22,7 @@
     <string name="weather_sunset">Auringon lasku</string>
     <string name="weather_air_pressure">Ilmanpaine</string>
     <string name="weather_details">YKSITYISKOHDAT</string>
-    <string name="weather_hourly_forecast">Tunnittainen ennustus</string>
+    <string name="weather_hourly_forecast">Tunnit</string>
     <string name="weather_now">Nyt</string>
     <string name="condition_clear_sky">Selkeää</string>
     <string name="condition_partly_cloudy">Puolipilvistä</string>
@@ -38,4 +38,5 @@
     <string name="condition_thunderstorm">Ukkosta</string>
     <string name="condition_heavy_hail">Rakeita</string>
     <string name="condition_unknown">Tuntematon</string>
+    <string name="weather_daily_forecast">Päivät</string>
 </resources>

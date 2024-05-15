@@ -42,6 +42,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 Text(text = "${current.temp}℃") // Current temp
                 Text(weather.getCurrentCondition())
                 Text("↑${daily.maxTemps[0]}℃ ↓${daily.minTemps[0]}℃")
+                Text(weather.getCurrentCondition(context), fontWeight = FontWeight.Bold)
             }
         }
         item {
