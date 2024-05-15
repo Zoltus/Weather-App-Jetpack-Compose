@@ -60,7 +60,9 @@ class MainActivity : ComponentActivity() {
 }
 
 
-
+/**
+ *
+ */
 @Composable
 fun WeatherApp(vm: WeatherViewModel) {
     Column {
@@ -69,6 +71,13 @@ fun WeatherApp(vm: WeatherViewModel) {
     }
 }
 
+/**
+ * Weather section
+ *
+ * Displays all weather related stuff
+ *
+ * @param vm The WeatherViewModel to access the weather information.
+ */
 @Composable
 fun WeatherSection(vm: WeatherViewModel) {
     val selectedWeather by vm.selectedWeather.collectAsState()
