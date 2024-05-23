@@ -2,6 +2,8 @@ package fi.sulku.weatherapp.models
 
 import android.content.Context
 import fi.sulku.weatherapp.R
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import fi.sulku.weatherapp.viewmodels.SettingsRepository.isFahrenheit
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime

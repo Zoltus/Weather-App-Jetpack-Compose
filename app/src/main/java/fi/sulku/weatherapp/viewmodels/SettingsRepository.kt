@@ -17,7 +17,7 @@ object SettingsRepository {
      */
     private lateinit var preferences: SharedPreferences
 
-     // Dark theme setting, true if the dark theme is enabled, false otherwise.
+    // Dark theme setting, true if the dark theme is enabled, false otherwise.
     private val _isDarkTheme = MutableStateFlow(false)
 
     // Temperature unit, true to use Fahrenheit, false to use Celsius.
@@ -33,10 +33,13 @@ object SettingsRepository {
      * Access the list of available locales.
      */
     val locales: List<Locale> get() = _locales.toList()
+
     // Default locale to use if the locale is not found.
     private val defaultLocale = locales[2]
+
     // Selected locale.
     private val _locale = MutableStateFlow(defaultLocale)
+
     // Selected locale accessor.
     val locale = _locale.asStateFlow()
     val isFahrenheit = _isFahrenheit.asStateFlow()
@@ -105,5 +108,13 @@ object SettingsRepository {
     fun setFahrenheit(isFahrenheit: Boolean) {
         _isFahrenheit.value = isFahrenheit
         preferences.edit().putBoolean("isFahrenheit", isFahrenheit).apply()
+    }
+
+    fun getConvertedTemp(temp: Double): String {
+        return if (_isFahrenheit.value) {
+            "${String.format(_locale.value,"%.1f", temp * 9 / 5 + 32)}°F" //Format
+        } else {
+            "$temp°C"
+        }
     }
 }

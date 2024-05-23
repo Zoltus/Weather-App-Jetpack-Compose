@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +19,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,27 +39,25 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     val context = LocalContext.current
     val settings = SettingsRepository
     //Settings
-    val isDarkTheme = settings.isDarkTheme
-    val isFahrenheit = settings.isFahrenheit
+    val isDarkTheme = remember { mutableStateOf(settings.isDarkTheme.value) }
+    val isFahrenheit = remember { mutableStateOf(settings.isFahrenheit.value) }
     //Locales
     val locale by settings.locale.collectAsState()
     val selectedLocale = remember { mutableStateOf(locale) }
 
-    Dialog(onDismissRequest = { viewSettings.value = false }) {
+    Dialog(onDismissRequest = { viewSettings.value = false }
+    ) {
         Column(
             modifier = Modifier
-                .background(Color.White, shape = RoundedCornerShape(10.dp))
+                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(10.dp))
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
-            //Setting(text = "Dark Theme", isDarkTheme)
-            //Setting(text = "Fahrenheit", isFahrenheit)
+            SwitchSetting(text = "Dark Theme", isDarkTheme)
+            SwitchSetting(text = "Fahrenheit", isFahrenheit)
             LanguageDropdown(selectedLocale)
-
             Spacer(modifier = Modifier.padding(6.dp))
-
             // Apply & Cancel Buttons
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -83,7 +81,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     }
 }
 
-/*
+
 @Composable
 private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
     Row(
@@ -96,5 +94,5 @@ private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
             onCheckedChange = { toggle.value = it }
         )
     }
-}*/
+}
 

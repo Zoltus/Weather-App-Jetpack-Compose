@@ -7,9 +7,9 @@
     <string name="weather_last_updated">Updated</string>
     <string name="weather_rain_chance">Rain chance</string>
     <string name="weather_feels_like">Feels like</string>
-    <string name="finnish">Finnish</string>
-    <string name="english">English</string>
-    <string name="swedish">Swedish</string>
+    <string name="lang_finnish">🇫🇮 Finnish</string>
+    <string name="lang_english">🇬🇧 English</string>
+    <string name="lang_swedish">🇸🇪 Swedish</string>
     <string name="permission_required">Permission required</string>
     <string name="permission_message">To get your current location the app needs location permissions. Please grant the permissions or search by city name.</string>
     <string name="open_settings">Open Settings</string>

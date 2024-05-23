@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -19,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import java.time.LocalDateTime
 
 /**
@@ -35,14 +39,17 @@ fun Hourly(weather: WeatherData) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFFBFDBFE),
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(16.dp) // Rounded corners
             )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(stringResource(id = R.string.weather_hourly_forecast), fontWeight = FontWeight.Bold)
+            Text(
+                stringResource(id = R.string.weather_hourly_forecast),
+                fontWeight = FontWeight.Bold
+            )
 
             Row(
                 modifier = Modifier
@@ -69,6 +76,7 @@ fun CreateHourlyCards(weather: WeatherData) {
     val context = LocalContext.current
     val currentTime = LocalDateTime.now().minusHours(1)
     val nextDayTime = currentTime.plusDays(1)
+
     List(weather.hourly.temps.size) {
         val time = LocalDateTime.parse(weather.hourly.time[it])
         //start from current hours and end 24h after:

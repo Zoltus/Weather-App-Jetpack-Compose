@@ -7,9 +7,9 @@
     <string name="weather_last_updated">Senast uppdaterad</string>
     <string name="weather_rain_chance">Regnchans</string>
     <string name="weather_feels_like">Känns som</string>
-    <string name="finnish">Finska</string>
-    <string name="english">Engelska</string>
-    <string name="swedish">Svenska</string>
+    <string name="lang_finnish">🇫🇮 Finska</string>
+    <string name="lang_english">🇬🇧 Engelska</string>
+    <string name="lang_swedish">🇸🇪 Svenska</string>
     <string name="permission_required">Tillstånd krävs</string>
     <string name="permission_message">För att få din nuvarande plats behöver appen platsbehörigheter. Vänligen bevilja behörigheterna eller sök efter stadens namn.</string>
     <string name="open_settings">Öppna inställningar</string>
