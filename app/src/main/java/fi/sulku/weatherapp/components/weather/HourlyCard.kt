@@ -4,8 +4,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
 
 /**
  * A Card to display the hourly weather information.
@@ -17,12 +20,14 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun HourlyCard(time: String, temp: Double, icon: Int) {
     // Padding:
+    val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
+    val fahrenheit = isFahrenheit
     Column(
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Text(time)
         Text("☀️")//${icon}
-        Text("$temp℃")
+        Text(SettingsRepository.getConvertedTemp(temp))
     }
 }
