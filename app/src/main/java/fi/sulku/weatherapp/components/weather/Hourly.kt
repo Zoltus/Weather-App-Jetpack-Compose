@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -38,14 +39,17 @@ fun Hourly(weather: WeatherData) {
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = Color(0xFFBFDBFE),
+                color = MaterialTheme.colorScheme.surface,
                 shape = RoundedCornerShape(16.dp) // Rounded corners
             )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(stringResource(id = R.string.weather_hourly_forecast), fontWeight = FontWeight.Bold)
+            Text(
+                stringResource(id = R.string.weather_hourly_forecast),
+                fontWeight = FontWeight.Bold
+            )
 
             Row(
                 modifier = Modifier

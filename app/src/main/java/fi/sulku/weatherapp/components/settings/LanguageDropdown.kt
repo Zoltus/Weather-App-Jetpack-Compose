@@ -3,13 +3,16 @@
 package fi.sulku.weatherapp.components.settings
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -21,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import java.util.Locale
@@ -41,11 +43,10 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
     val locales = SettingsRepository.locales
     val locale by settings.locale.collectAsState()
     var viewLocaleDropdown by remember { mutableStateOf(false) }
-
+    //Use default text colors in textfield and dropdown
+    val textColors = LocalTextStyle.current.copy(color = LocalContentColor.current)
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(32.dp)
+        modifier = Modifier.fillMaxWidth()
     ) {
         ExposedDropdownMenuBox(
             expanded = viewLocaleDropdown,
@@ -56,16 +57,24 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
                 onValueChange = {},
                 readOnly = true,
                 trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = viewLocaleDropdown) },
-                modifier = Modifier.menuAnchor()
+                modifier = Modifier.menuAnchor(),
+                //Copy normal text composable style
+                textStyle = textColors
             )
             ExposedDropdownMenu(
+                modifier = Modifier.background(MaterialTheme.colorScheme.surfaceVariant),
                 expanded = viewLocaleDropdown,
                 onDismissRequest = { viewLocaleDropdown = false }
             ) {
                 locales.forEach {
                     if (it != selectedLocale.value) { // Ignores selected lang
                         DropdownMenuItem(
-                            text = { Text(text = translateLocale(context, it)) },
+                            text = {
+                                Text(
+                                    text = translateLocale(context, it),
+                                    style = textColors
+                                )
+                            },
                             onClick = {
                                 viewLocaleDropdown = false
                                 selectedLocale.value = it
@@ -84,7 +93,7 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
  * @param context The context to access the resources.
  * @param locale The locale to translate.
  */
-private fun translateLocale(context : Context, locale: Locale): String {
+private fun translateLocale(context: Context, locale: Locale): String {
     return when (locale.displayName) {
         "English" -> context.getString(R.string.lang_english)
         "Finnish" -> context.getString(R.string.lang_finnish)

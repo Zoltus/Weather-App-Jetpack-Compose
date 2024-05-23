@@ -28,10 +28,6 @@ fun Daily(vm: WeatherViewModel) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .background(
-                color = Color(0xFFBFDBFE),
-                shape = RoundedCornerShape(16.dp) // Rounded corners
-            )
     ) {
         Text(stringResource(id = R.string.weather_daily_forecast), fontWeight = FontWeight.Bold)
     }
