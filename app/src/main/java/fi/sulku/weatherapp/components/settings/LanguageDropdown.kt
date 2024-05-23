@@ -63,7 +63,7 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
                 onDismissRequest = { viewLocaleDropdown = false }
             ) {
                 locales.forEach {
-                    if (it != locale) { // Ignores selected lang
+                    if (it != selectedLocale.value) { // Ignores selected lang
                         DropdownMenuItem(
                             text = { Text(text = translateLocale(context, it)) },
                             onClick = {
