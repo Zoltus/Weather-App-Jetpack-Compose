@@ -39,6 +39,7 @@ class MainActivity : ComponentActivity() {
             // Observes location so everything recomposes if location changes
             val locale by SettingsRepository.locale.collectAsState()
             val localee = locale //todo cleanup
+
             //Reloads langues from configs so eveything updates correcly
             val context = LocalContext.current
             SettingsRepository.reloadConfig(context)

@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -17,6 +19,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import fi.sulku.weatherapp.viewmodels.SettingsRepository.getConvertedTemp
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
 /**
@@ -33,6 +37,10 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
     val daily = weather.daily
     val current = weather.current
     val context = LocalContext.current
+    //todo cleanup
+    val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
+    val fahrenheit = isFahrenheit
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp)
@@ -44,10 +52,14 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 Text("${stringResource(R.string.weather_last_updated)}: ${weather.getLastUpdated()}")
                 Spacer(modifier = Modifier.height(20.dp))
                 //Text(text = "<ConditionIcon>")
-                Text(text = "${current.temp}℃", fontWeight = FontWeight.Bold, fontSize = 32.sp) // Current temp
+                Text(
+                    text = getConvertedTemp(current.temp),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 32.sp
+                ) // Current temp
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(weather.getCurrentCondition(context), fontWeight = FontWeight.Bold)
-                Text("↑${daily.maxTemps[0]}℃ ↓${daily.minTemps[0]} ℃")
+                Text("↑${getConvertedTemp(daily.maxTemps[0])} ↓${getConvertedTemp(daily.minTemps[0])}")
             }
         }
         item {
@@ -55,8 +67,14 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 Box(modifier = Modifier.height(50.dp))
                 Text("☔ ${stringResource(R.string.weather_rain_chance)}: ${daily.rainChance[0]}%")
                 //Text(text = "☃ Snow Chance: -11%")
-                Text(text = "\uD83D\uDD7A ${stringResource(R.string.weather_feels_like)}: ${current.feelsLike}℃")
+                Text(
+                    text = "\uD83D\uDD7A ${stringResource(R.string.weather_feels_like)}: ${
+                        getConvertedTemp(current.feelsLike)
+                    }"
+                )
             }
         }
     }
+
+
 }

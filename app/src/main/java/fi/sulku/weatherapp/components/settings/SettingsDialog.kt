@@ -39,8 +39,8 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     val context = LocalContext.current
     val settings = SettingsRepository
     //Settings
-    val isDarkTheme = settings.isDarkTheme
-    val isFahrenheit = settings.isFahrenheit
+    //val isDarkTheme = settings.isDarkTheme
+    val isFahrenheit = remember { mutableStateOf(settings.isFahrenheit.value) }
     //Locales
     val locale by settings.locale.collectAsState()
     val selectedLocale = remember { mutableStateOf(locale) }
@@ -55,7 +55,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
         ) {
 
             //Setting(text = "Dark Theme", isDarkTheme)
-            //Setting(text = "Fahrenheit", isFahrenheit)
+            SwitchSetting(text = "Fahrenheit", isFahrenheit)
             LanguageDropdown(selectedLocale)
 
             Spacer(modifier = Modifier.padding(6.dp))
@@ -67,7 +67,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
             ) {
                 Button(onClick = {
                     viewSettings.value = false
-                    settings.setDarkTheme(isDarkTheme.value)
+                    //settings.setDarkTheme(isDarkTheme.value)
                     settings.setLocale(selectedLocale.value)
                     settings.setFahrenheit(isFahrenheit.value)
                     //Reload configs
@@ -83,7 +83,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     }
 }
 
-/*
+
 @Composable
 private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
     Row(
@@ -96,5 +96,5 @@ private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
             onCheckedChange = { toggle.value = it }
         )
     }
-}*/
+}
 
