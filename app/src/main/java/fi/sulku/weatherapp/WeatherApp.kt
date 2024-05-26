@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -79,17 +82,18 @@ fun WeatherApp(vm: WeatherViewModel) {
 fun WeatherSection(vm: WeatherViewModel) {
     val selectedWeather by vm.selectedWeather.collectAsState()
     selectedWeather?.let { weather ->
-        Column(
+        LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp)
+                .clip(RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp)) //Bottom rounded corners
         ) {
-            Current(vm, weather)
-            Spacer(modifier = Modifier.padding(10.dp))
-            Hourly(weather)
-            //Daily()
-            Spacer(modifier = Modifier.padding(10.dp))
-            Details(weather)
+            item { Current(vm, weather) }
+            item { Spacer(modifier = Modifier.padding(10.dp)) }
+            item { Hourly(weather) }
+            //item { Daily() }
+            item { Spacer(modifier = Modifier.padding(10.dp)) }
+            item { Details(weather) }
         }
     }
 }

@@ -1,14 +1,14 @@
 package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -41,13 +41,13 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
     val current = weather.current
     val context = LocalContext.current
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp)
-    ) {
-        item {
-            //Left side items:
-            Column {
+
+    Column {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Column { //Left side
                 Text("\uD83D\uDCCD${vm.getCity()}", fontWeight = FontWeight.Bold) //todo change getcity method
                 Text("${stringResource(R.string.weather_last_updated)}: ${weather.getLastUpdated()}")
                 Spacer(modifier = Modifier.height(20.dp))
@@ -71,8 +71,6 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                     } ↓${getConvertedTemp(daily.minTemps[0], isFahrenheit)}"
                 )
             }
-        }
-        item {
             Column {
                 Box(modifier = Modifier.height(120.dp))
                 Text("☔ ${stringResource(R.string.weather_rain_chance)}: ${daily.rainChance[0]}%")

@@ -4,6 +4,7 @@ import android.content.Context
 import fi.sulku.weatherapp.R
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -97,7 +98,10 @@ data class WeatherData(
             in 85..86 -> R.drawable.condition_snow_showers
             in 95..96 -> R.drawable.condition_thunderstorm
             99 -> R.string.condition_heavy_hail
-            else -> R.string.condition_unknown
+            else ->  {
+                Timber.w("Unknown weather code: $weatherCode")
+                R.string.condition_unknown
+            }
         }
     }
 

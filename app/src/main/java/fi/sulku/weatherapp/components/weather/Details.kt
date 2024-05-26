@@ -1,9 +1,11 @@
 package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -57,11 +59,11 @@ fun Details(weather: WeatherData) {
             modifier = Modifier.padding(16.dp)
         ) {
             Text(stringResource(id = R.string.weather_details), fontWeight = FontWeight.Bold)
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp)
-            ) {
-                item {
+            Column {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Column {
                         Text(stringResource(id = R.string.weather_rain_amount), fontWeight = FontWeight.Bold)
                         Text(rainAmount)
@@ -72,9 +74,7 @@ fun Details(weather: WeatherData) {
                         Text(stringResource(id = R.string.weather_sunrise), fontWeight = FontWeight.Bold)
                         Text(weather.convertToClockTime(context, weather.daily.sunrise[1]))
                     }
-                }
-                item {
-                    Column(horizontalAlignment = Alignment.End) {
+                    Column {
                         Text(stringResource(id = R.string.weather_wind_speed), fontWeight = FontWeight.Bold)
                         Text(windSpeed)
                         //Text("Visibility")

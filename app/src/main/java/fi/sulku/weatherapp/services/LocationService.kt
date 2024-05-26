@@ -63,7 +63,7 @@ object LocationService {
             val location: android.location.Location = locationProvider.lastLocation.await()
             Location(location.latitude.toFloat(), location.longitude.toFloat())
         } else {
-            Log.d("Location", "Not granted!")
+            Timber.d("Location", "Not granted!")
             null
         }
     }
