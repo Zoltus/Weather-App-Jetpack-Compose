@@ -12,17 +12,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
-import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import java.time.LocalDateTime
 
 /**
@@ -79,13 +75,14 @@ fun CreateHourlyCards(weather: WeatherData) {
 
     List(weather.hourly.temps.size) {
         val time = LocalDateTime.parse(weather.hourly.time[it])
+        val iconCode = weather.getConditionIconId(weather.hourly.weather_code[it])
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
             val timeString = weather.convertToClockTime(context, weather.hourly.time[it])
             HourlyCard(
                 time = timeString,
                 temp = weather.hourly.temps[it],
-                icon = weather.hourly.weather_code[it]
+                iconId = iconCode
             )
         }
     }
