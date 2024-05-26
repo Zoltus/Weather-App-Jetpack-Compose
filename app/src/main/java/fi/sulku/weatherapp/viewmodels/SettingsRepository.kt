@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import fi.sulku.weatherapp.services.LocationService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -65,8 +66,6 @@ object SettingsRepository {
         this._isMiles.value = preferences.getBoolean("useMiles", false)
         this._selectedLocale.value =
             Locale(preferences.getString("locale", defaultLocale.toString()) ?: defaultLocale.toString())
-
-        println("Locale: " + _selectedLocale.value)
     }
 
     /**
@@ -85,8 +84,7 @@ object SettingsRepository {
      * @param locale The locale to set.
      */
     fun setLocale(locale: Locale) {
-        println("Set Locale: $locale")
-        println("Locale was: ${_selectedLocale.value}")
+        Timber.d("Setting locale to: $locale")
         LocationService.setLocale(locale)
         _selectedLocale.value = locale
         preferences.edit().putString("locale", locale.toString()).apply()
@@ -96,6 +94,7 @@ object SettingsRepository {
      * Set the temperature unit setting.
      */
     fun setFahrenheit(isFahrenheit: Boolean) {
+        Timber.d("Setting fahrenheit to: $isFahrenheit")
         _isFahrenheit.value = isFahrenheit
         preferences.edit().putBoolean("isFahrenheit", isFahrenheit).apply()
     }
@@ -103,14 +102,16 @@ object SettingsRepository {
     /**
      * Set the inches/millis setting.
      */
-    fun setInches(useInches: Boolean) {
-        _isInches.value = useInches
-        preferences.edit().putBoolean("useInches", useInches).apply()
+    fun setInches(isInches: Boolean) {
+        Timber.d("Setting inches to: $isInches")
+        _isInches.value = isInches
+        preferences.edit().putBoolean("useInches", isInches).apply()
     }
 
-    fun setMiles(useMiles: Boolean) {
-        _isMiles.value = useMiles
-        preferences.edit().putBoolean("useMiles", useMiles).apply()
+    fun setMiles(isMiles: Boolean) {
+        Timber.d("Setting miles to: $isMiles")
+        _isMiles.value = isMiles
+        preferences.edit().putBoolean("useMiles", isMiles).apply()
     }
 
     /**
@@ -120,6 +121,7 @@ object SettingsRepository {
      * @param context The context to reload the configuration for.
      */
     fun reloadConfig(context: Context) {
+        Timber.d("Reloading configs")
         val configuration = context.resources.configuration
         val resources = context.resources
         context.resources.updateConfiguration(

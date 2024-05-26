@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 
 /**
  * ViewModel for weather data.
@@ -43,6 +44,7 @@ class WeatherViewModel : ViewModel() {
      * @param data Weather data to be set.
      */
     private fun setWeather(loc: Location, data: WeatherData) {
+        Timber.d("Setting weather to $loc")
         selectedLocation.value = loc //Set selected location to new location
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
     }

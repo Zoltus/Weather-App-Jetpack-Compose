@@ -25,28 +25,25 @@ import fi.sulku.weatherapp.services.LocationService
 import fi.sulku.weatherapp.ui.theme.WeatherAppTheme
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
+import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
             //Initialize LocationService and SettingsRepository
+            Timber.d("Initializing LocationService")
             LocationService.initialize(this.application)
+            Timber.d("Initializing settings repository")
             SettingsRepository.initialize(getSharedPreferences("settings", Context.MODE_PRIVATE))
-
-            // Observes location so everything recomposes if location changes
             val locale by SettingsRepository.selectedLocale.collectAsState()
-            val localee = locale //todo cleanup
-
+            Timber.d("Using locale: $locale")
             //Reloads langues from configs so eveything updates correcly
             val context = LocalContext.current
             SettingsRepository.reloadConfig(context)
-
-            val isDarkTheme by SettingsRepository.isDarkTheme.collectAsState()
             val weatherVm: WeatherViewModel = viewModel()
-
+            val isDarkTheme by SettingsRepository.isDarkTheme.collectAsState()
             //Set locale to viewmodels locale
             WeatherAppTheme(darkTheme = isDarkTheme) {
                 Surface(
@@ -59,7 +56,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
 
 /**
  *

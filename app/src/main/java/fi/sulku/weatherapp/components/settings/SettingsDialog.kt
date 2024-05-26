@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import timber.log.Timber
 
 /**
  * A dialog to display the settings.
@@ -41,12 +42,9 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     //Settings
     val isDarkTheme = remember { mutableStateOf(settings.isDarkTheme.value) }
     val isFahrenheit = remember { mutableStateOf(settings.isFahrenheit.value) }
-
     val useMiles = remember { mutableStateOf(settings.isMiles.value) }
     val useInches = remember { mutableStateOf(settings.isInches.value) }
-    //Locales
-    val locale by settings.selectedLocale.collectAsState()
-    val selectedLocale = remember { mutableStateOf(locale) }
+    val selectedLocale = remember { mutableStateOf(settings.selectedLocale.value) }
 
     Dialog(onDismissRequest = { viewSettings.value = false }
     ) {
@@ -70,6 +68,7 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(onClick = {
+                    Timber.d("Applying settings")
                     viewSettings.value = false
                     settings.setDarkTheme(isDarkTheme.value)
                     settings.setLocale(selectedLocale.value)

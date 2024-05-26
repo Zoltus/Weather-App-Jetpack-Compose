@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import fi.sulku.weatherapp.models.Location
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.util.Locale
 
 /**

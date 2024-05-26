@@ -8,6 +8,7 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import timber.log.Timber
 
 /**
  * Service for fetching weather data from the Open-Meteo API.
@@ -33,6 +34,7 @@ class WeatherApiService {
      * @return WeatherData object containing the weather data.
      */
     suspend fun fetchWeather(location: Location): WeatherData {
+        Timber.d("Fetching weather for $location")
         val url = createUrl(location)
         return client.get(url).body<WeatherData>()
     }
