@@ -2,8 +2,6 @@ package fi.sulku.weatherapp.models
 
 import android.content.Context
 import fi.sulku.weatherapp.R
-import fi.sulku.weatherapp.viewmodels.SettingsRepository
-import fi.sulku.weatherapp.viewmodels.SettingsRepository.isFahrenheit
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
@@ -78,6 +76,29 @@ data class WeatherData(
             else -> R.string.condition_unknown
         }
         return context.getString(translationId)
+    }
+
+    fun getConditionIconId(): Int {
+        return getConditionIconId(current.weather_code)
+    }
+
+    fun getConditionIconId(weatherCode: Int): Int {
+        return when (weatherCode) {
+            0 -> R.drawable.condition_clear_sky
+            in 1..3 -> R.drawable.condition_partly_cloudy
+            in 45..48 -> R.drawable.condition_fog
+            in 51..55 -> R.drawable.condition_drizzle
+            in 56..57 -> R.drawable.condition_freezing_drizzle
+            in 61..65 -> R.drawable.condition_rain
+            in 66..67 -> R.drawable.condition_freezing_rain
+            in 71..75 -> R.drawable.condition_snow
+            77 -> R.drawable.condition_snow_grains
+            in 80..82 -> R.drawable.condition_rain_showers
+            in 85..86 -> R.drawable.condition_snow_showers
+            in 95..96 -> R.drawable.condition_thunderstorm
+            99 -> R.string.condition_heavy_hail
+            else -> R.string.condition_unknown
+        }
     }
 
     /**
