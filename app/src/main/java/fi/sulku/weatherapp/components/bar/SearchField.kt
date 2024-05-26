@@ -34,7 +34,7 @@ fun SearchField(vm: WeatherViewModel, modifier: Modifier = Modifier) {
     val isLoading by vm.isLoading.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
     val input = remember { mutableStateOf("") }
-    val locale by SettingsRepository.locale.collectAsState()
+    val locale by SettingsRepository.selectedLocale.collectAsState()
 
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         TextField(

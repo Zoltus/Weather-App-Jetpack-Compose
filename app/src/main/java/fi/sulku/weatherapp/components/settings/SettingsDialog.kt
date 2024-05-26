@@ -41,8 +41,11 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     //Settings
     val isDarkTheme = remember { mutableStateOf(settings.isDarkTheme.value) }
     val isFahrenheit = remember { mutableStateOf(settings.isFahrenheit.value) }
+
+    val useMiles = remember { mutableStateOf(settings.isMiles.value) }
+    val useInches = remember { mutableStateOf(settings.isInches.value) }
     //Locales
-    val locale by settings.locale.collectAsState()
+    val locale by settings.selectedLocale.collectAsState()
     val selectedLocale = remember { mutableStateOf(locale) }
 
     Dialog(onDismissRequest = { viewSettings.value = false }
@@ -54,8 +57,11 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            //todo translations
             SwitchSetting(text = "Dark Theme", isDarkTheme)
             SwitchSetting(text = "Fahrenheit", isFahrenheit)
+            SwitchSetting(text = "Miles", useMiles)
+            SwitchSetting(text = "Inches", useInches)
             LanguageDropdown(selectedLocale)
             Spacer(modifier = Modifier.padding(6.dp))
             // Apply & Cancel Buttons
@@ -68,6 +74,8 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
                     settings.setDarkTheme(isDarkTheme.value)
                     settings.setLocale(selectedLocale.value)
                     settings.setFahrenheit(isFahrenheit.value)
+                    settings.setMiles(useMiles.value)
+                    settings.setInches(useInches.value)
                     //Reload configs
                     settings.reloadConfig(context)
                 }) {
