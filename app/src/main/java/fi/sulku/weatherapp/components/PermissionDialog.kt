@@ -12,6 +12,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fi.sulku.weatherapp.R
+import timber.log.Timber
 
 /**
  * A dialog that informs the user that the app needs location permissions
@@ -31,6 +32,7 @@ fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
         text = { Text(stringResource(id = R.string.permission_message)) },
         confirmButton = {
             Button(onClick = {
+                Timber.d("Directing user to app settings.")
                 permissionDialog.value = false
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 val uri: Uri = Uri.fromParts("package", context.packageName, null)

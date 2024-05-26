@@ -37,10 +37,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
     val daily = weather.daily
     val current = weather.current
     val context = LocalContext.current
-    //todo cleanup
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
-    val fahrenheit = isFahrenheit
-
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(8.dp)
@@ -53,13 +50,20 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 Spacer(modifier = Modifier.height(20.dp))
                 //Text(text = "<ConditionIcon>")
                 Text(
-                    text = getConvertedTemp(current.temp),
+                    text = getConvertedTemp(current.temp, isFahrenheit),
                     fontWeight = FontWeight.Bold,
                     fontSize = 32.sp
                 ) // Current temp
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(weather.getCurrentCondition(context), fontWeight = FontWeight.Bold)
-                Text("↑${getConvertedTemp(daily.maxTemps[0])} ↓${getConvertedTemp(daily.minTemps[0])}")
+                Text(
+                    "↑${
+                        getConvertedTemp(
+                            daily.maxTemps[0],
+                            isFahrenheit
+                        )
+                    } ↓${getConvertedTemp(daily.minTemps[0], isFahrenheit)}"
+                )
             }
         }
         item {
@@ -69,12 +73,10 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 //Text(text = "☃ Snow Chance: -11%")
                 Text(
                     text = "\uD83D\uDD7A ${stringResource(R.string.weather_feels_like)}: ${
-                        getConvertedTemp(current.feelsLike)
+                        getConvertedTemp(current.feelsLike, isFahrenheit)
                     }"
                 )
             }
         }
     }
-
-
 }

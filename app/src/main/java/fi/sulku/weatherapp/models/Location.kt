@@ -1,5 +1,6 @@
 package fi.sulku.weatherapp.models
 
+import timber.log.Timber
 import kotlin.math.round
 
 /**
@@ -21,6 +22,7 @@ data class Location(var latitude: Float, var longitude: Float) {
      * @param coordinate Latitude or longitude.
      */
     private fun roundtoClosest500m(coordinate: Float): Float {
+        Timber.d("Rounding $coordinate")
         val coordinateInMeters = coordinate * 111139 // Convert to meters
         val roundedCoordinate = round(coordinateInMeters / 500) * 500 // Round to nearest 500 meters
         return roundedCoordinate / 111139 // Convert back to degrees

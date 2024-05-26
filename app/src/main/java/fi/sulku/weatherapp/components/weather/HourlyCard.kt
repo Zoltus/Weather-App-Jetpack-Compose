@@ -21,13 +21,12 @@ import fi.sulku.weatherapp.viewmodels.SettingsRepository
 fun HourlyCard(time: String, temp: Double, icon: Int) {
     // Padding:
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
-    val fahrenheit = isFahrenheit
     Column(
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Text(time)
         Text("☀️")//${icon}
-        Text(SettingsRepository.getConvertedTemp(temp))
+        Text(SettingsRepository.getConvertedTemp(temp, isFahrenheit))
     }
 }

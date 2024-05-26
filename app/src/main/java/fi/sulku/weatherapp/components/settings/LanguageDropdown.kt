@@ -41,7 +41,7 @@ fun LanguageDropdown(selectedLocale: MutableState<Locale>) {
     val context = LocalContext.current
     val settings = SettingsRepository
     val locales = SettingsRepository.locales
-    val locale by settings.locale.collectAsState()
+    val locale by settings.selectedLocale.collectAsState()
     var viewLocaleDropdown by remember { mutableStateOf(false) }
     //Use default text colors in textfield and dropdown
     val textColors = LocalTextStyle.current.copy(color = LocalContentColor.current)
