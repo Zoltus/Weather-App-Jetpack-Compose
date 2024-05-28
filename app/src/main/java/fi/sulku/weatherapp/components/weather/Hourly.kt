@@ -80,6 +80,7 @@ fun CreateHourlyCards(weather: WeatherData) {
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
             val timeString = weather.convertToClockTime(context, weather.hourly.time[it])
             HourlyCard(
+            val timeString = convertToClockTime(context, weather.hourly.time[it])
                 time = timeString,
                 temp = weather.hourly.temps[it],
                 iconId = iconCode

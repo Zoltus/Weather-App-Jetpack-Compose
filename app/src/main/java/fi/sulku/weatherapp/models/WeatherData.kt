@@ -2,11 +2,17 @@ package fi.sulku.weatherapp.models
 
 import android.content.Context
 import fi.sulku.weatherapp.R
+import fi.sulku.weatherapp.Utils.getConvertedTempp
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import timber.log.Timber
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 
 /**
  * Ktor serializable class for the weather data.
@@ -102,27 +108,6 @@ data class WeatherData(
                 Timber.w("Unknown weather code: $weatherCode")
                 R.string.condition_unknown
             }
-        }
-    }
-
-    /**
-     * Convert the given time to a clock time.
-     * If the time is the same as the current hour, return "Now".
-     * Otherwise, return the time in HH:mm format.
-     *
-     * @param time The time to convert.
-     * @return The time in clock time format.
-     */
-    fun convertToClockTime(context: Context, time: String): String {
-        val currentTime = LocalDateTime.now()
-        val date = LocalDateTime.parse(time)
-        val isSameHour = currentTime.hour == date.hour
-
-        return if (isSameHour) {
-            context.getString(R.string.weather_now)
-        } else {
-            val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            date.format(formatter)
         }
     }
 }

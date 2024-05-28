@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
+import fi.sulku.weatherapp.Utils.convertToClockTime
 import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 
@@ -72,7 +73,7 @@ fun Details(weather: WeatherData) {
                         Text(stringResource(id = R.string.weather_uv), fontWeight = FontWeight.Bold)
                         Text(weather.daily.uv_index_max[1].toString())
                         Text(stringResource(id = R.string.weather_sunrise), fontWeight = FontWeight.Bold)
-                        Text(weather.convertToClockTime(context, weather.daily.sunrise[1]))
+                        Text(convertToClockTime(context, weather.daily.sunrise[1]))
                     }
                     Column {
                         Text(stringResource(id = R.string.weather_wind_speed), fontWeight = FontWeight.Bold)
@@ -82,7 +83,7 @@ fun Details(weather: WeatherData) {
                         Text(stringResource(id = R.string.weather_air_pressure), fontWeight = FontWeight.Bold)
                         Text("${weather.current.pressure} hPa")
                         Text(stringResource(id = R.string.weather_sunset), fontWeight = FontWeight.Bold)
-                        Text(weather.convertToClockTime(context, weather.daily.sunset[1]))
+                        Text(convertToClockTime(context, weather.daily.sunset[1]))
                     }
                 }
             }

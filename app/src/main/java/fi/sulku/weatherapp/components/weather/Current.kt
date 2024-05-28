@@ -21,9 +21,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fi.sulku.weatherapp.R
+import fi.sulku.weatherapp.Utils.getConvertedTemp
 import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
-import fi.sulku.weatherapp.viewmodels.SettingsRepository.getConvertedTemp
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
 /**
@@ -51,7 +51,8 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 Text("\uD83D\uDCCD${vm.getCity()}", fontWeight = FontWeight.Bold) //todo change getcity method
                 Text("${stringResource(R.string.weather_last_updated)}: ${weather.getLastUpdated()}")
                 Spacer(modifier = Modifier.height(20.dp))
-                Image( modifier = Modifier.size(96.dp),
+                Image(
+                    modifier = Modifier.size(96.dp),
                     painter = painterResource(weather.getConditionIconId()),
                     contentDescription = "Weather icon"
                 )
@@ -64,10 +65,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                 Text(weather.getCurrentCondition(context), fontWeight = FontWeight.Bold)
                 Text(
                     "↑${
-                        getConvertedTemp(
-                            daily.maxTemps[0],
-                            isFahrenheit
-                        )
+                        getConvertedTemp(daily.maxTemps[0], isFahrenheit)
                     } ↓${getConvertedTemp(daily.minTemps[0], isFahrenheit)}"
                 )
             }

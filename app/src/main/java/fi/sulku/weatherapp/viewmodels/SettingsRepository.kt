@@ -131,12 +131,4 @@ object SettingsRepository {
         configuration.setLocale(_selectedLocale.value)
         resources.updateConfiguration(configuration, resources.displayMetrics)
     }
-
-    fun getConvertedTemp(temp: Double, isFahrenheit: Boolean): String {
-        return if (isFahrenheit) {
-            "${String.format(_selectedLocale.value, "%.1f", temp * 9 / 5 + 32)}°F" //Format
-        } else {
-            "$temp°C"
-        }
-    }
 }
