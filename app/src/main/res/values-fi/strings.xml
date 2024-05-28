@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="city">Kaupunki</string>
-    <string name="settings">Asetukset</string>
-    <string name="apply">Käytä</string>
-    <string name="cancel">Sulje</string>
+    <string name="weather_city">Kaupunki</string>
+    <string name="settings_title">Asetukset</string>
+    <string name="settings_apply">Käytä</string>
+    <string name="settings_cancel">Sulje</string>
     <string name="weather_last_updated">Päivitetty</string>
     <string name="weather_rain_chance">Sateen madh.</string>
     <string name="weather_feels_like">Tuntuu</string>
     <string name="lang_finnish">🇫🇮 Suomi</string>
     <string name="lang_english">🇬🇧 Englanti</string>
     <string name="lang_swedish">🇸🇪 Ruotsi</string>
-    <string name="permission_required">Oikeuksia vaaditaan</string>
-    <string name="permission_message">fi</string>
-    <string name="open_settings">Avaa Asetukset</string>
-    <string name="dismiss">Sulje</string>
+    <string name="settings_permission_required">Oikeuksia vaaditaan</string>
+    <string name="permissions_message">fi</string>
+    <string name="permissions_open_settings">Avaa Asetukset</string>
+    <string name="permissions_dismiss">Sulje</string>
     <string name="weather_rain_amount">Sade</string>
     <string name="weather_humidity">Ilman kosteus</string>
     <string name="weather_sunrise">Auringon nousu</string>
@@ -38,5 +38,10 @@
     <string name="condition_thunderstorm">Ukkosta</string>
     <string name="condition_heavy_hail">Rakeita</string>
     <string name="condition_unknown">Tuntematon</string>
-    <string name="weather_daily_forecast">Päivät</string>
+    <string name="weather_daily_forecast">PÄIVÄT</string>
+    <string name="chart_rain_amount">Sademäärä</string>
+    <string name="chart_max_temp">Max lämpö</string>
+    <string name="chart_min_temp">Min lämpö</string>
+    <string name="settings_dark_theme">Vaale/Tumma tila</string>
+    <string name="weather_today">Tänään</string>
 </resources>

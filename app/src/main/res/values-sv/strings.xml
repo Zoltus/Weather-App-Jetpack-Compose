@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="city">Stad</string>
-    <string name="settings">Inställningar</string>
-    <string name="apply">Tillämpa</string>
-    <string name="cancel">Avbryt</string>
+    <string name="weather_city">Stad</string>
+    <string name="settings_title">Inställningar</string>
+    <string name="settings_apply">Tillämpa</string>
+    <string name="settings_cancel">Avbryt</string>
     <string name="weather_last_updated">Senast uppdaterad</string>
     <string name="weather_rain_chance">Regnchans</string>
     <string name="weather_feels_like">Känns som</string>
     <string name="lang_finnish">🇫🇮 Finska</string>
     <string name="lang_english">🇬🇧 Engelska</string>
     <string name="lang_swedish">🇸🇪 Svenska</string>
-    <string name="permission_required">Tillstånd krävs</string>
-    <string name="permission_message">För att få din nuvarande plats behöver appen platsbehörigheter. Vänligen bevilja behörigheterna eller sök efter stadens namn.</string>
-    <string name="open_settings">Öppna inställningar</string>
-    <string name="dismiss">Avvisa</string>
+    <string name="settings_permission_required">Tillstånd krävs</string>
+    <string name="permissions_message">För att få din nuvarande plats behöver appen platsbehörigheter. Vänligen bevilja behörigheterna eller sök efter stadens namn.</string>
+    <string name="permissions_open_settings">Öppna inställningar</string>
+    <string name="permissions_dismiss">Avvisa</string>
     <string name="weather_rain_amount">Regn</string>
     <string name="weather_humidity">Luftfuktighet</string>
     <string name="weather_sunrise">Soluppgång</string>
@@ -39,4 +39,9 @@
     <string name="condition_heavy_hail">Kraftigt hagel</string>
     <string name="condition_unknown">Okänd</string>
     <string name="weather_daily_forecast">XXX</string>
+    <string name="chart_rain_amount">x</string>
+    <string name="chart_max_temp">x</string>
+    <string name="chart_min_temp">x</string>
+    <string name="settings_dark_theme">x</string>
+    <string name="weather_today">x</string>
 </resources>
