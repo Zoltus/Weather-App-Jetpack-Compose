@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fi.sulku.weatherapp.Utils.getConvertedTemp
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 
 /**
@@ -21,8 +22,7 @@ import fi.sulku.weatherapp.viewmodels.SettingsRepository
  * @param iconId The icon of the weather condition.
  */
 @Composable
-fun HourlyCard(time: String, temp: Double, iconId: Int) {
-    // Padding:
+fun WeatherCard(time: String, temp: Double, iconId: Int, onClick : () -> Unit = {}) {
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
 
     Column(
@@ -34,6 +34,6 @@ fun HourlyCard(time: String, temp: Double, iconId: Int) {
             painter = painterResource(id = iconId),
             contentDescription = "Weather icon"
         )
-        Text(SettingsRepository.getConvertedTemp(temp, isFahrenheit))
+        Text(getConvertedTemp(temp, isFahrenheit))
     }
 }

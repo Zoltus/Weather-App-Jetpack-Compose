@@ -13,7 +13,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import fi.sulku.weatherapp.components.bar.TopBar
 import fi.sulku.weatherapp.components.weather.Current
+import fi.sulku.weatherapp.components.weather.Daily
 import fi.sulku.weatherapp.components.weather.Details
 import fi.sulku.weatherapp.components.weather.Hourly
 import fi.sulku.weatherapp.services.LocationService
@@ -40,14 +43,15 @@ class MainActivity : ComponentActivity() {
             LocationService.initialize(this.application)
             Timber.d("Initializing settings repository")
             SettingsRepository.initialize(getSharedPreferences("settings", Context.MODE_PRIVATE))
-            val locale by SettingsRepository.selectedLocale.collectAsState()
-            Timber.d("Using locale: $locale")
+
             //Reloads langues from configs so eveything updates correcly
             val context = LocalContext.current
             SettingsRepository.reloadConfig(context)
             val weatherVm: WeatherViewModel = viewModel()
             val isDarkTheme by SettingsRepository.isDarkTheme.collectAsState()
             //Set locale to viewmodels locale
+            val locale by SettingsRepository.selectedLocale.collectAsState()
+            Timber.d("Using locale: $locale")
             WeatherAppTheme(darkTheme = isDarkTheme) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
@@ -76,11 +80,11 @@ fun WeatherApp(vm: WeatherViewModel) {
  *
  * Displays all weather related stuff
  *
- * @param vm The WeatherViewModel to access the weather information.
+ * @param weatherVm The WeatherViewModel to access the weather information.
  */
 @Composable
-fun WeatherSection(vm: WeatherViewModel) {
-    val selectedWeather by vm.selectedWeather.collectAsState()
+fun WeatherSection(weatherVm: WeatherViewModel) {
+    val selectedWeather by weatherVm.selectedWeather.collectAsState()
     selectedWeather?.let { weather ->
         LazyColumn(
             modifier = Modifier
@@ -88,10 +92,10 @@ fun WeatherSection(vm: WeatherViewModel) {
                 .padding(16.dp)
                 .clip(RoundedCornerShape(0.dp, 0.dp, 16.dp, 16.dp)) //Bottom rounded corners
         ) {
-            item { Current(vm, weather) }
+            item { Current(weatherVm, weather) }
             item { Spacer(modifier = Modifier.padding(10.dp)) }
             item { Hourly(weather) }
-            //item { Daily() }
+            item { Daily(weather) }
             item { Spacer(modifier = Modifier.padding(10.dp)) }
             item { Details(weather) }
         }

@@ -53,11 +53,10 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            //todo translations
-            SwitchSetting(text = "Dark Theme", isDarkTheme)
-            SwitchSetting(text = "Fahrenheit", isFahrenheit)
-            SwitchSetting(text = "Miles", useMiles)
-            SwitchSetting(text = "Inches", useInches)
+            SwitchSetting(text = stringResource(id = R.string.settings_dark_theme), isDarkTheme)
+            SwitchSetting(text = stringResource(id = R.string.settings_fahrenheit), isFahrenheit)
+            SwitchSetting(text = stringResource(id = R.string.settings_miles), useMiles)
+            SwitchSetting(text = stringResource(id = R.string.settings_inches), useInches)
             LanguageDropdown(selectedLocale)
             Spacer(modifier = Modifier.padding(6.dp))
             // Apply & Cancel Buttons
@@ -76,10 +75,10 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
                     //Reload configs
                     settings.reloadConfig(context)
                 }) {
-                    Text(text = stringResource(R.string.apply))
+                    Text(text = stringResource(R.string.settings_apply))
                 }
                 Button(onClick = { viewSettings.value = false }) {
-                    Text(text = stringResource(R.string.cancel))
+                    Text(text = stringResource(R.string.settings_cancel))
                 }
             }
         }

@@ -31,7 +31,7 @@ fun SettingsButton() {
     ) {
         Icon(
             imageVector = Icons.Default.Settings,
-            contentDescription = stringResource(R.string.settings),
+            contentDescription = stringResource(R.string.settings_title),
             tint = Color.White,
         )
     }

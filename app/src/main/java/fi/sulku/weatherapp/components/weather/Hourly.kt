@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
+import fi.sulku.weatherapp.Utils.convertToClockTime
 import fi.sulku.weatherapp.models.WeatherData
 import java.time.LocalDateTime
 
@@ -65,7 +66,7 @@ fun Hourly(weather: WeatherData) {
  * and then creates a HourlyCard for each hour.
  *
  * @param weather The WeatherData to access the hourly weather information.
- * @see HourlyCard
+ * @see WeatherCard
  */
 @Composable
 fun CreateHourlyCards(weather: WeatherData) {
@@ -78,9 +79,8 @@ fun CreateHourlyCards(weather: WeatherData) {
         val iconCode = weather.getConditionIconId(weather.hourly.weather_code[it])
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
-            val timeString = weather.convertToClockTime(context, weather.hourly.time[it])
-            HourlyCard(
             val timeString = convertToClockTime(context, weather.hourly.time[it])
+            WeatherCard(
                 time = timeString,
                 temp = weather.hourly.temps[it],
                 iconId = iconCode

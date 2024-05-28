@@ -45,7 +45,7 @@ fun SearchField(vm: WeatherViewModel, modifier: Modifier = Modifier) {
             onValueChange = { input.value = it },
             placeholder = {
                 val unused = locale // Listen for changes in the locale to refresh placeholder(jetbrains bug)
-                Text(stringResource(R.string.city))
+                Text(stringResource(R.string.weather_city))
             },
             colors = TextFieldDefaults.colors(
                 // Remove underline

@@ -27,8 +27,8 @@ fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
 
     AlertDialog(
         onDismissRequest = { permissionDialog.value = false },
-        title = { Text(stringResource(id = R.string.permission_required)) },
-        text = { Text(stringResource(id = R.string.permission_message)) },
+        title = { Text(stringResource(id = R.string.settings_permission_required)) },
+        text = { Text(stringResource(id = R.string.permissions_message)) },
         confirmButton = {
             Button(onClick = {
                 Timber.d("Directing user to app settings.")
@@ -38,12 +38,12 @@ fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
                 intent.data = uri
                 context.startActivity(intent)
             }) {
-                Text(stringResource(id = R.string.open_settings))
+                Text(stringResource(id = R.string.permissions_open_settings))
             }
         },
         dismissButton = {
             Button(onClick = { permissionDialog.value = false }) {
-                Text(stringResource(id = R.string.dismiss))
+                Text(stringResource(id = R.string.permissions_dismiss))
             }
         }
     )
