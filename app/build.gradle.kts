@@ -20,6 +20,8 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        // Set apikey from env
+        manifestPlaceholders["GoogleMapsApiKey"] = env.GOOGLE_MAPS_API_KEY
     }
 
     buildTypes {
@@ -72,6 +74,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.play.services.maps)
+    implementation(libs.maps.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
