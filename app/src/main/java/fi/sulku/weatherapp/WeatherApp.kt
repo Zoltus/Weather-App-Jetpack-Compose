@@ -22,6 +22,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.github.mikephil.charting.BuildConfig
 import fi.sulku.weatherapp.components.bar.TopBar
 import fi.sulku.weatherapp.components.weather.Current
 import fi.sulku.weatherapp.components.weather.Daily
@@ -34,16 +35,18 @@ import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import timber.log.Timber
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Set timber as debugger
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
         setContent {
             //Initialize LocationService and SettingsRepository
             Timber.d("Initializing LocationService")
             LocationService.initialize(this.application)
             Timber.d("Initializing settings repository")
             SettingsRepository.initialize(getSharedPreferences("settings", Context.MODE_PRIVATE))
-
             //Reloads langues from configs so eveything updates correcly
             val context = LocalContext.current
             SettingsRepository.reloadConfig(context)

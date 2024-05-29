@@ -34,9 +34,9 @@ class WeatherApiService {
      * @return WeatherData object containing the weather data.
      */
     suspend fun fetchWeather(location: Location): WeatherData {
-        Timber.d("Fetching weather for $location")
         val url = createUrl(location)
-        return client.get(url).body<WeatherData>()
+        val body = client.get(url).body<WeatherData>()
+        return body
     }
 
     /**

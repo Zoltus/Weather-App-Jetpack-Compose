@@ -39,4 +39,5 @@ fun SettingsButton() {
     if (viewSettings.value) {
         SettingsDialog(viewSettings)
     }
+
 }

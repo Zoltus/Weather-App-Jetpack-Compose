@@ -22,17 +22,14 @@ import timber.log.Timber
  */
 class WeatherViewModel : ViewModel() {
     private val weatherApiService = WeatherApiService()
-
-    private val selectedLocation = MutableStateFlow<Location?>(null)
     private val _isLoading = MutableStateFlow(false)
-
-    //todo sure has locs only min 500m apart
+    private val _selectedLocation = MutableStateFlow<Location?>(null)
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
 
+    val selectedLocation = _selectedLocation.asStateFlow()
     val isLoading = _isLoading.asStateFlow()
-
     //Gets the weather data from the cache based on the selected location
-    val selectedWeather: StateFlow<WeatherData?> = selectedLocation
+    val selectedWeather: StateFlow<WeatherData?> = _selectedLocation
         .combine(_weatherCache) { loc, weatherCache -> weatherCache[loc] }
         .stateIn(viewModelScope, SharingStarted.Lazily, null)
 
@@ -45,7 +42,7 @@ class WeatherViewModel : ViewModel() {
      */
     private fun setWeather(loc: Location, data: WeatherData) {
         Timber.d("Setting weather to $loc")
-        selectedLocation.value = loc //Set selected location to new location
+        _selectedLocation.value = loc //Set selected location to new location
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
     }
 
@@ -55,15 +52,17 @@ class WeatherViewModel : ViewModel() {
      * @return City name of the selected location.
      */
     fun getCity(): String? {
-        return LocationService.getCity(selectedLocation.value)
+        return LocationService.getCity(_selectedLocation.value)
     }
 
-    /**
-     * Update the weather data for the given city.
-     */
+
     suspend fun selectCity(city: String) {
         val location: Location? = LocationService.getLocation(city)
         checkWeatherUpdates(location)
+    }
+
+    suspend fun selectLocation(latitude: Double, longitude: Double) {
+        checkWeatherUpdates(Location(latitude, longitude))
     }
 
     /**
@@ -82,14 +81,18 @@ class WeatherViewModel : ViewModel() {
      * @param loc Location to fetch the weather data for.
      */
     private suspend fun checkWeatherUpdates(loc: Location?) {
+        Timber.d("Checking weather for $loc")
         if (loc == null) return
         _isLoading.value = true
         val weatherData: WeatherData? = _weatherCache.value[loc]
         if (weatherData != null && !weatherData.needsUpdate()) {
+            Timber.d("Weather is up to date for $loc")
             setWeather(loc, weatherData)
         } else {
+            Timber.d("Fetching new weather for $loc")
             val newWeather = weatherApiService.fetchWeather(loc)
             setWeather(loc, newWeather)
+            Timber.d("Weather fetched for $loc")
         }
         _isLoading.value = false
     }
