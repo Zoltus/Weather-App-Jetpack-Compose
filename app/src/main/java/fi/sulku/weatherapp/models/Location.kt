@@ -10,7 +10,7 @@ import kotlin.math.round
  * @param latitude Latitude of the location.
  * @param longitude Longitude of the location.
  */
-data class Location(var latitude: Float, var longitude: Float) {
+data class Location(var latitude: Double, var longitude: Double) {
     init {
         latitude = roundtoClosest500m(latitude)
         longitude = roundtoClosest500m(longitude)
@@ -21,7 +21,7 @@ data class Location(var latitude: Float, var longitude: Float) {
      *
      * @param coordinate Latitude or longitude.
      */
-    private fun roundtoClosest500m(coordinate: Float): Float {
+    private fun roundtoClosest500m(coordinate: Double): Double {
         Timber.d("Rounding $coordinate")
         val coordinateInMeters = coordinate * 111139 // Convert to meters
         val roundedCoordinate = round(coordinateInMeters / 500) * 500 // Round to nearest 500 meters

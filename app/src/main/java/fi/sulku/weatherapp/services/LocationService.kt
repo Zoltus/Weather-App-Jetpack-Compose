@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import fi.sulku.weatherapp.models.Location
@@ -61,7 +60,7 @@ object LocationService {
         ) {
             val locationProvider = LocationServices.getFusedLocationProviderClient(app)
             val location: android.location.Location = locationProvider.lastLocation.await()
-            Location(location.latitude.toFloat(), location.longitude.toFloat())
+            Location(location.latitude, location.longitude)
         } else {
             Timber.d("Location", "Not granted!")
             null
@@ -91,7 +90,7 @@ object LocationService {
      */
     fun getLocation(city: String): Location? {
         if (city.trim().isEmpty()) return null
-        return getAddressFromCity(city)?.let { Location(it.latitude.toFloat(), it.longitude.toFloat()) }
+        return getAddressFromCity(city)?.let { Location(it.latitude, it.longitude) }
     }
 
     /**
