@@ -59,8 +59,8 @@ object LocationService {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             val locationProvider = LocationServices.getFusedLocationProviderClient(app)
-            val location: android.location.Location = locationProvider.lastLocation.await()
-            Location(location.latitude, location.longitude)
+            val location: android.location.Location? = locationProvider.lastLocation.await()
+            location?.let { Location(it.latitude, it.longitude) }
         } else {
             Timber.d("Location", "Not granted!")
             null
@@ -75,7 +75,7 @@ object LocationService {
      */
     fun getCity(location: Location?): String? {
         return location?.let {
-            val address = getAddressFromLocation(it.latitude.toDouble(), it.longitude.toDouble())
+            val address = getAddressFromLocation(it.latitude, it.longitude)
             val city = address?.locality
             val country = city ?: address?.countryName
             return country

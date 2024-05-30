@@ -56,7 +56,9 @@ class MainActivity : ComponentActivity() {
             Timber.d("Initializing LocationService")
             LocationService.initialize(this.application)
             Timber.d("Initializing settings repository")
-            SettingsRepository.initialize(weatherVm, scope, getSharedPreferences("settings", Context.MODE_PRIVATE))
+            SettingsRepository.initialize(getSharedPreferences("settings", Context.MODE_PRIVATE))
+            //Fetches old location if it exists
+            SettingsRepository.fetchOldLocation(weatherVm, scope)
             //Reloads langues from configs so eveything updates correcly
             SettingsRepository.reloadConfig(context)
             WeatherAppTheme(darkTheme = isDarkTheme) {

@@ -33,7 +33,6 @@ object SettingsRepository {
     // Default to tampere
     private val defaultLocation = Location(61.4981, 23.7610)
     private val _lastSelectedLocation: MutableStateFlow<Location> = MutableStateFlow(defaultLocation)
-
     private val _lastSelectedWeather: MutableStateFlow<WeatherData?> = MutableStateFlow(null)
 
     private val _locales = listOf(
@@ -60,7 +59,6 @@ object SettingsRepository {
     val isMiles = _isMiles.asStateFlow()
     val isInches = _isInches.asStateFlow()
     val lastSelectedLocation = _lastSelectedLocation.asStateFlow()
-    val lastSelectedWeather = _lastSelectedWeather.asStateFlow()
 
     /**
      * Initialize the settings repository.
@@ -69,7 +67,7 @@ object SettingsRepository {
      *
      * @param preferences Shared preferences to load the settings from.
      */
-    fun initialize(weatherVm: WeatherViewModel, scope: CoroutineScope, preferences: SharedPreferences) {
+    fun initialize(preferences: SharedPreferences) {
         this.preferences = preferences
         this._isFahrenheit.value = preferences.getBoolean("isFahrenheit", false)
         this._isDarkTheme.value = preferences.getBoolean("isDarkTheme", false)
@@ -80,20 +78,23 @@ object SettingsRepository {
         val lat = preferences.getFloat("lastloc_lat", defaultLocation.latitude.toFloat())
         val lon = preferences.getFloat("lastloc_lon", defaultLocation.longitude.toFloat())
         this._lastSelectedLocation.value = Location(lat.toDouble(), lon.toDouble())
-
         //Get old weatherData
         val weatherJson = preferences.getString("lastweather", null)
-        // Set old locs
+        // Load last weather data
         if (weatherJson != null) {
             val weatherData: WeatherData = Json.decodeFromString<WeatherData>(weatherJson)
             this._lastSelectedWeather.value = weatherData
         }
+    }
 
+    fun fetchOldLocation(weatherVm: WeatherViewModel, scope: CoroutineScope) {
         // Fetch updates for the old/Default loc
         scope.launch {
-            weatherVm.selectLocation(lat.toDouble(), lon.toDouble())
+            val loc = _lastSelectedLocation.value
+            weatherVm.selectLocation(loc.latitude, loc.longitude)
         }
     }
+
 
     /**
      * Set the dark theme setting.
@@ -142,6 +143,7 @@ object SettingsRepository {
     }
 
     fun setLastLocation(loc: Location) {
+        //todo serialization
         Timber.d("Setting last location to: $loc")
         _lastSelectedLocation.value = loc
         preferences.edit().putFloat("lastloc_lat", loc.latitude.toFloat()).apply()
@@ -151,8 +153,8 @@ object SettingsRepository {
     fun setLastWeather(weatherData: WeatherData) {
         Timber.d("Setting last weather to: $weatherData")
         _lastSelectedWeather.value = weatherData
-        val jsonString = Json.encodeToString(weatherData)
-        preferences.edit().putString("lastweather", jsonString).apply()
+        val weatherJson = Json.encodeToString(weatherData)
+        preferences.edit().putString("lastweather", weatherJson).apply()
     }
 
     /**

@@ -36,6 +36,7 @@ class WeatherViewModel : ViewModel() {
     /**
      * Set the weather data to the cache.
      * If the location is already in the cache, update the data.
+     * Also used in glancewidget to set old weater data.
      *
      * @param loc Location of the weather data.
      * @param data Weather data to be set.

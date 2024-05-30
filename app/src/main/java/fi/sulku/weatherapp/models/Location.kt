@@ -1,5 +1,6 @@
 package fi.sulku.weatherapp.models
 
+import kotlinx.serialization.Serializable
 import timber.log.Timber
 import kotlin.math.round
 
@@ -10,6 +11,7 @@ import kotlin.math.round
  * @param latitude Latitude of the location.
  * @param longitude Longitude of the location.
  */
+@Serializable
 data class Location(var latitude: Double, var longitude: Double) {
     init {
         latitude = roundtoClosest500m(latitude)
