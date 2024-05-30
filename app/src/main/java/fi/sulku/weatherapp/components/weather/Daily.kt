@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -44,7 +45,7 @@ import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import android.graphics.Color as ColorReg
 
 @Composable
-fun Daily(weather: WeatherData) {
+fun Daily(weather: WeatherData, selectedDay: MutableIntState) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -59,7 +60,7 @@ fun Daily(weather: WeatherData) {
                 .padding(16.dp)
         ) {
             Text(
-                stringResource(id = R.string.weather_daily_forecast),
+                stringResource(id = R.string.weather_daily_forecast) + "",
                 fontWeight = FontWeight.Bold
             )
             Column(
@@ -70,7 +71,7 @@ fun Daily(weather: WeatherData) {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    CreateDailyCards(weather)
+                    CreateDailyCards(weather, selectedDay)
                 }
                 WeatherChart(weather)
             }
@@ -79,18 +80,16 @@ fun Daily(weather: WeatherData) {
 }
 
 @Composable
-fun CreateDailyCards(weather: WeatherData) {
+fun CreateDailyCards(weather: WeatherData, selectedDay: MutableIntState) {
     val context = LocalContext.current
     List(weather.daily.maxTemps.size) {
-        val iconCode = weather.getConditionIconId(weather.daily.weather_code[it])
+        val iconCode = weather.getConditionIconId(weather.daily.weatherCode[it])
         val timeString = convertDateToDay(context, weather.daily.time[it])
         WeatherCard(
             time = timeString,
             temp = weather.daily.maxTemps[it],
             iconId = iconCode,
-            onClick = {
-
-            }
+            onClick = { selectedDay.intValue = it }
         )
     }
 }

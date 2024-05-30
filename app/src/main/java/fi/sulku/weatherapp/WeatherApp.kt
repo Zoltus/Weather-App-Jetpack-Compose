@@ -15,6 +15,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -36,9 +38,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Set timber as debugger
-        if (BuildConfig.DEBUG) {
+        //if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
-        }
+      //  }
         setContent {
             //Initialize LocationService and SettingsRepository
             Timber.d("Initializing LocationService")
@@ -86,6 +88,8 @@ fun WeatherApp(vm: WeatherViewModel) {
 @Composable
 fun WeatherSection(weatherVm: WeatherViewModel) {
     val selectedWeather by weatherVm.selectedWeather.collectAsState()
+    //to vm?
+    val selectedDay = remember { mutableIntStateOf(1) }
     selectedWeather?.let { weather ->
         LazyColumn(
             modifier = Modifier
@@ -95,10 +99,10 @@ fun WeatherSection(weatherVm: WeatherViewModel) {
         ) {
             item { Current(weatherVm, weather) }
             item { Spacer(modifier = Modifier.padding(10.dp)) }
-            item { Hourly(weather) }
-            item { Daily(weather) }
+            item { Hourly(weather, selectedDay.intValue) }
+            item { Daily(weather, selectedDay) }
             item { Spacer(modifier = Modifier.padding(10.dp)) }
-            item { Details(weather) }
+            item { Details(weather.daily, selectedDay.intValue) }
         }
     }
 }

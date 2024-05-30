@@ -12,6 +12,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -20,7 +22,9 @@ import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.Utils.convertToClockTime
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import java.time.LocalDateTime
+import java.time.format.TextStyle
 
 /**
  * Horizontal scrollable hourly forecast component.
@@ -31,29 +35,31 @@ import java.time.LocalDateTime
  * @see CreateHourlyCards
  */
 @Composable
-fun Hourly(weather: WeatherData) {
+fun Hourly(weather: WeatherData, dayIndex: Int) {
+    val locale by SettingsRepository.selectedLocale.collectAsState()
+    val day = LocalDateTime.now().plusDays((dayIndex - 1).toLong()).dayOfWeek.getDisplayName(TextStyle.FULL, locale)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(16.dp) // Rounded corners
+                shape = RoundedCornerShape(16.dp)
             )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                stringResource(id = R.string.weather_hourly_forecast),
+                stringResource(id = R.string.weather_hourly_forecast) + " ($day)",
                 fontWeight = FontWeight.Bold
             )
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
             ) {
-                CreateHourlyCards(weather)
+                CreateHourlyCards(weather, dayIndex)
             }
         }
     }
@@ -69,14 +75,17 @@ fun Hourly(weather: WeatherData) {
  * @see WeatherCard
  */
 @Composable
-fun CreateHourlyCards(weather: WeatherData) {
+fun CreateHourlyCards(weather: WeatherData, dayIndex: Int) { // todo index day
     val context = LocalContext.current
-    val currentTime = LocalDateTime.now().minusHours(1)
+    var currentTime = LocalDateTime.now().minusHours(1).plusDays(dayIndex.toLong() - 1)
     val nextDayTime = currentTime.plusDays(1)
+    if (dayIndex != 1) {
+        currentTime = currentTime.withHour(0).withMinute(0).withSecond(0)
+    }
 
     List(weather.hourly.temps.size) {
         val time = LocalDateTime.parse(weather.hourly.time[it])
-        val iconCode = weather.getConditionIconId(weather.hourly.weather_code[it])
+        val iconCode = weather.getConditionIconId(weather.hourly.weatherCode[it])
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
             val timeString = convertToClockTime(context, weather.hourly.time[it])

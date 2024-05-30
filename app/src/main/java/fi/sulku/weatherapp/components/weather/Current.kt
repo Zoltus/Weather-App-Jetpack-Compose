@@ -42,6 +42,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
     val context = LocalContext.current
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
 
+
     Column {
         Row(
             Modifier.fillMaxWidth(),
@@ -60,7 +61,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                     text = getConvertedTemp(current.temp, isFahrenheit),
                     fontWeight = FontWeight.Bold,
                     fontSize = 32.sp
-                ) // Current temp
+                )
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(weather.getCurrentCondition(context), fontWeight = FontWeight.Bold)
                 Text(
@@ -69,14 +70,16 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                     } ↓${getConvertedTemp(daily.minTemps[0], isFahrenheit)}"
                 )
             }
-            Column {
+            Column {// Right Side
                 Box(modifier = Modifier.height(120.dp))
-                Text("☔ ${stringResource(R.string.weather_rain_chance)}: ${daily.rainChance[0]}%")
-                //Text(text = "☃ Snow Chance: -11%")
+                Text("${stringResource(R.string.weather_rain_chance)}: ${daily.rainChance[0]}%")
                 Text(
-                    text = "\uD83D\uDD7A ${stringResource(R.string.weather_feels_like)}: ${
+                    text = "${stringResource(R.string.weather_feels_like)}: ${
                         getConvertedTemp(current.feelsLike, isFahrenheit)
                     }"
+                )
+                Text(
+                    stringResource(id = R.string.weather_humidity) + weather.current.humidity.toString() + "%"
                 )
             }
         }

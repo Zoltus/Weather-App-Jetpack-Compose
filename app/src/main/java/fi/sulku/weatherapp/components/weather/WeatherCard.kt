@@ -1,6 +1,7 @@
 package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,15 +23,17 @@ import fi.sulku.weatherapp.viewmodels.SettingsRepository
  * @param iconId The icon of the weather condition.
  */
 @Composable
-fun WeatherCard(time: String, temp: Double, iconId: Int, onClick : () -> Unit = {}) {
+fun WeatherCard(time: String, temp: Double, iconId: Int, onClick: () -> Unit = {}) {
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
 
     Column(
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
+            .clickable { onClick() }
     ) {
         Text(time)
-        Image(modifier = Modifier.size(52.dp),
+        Image(
+            modifier = Modifier.size(52.dp),
             painter = painterResource(id = iconId),
             contentDescription = "Weather icon"
         )
