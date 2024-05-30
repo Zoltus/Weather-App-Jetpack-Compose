@@ -2,17 +2,11 @@ package fi.sulku.weatherapp.models
 
 import android.content.Context
 import fi.sulku.weatherapp.R
-import fi.sulku.weatherapp.Utils.getConvertedTempp
-import fi.sulku.weatherapp.viewmodels.SettingsRepository
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import timber.log.Timber
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.time.format.TextStyle
-import java.util.Locale
 
 /**
  * Ktor serializable class for the weather data.
@@ -149,30 +143,32 @@ data class Current(
  * Contains the daily weather information for the next 14 days.
  *
  * @property time The time of the weather data.
- * @property weather_code The weather condition code.
+ * @property weatherCode The weather condition code.
  * @property maxTemps The maximum temperature in Celsius.
  * @property minTemps The minimum temperature in Celsius.
  * @property sunrise The sunrise time.
  * @property sunset The sunset time.
- * @property uv_index_max The maximum UV index.
+ * @property uvIndex The maximum UV index.
  * @property rainAmount The precipitation amount in mm.
  * @property rainChance The precipitation probability in percentage.
  */
 @Serializable
 data class Daily(
     val time: List<String>,
-    val weather_code: List<Int>,
+    @SerialName("weather_code")
+    val weatherCode: List<Int>,
     @SerialName("temperature_2m_max")
     val maxTemps: List<Double>,
     @SerialName("temperature_2m_min")
     val minTemps: List<Double>,
     val sunrise: List<String>,
     val sunset: List<String>,
-    val uv_index_max: List<Double>,
+    @SerialName("uv_index_max")
+    val uvIndex: List<Double>,
     @SerialName("precipitation_sum")
     val rainAmount: List<Double>,
     @SerialName("precipitation_probability_max") //Todo if its right
-    val rainChance: List<Int>
+    val rainChance: List<Int>,
     @SerialName("wind_speed_10m_max")
     val windSpeed: List<Double>
 )
@@ -185,7 +181,7 @@ data class Daily(
  * @property time The time of the weather data.
  * @property temps The temperature in Celsius.
  * @property feelsLike The apparent temperature in Celsius.
- * @property weather_code The weather condition code.
+ * @property weatherCode The weather condition code.
  */
 @Serializable
 data class Hourly(
@@ -194,5 +190,6 @@ data class Hourly(
     val temps: List<Double>,
     @SerialName("apparent_temperature")
     val feelsLike: List<Double>,
-    val weather_code: List<Int>
+    @SerialName("weather_code")
+    val weatherCode: List<Int>
 )
