@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -36,28 +37,43 @@ fun SearchField(vm: WeatherViewModel, modifier: Modifier = Modifier) {
     val input = remember { mutableStateOf("") }
     val locale by SettingsRepository.selectedLocale.collectAsState()
 
+    var isError by remember { mutableStateOf(false) }
+
+
     Box(modifier = modifier, contentAlignment = Alignment.Center) {
         TextField(
+            isError = isError,
+            enabled = !isLoading,
             modifier = Modifier.fillMaxHeight(),
             singleLine = true,
             shape = RoundedCornerShape(10),
             value = input.value,
-            onValueChange = { input.value = it },
+            onValueChange = {
+                input.value = it
+                isError = false
+            },
             placeholder = {
                 val unused = locale // Listen for changes in the locale to refresh placeholder(jetbrains bug)
                 Text(stringResource(R.string.weather_city))
             },
-            colors = TextFieldDefaults.colors( // Remove underline
+            colors = TextFieldDefaults.colors(
+                // Remove underline
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
             ),
-            keyboardActions = KeyboardActions(onDone = {
-                keyboardController?.hide()
-                scope.launch {
-                    vm.selectCity(input.value)
-                    input.value = ""
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    keyboardController?.hide()
+                    scope.launch {
+                        val weatherData = vm.selectCity(input.value)
+                        input.value = ""
+                        // if invalid city show error
+                        if (weatherData == null) {
+                            isError = true
+                        }
+                    }
                 }
-            }),
+            ),
         )
         if (isLoading) {
             CircularProgressIndicator(
