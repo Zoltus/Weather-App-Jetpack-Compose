@@ -1,8 +1,6 @@
 package fi.sulku.weatherapp.components.bar
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
@@ -10,7 +8,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.google.android.gms.maps.model.CameraPosition
@@ -26,7 +23,7 @@ import timber.log.Timber
 
 
 @Composable
-fun MapView(weatherVm: WeatherViewModel, scope: CoroutineScope, showMap: MutableState<Boolean>) {
+fun MapDialog(weatherVm: WeatherViewModel, scope: CoroutineScope, showMap: MutableState<Boolean>) {
     val selectedLoc: Location? by weatherVm.selectedLocation.collectAsState()
     // Default loc to tampere if none selected
     val defaultLoc = LatLng(61.504062480317444, 23.830518539846498)
