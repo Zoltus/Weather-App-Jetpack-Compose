@@ -59,11 +59,24 @@ class WeatherViewModel : ViewModel() {
     }
 
 
+    /**
+     * Select the city and fetch the weather data.
+     * If the weather data is already in the cache and it is up to date do nothing.
+     *
+     * @param city City to fetch the weather data for.
+     */
     suspend fun selectCity(city: String) : WeatherData? {
         val location: Location? = LocationService.getLocation(city)
         return checkWeatherUpdates(location)
     }
 
+    /**
+     * Select the location and fetch the weather data.
+     *
+     * If the weather data is already in the cache and it is up to date do nothing.
+     *
+     * @param latitude Latitude of the location.
+     */
     suspend fun selectLocation(latitude: Double, longitude: Double) : WeatherData? {
         return checkWeatherUpdates(Location(latitude, longitude))
     }

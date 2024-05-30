@@ -29,6 +29,12 @@ import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import kotlinx.coroutines.launch
 
+/**
+ * SearchField to search for a city.
+ *
+ * @param vm The WeatherViewModel to access the search functionality.
+ * @param modifier The modifier to apply to this layout.
+ */
 @Composable
 fun SearchField(vm: WeatherViewModel, modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()

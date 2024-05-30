@@ -87,6 +87,12 @@ object SettingsRepository {
         }
     }
 
+    /**
+     * Fetch the weather for the old location.
+     *
+     * @param weatherVm The WeatherViewModel to fetch the weather for the old location.
+     * @param scope The CoroutineScope to launch the coroutine in.
+     */
     fun fetchOldLocation(weatherVm: WeatherViewModel, scope: CoroutineScope) {
         // Fetch updates for the old/Default loc
         scope.launch {
@@ -142,6 +148,12 @@ object SettingsRepository {
         preferences.edit().putBoolean("useMiles", isMiles).apply()
     }
 
+    /**
+     * Set the last location.
+     * Used when app first starts to show the last location.
+     *
+     * @param loc The location to set as the last location.
+     */
     fun setLastLocation(loc: Location) {
         //todo serialization
         Timber.d("Setting last location to: $loc")
@@ -150,6 +162,12 @@ object SettingsRepository {
         preferences.edit().putFloat("lastloc_lon", loc.longitude.toFloat()).apply()
     }
 
+    /**
+     * Set the last weather.
+     * Used when app first starts to show the last weather.
+     *
+     * @param weatherData The weather data to set as the last weather.
+     */
     fun setLastWeather(weatherData: WeatherData) {
         Timber.d("Setting last weather to: $weatherData")
         _lastSelectedWeather.value = weatherData

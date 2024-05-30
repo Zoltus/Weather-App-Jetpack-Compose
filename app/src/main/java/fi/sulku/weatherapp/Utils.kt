@@ -30,7 +30,17 @@ object Utils {
         }
     }
 
-    fun convertDateToDay(context: Context,dateString: String): String {
+    /**
+     * Convert the given date to a day.
+     *
+     * If the date is today, return "Today".
+     * Otherwise, return the day of the week in short format.
+     *
+     * @param context The context.
+     * @param dateString The date to convert.
+     * @return The date in day format.
+     */
+    fun convertDateToDay(context: Context, dateString: String): String {
         val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
         val date = LocalDate.parse(dateString, inputFormatter)
         return if (date == LocalDate.now()) {
@@ -40,6 +50,12 @@ object Utils {
         }
     }
 
+    /**
+     * Get the converted temperature.
+     *
+     * @param temp The temperature to convert.
+     * @param isFahrenheit True if the temperature is in Fahrenheit.
+     */
     fun getConvertedTempp(temp: Double, isFahrenheit: Boolean): Double {
         return if (isFahrenheit) {
             temp * 9 / 5 + 32
@@ -47,6 +63,13 @@ object Utils {
             temp
         }
     }
+
+    /**
+     * Get the converted temperature.
+     *
+     * @param temp The temperature to convert.
+     * @param isFahrenheit True if the temperature is in Fahrenheit.
+     */
     fun getConvertedTemp(temp: Double, isFahrenheit: Boolean): String {
         return if (isFahrenheit) {
             "${String.format(SettingsRepository.selectedLocale.value, "%.1f", temp * 9 / 5 + 32)}°F" //Format

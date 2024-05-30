@@ -15,12 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
-import fi.sulku.weatherapp.Utils.convertToClockTime
 import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import java.time.LocalDateTime
@@ -32,7 +30,7 @@ import java.time.format.TextStyle
  * Displays the hourly forecast for the next 24 hours.
  *
  * @param weather The WeatherData to access the hourly weather information.
- * @see CreateHourlyCards
+ * @see HourlyCards
  */
 @Composable
 fun Hourly(weather: WeatherData, selectedDayIndex: Int) {
@@ -61,41 +59,9 @@ fun Hourly(weather: WeatherData, selectedDayIndex: Int) {
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
             ) {
-                CreateHourlyCards(weather, selectedDayIndex)
+                HourlyCards(weather, selectedDayIndex)
             }
         }
     }
 }
 
-/**
- * Create hourly cards for the hourly forecast.
- *
- * Filters the hourly weather information to display only the next 24 hours
- * and then creates a HourlyCard for each hour.
- *
- * @param weather The WeatherData to access the hourly weather information.
- * @see WeatherCard
- */
-@Composable
-fun CreateHourlyCards(weather: WeatherData, dayIndex: Int) { // todo index day
-    val context = LocalContext.current
-    var currentTime = LocalDateTime.now().minusHours(1).plusDays(dayIndex.toLong() - 1)
-    val nextDayTime = currentTime.plusDays(1)
-    if (dayIndex != 1) {
-        currentTime = currentTime.withHour(0).withMinute(0).withSecond(0)
-    }
-
-    List(weather.hourly.temps.size) {
-        val time = LocalDateTime.parse(weather.hourly.time[it])
-        val iconCode = weather.getConditionIconId(weather.hourly.weatherCode[it])
-        //start from current hours and end 24h after:
-        if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
-            val timeString = convertToClockTime(context, weather.hourly.time[it])
-            WeatherCard(
-                time = timeString,
-                temp = weather.hourly.temps[it],
-                iconId = iconCode
-            )
-        }
-    }
-}

@@ -42,7 +42,6 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
     val context = LocalContext.current
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
 
-
     Column {
         Row(
             Modifier.fillMaxWidth(),

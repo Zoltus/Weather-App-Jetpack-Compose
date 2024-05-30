@@ -86,6 +86,12 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
 }
 
 
+/**
+ * Dropdown to select the language.
+ *
+ * @param text The text to display.
+ * @param toggle The State to control the visibility of the dialog.
+ */
 @Composable
 private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
     Row(

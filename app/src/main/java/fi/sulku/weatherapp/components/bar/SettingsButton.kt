@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.components.settings.SettingsDialog
 
+/**
+ * Button to open the settings dialog.
+ */
 @Composable
 fun SettingsButton() {
     val viewSettings = remember { mutableStateOf(false) }

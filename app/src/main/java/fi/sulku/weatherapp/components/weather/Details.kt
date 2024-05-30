@@ -31,7 +31,8 @@ import java.time.format.TextStyle
  * Creates Vertical Grid with 2 columns to display the weather details.
  * Half on the left and half on the right side.
  *
- * @param weather The WeatherData to access the weather details.
+ * @param daily The Daily to access the daily weather information.
+ * @param selectedDay The selected day index.
  */
 @Composable
 fun Details(daily: Daily, selectedDay : Int) {

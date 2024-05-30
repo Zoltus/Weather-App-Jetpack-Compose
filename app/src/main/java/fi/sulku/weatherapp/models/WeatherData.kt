@@ -79,10 +79,18 @@ data class WeatherData(
         return context.getString(translationId)
     }
 
+    /**
+     * Get the weather condition icon id.
+     */
     fun getConditionIconId(): Int {
         return getConditionIconId(current.weather_code)
     }
 
+    /**
+     * Get the weather condition icon id for the given weather code.
+     *
+     * @return The weather condition icon id.
+     */
     fun getConditionIconId(weatherCode: Int): Int {
         return when (weatherCode) {
             0 -> R.drawable.condition_clear_sky

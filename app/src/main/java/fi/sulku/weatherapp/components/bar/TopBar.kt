@@ -12,6 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
+/**
+ * TopBar top section of the app.
+ *
+ * Contains the location button, search field and settings button.
+ */
 @Composable
 fun TopBar(vm: WeatherViewModel) {
     Box(

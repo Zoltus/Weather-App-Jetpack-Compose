@@ -33,8 +33,20 @@ import fi.sulku.weatherapp.services.WeatherApiService
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import kotlinx.coroutines.launch
 
+/**
+ * Weather widget.
+ * Displays the current weather information.
+ * User can click the widget to refresh the weather information.
+ */
 class WeatherWidget : GlanceAppWidget() {
     private val weatherApiService = WeatherApiService()
+
+    /**
+     * Provides the glance content.
+     *
+     * @param context The context.
+     * @param id The glance id.
+     */
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val currentLocation = LocationService.getCurrentLocation()
         val weather = currentLocation?.let { weatherApiService.fetchWeather(it) }
@@ -43,11 +55,20 @@ class WeatherWidget : GlanceAppWidget() {
         }
     }
 
+    /**
+     * The content view.
+     *
+     * User can click the widget to refresh the weather information.
+     *
+     * @param firstLoc The first fetched location data.
+     * @param firstWeather The first fetched weather data.
+     * @param context The context.
+     */
     @Composable
-    private fun ContentView(orgLoc: Location?, orgWeather: WeatherData?, context: Context) {
+    private fun ContentView(firstLoc: Location?, firstWeather: WeatherData?, context: Context) {
         val scope = rememberCoroutineScope()
-        var location by remember { mutableStateOf(orgLoc) }
-        var weather by remember { mutableStateOf(orgWeather) }
+        var location by remember { mutableStateOf(firstLoc) }
+        var weather by remember { mutableStateOf(firstWeather) }
         var isLoading by remember { mutableStateOf(false) }
 
         Column(

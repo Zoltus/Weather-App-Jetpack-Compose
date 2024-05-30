@@ -22,6 +22,13 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 
 
+/**
+ * Dialog for showing map and selecting location
+ *
+ * @param weatherVm WeatherViewModel ViewModel
+ * @param scope CoroutineScope scope to run fetch location
+ * @param showMap MutableState<Boolean> state to show/hide dialog
+ */
 @Composable
 fun MapDialog(weatherVm: WeatherViewModel, scope: CoroutineScope, showMap: MutableState<Boolean>) {
     val selectedLoc: Location? by weatherVm.selectedLocation.collectAsState()
