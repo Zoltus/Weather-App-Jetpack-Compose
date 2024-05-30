@@ -62,10 +62,10 @@ fun LocationButton(vm: WeatherViewModel) {
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(10),
         onClick = {
-            isChoosingLocation = !isChoosingLocation
             if (isChoosingLocation) {
                 permLauncher.launch(perms)
             }
+            isChoosingLocation = !isChoosingLocation
         }
     ) {
         Text(if (isChoosingLocation) "\uD83D\uDCCD" else "\uD83C\uDF0D")
