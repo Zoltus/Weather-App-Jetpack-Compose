@@ -5,8 +5,8 @@
     <string name="settings_apply">Tillämpa</string>
     <string name="settings_cancel">Avbryt</string>
     <string name="weather_last_updated">Senast uppdaterad</string>
-    <string name="weather_rain_chance">Regnchans</string>
-    <string name="weather_feels_like">Känns som</string>
+    <string name="weather_rain_chance">☔ Regnchans</string>
+    <string name="weather_feels_like">🕺 Känns som</string>
     <string name="lang_finnish">🇫🇮 Finska</string>
     <string name="lang_english">🇬🇧 Engelska</string>
     <string name="lang_swedish">🇸🇪 Svenska</string>
@@ -15,13 +15,13 @@
     <string name="permissions_open_settings">Öppna inställningar</string>
     <string name="permissions_dismiss">Avvisa</string>
     <string name="weather_rain_amount">Regn</string>
-    <string name="weather_humidity">Luftfuktighet</string>
+    <string name="weather_humidity">💧 Luftfuktighet</string>
     <string name="weather_sunrise">Soluppgång</string>
     <string name="weather_wind_speed">Vindhastighet</string>
     <string name="weather_visibility">Synlighet</string>
     <string name="weather_sunset">Solnedgång</string>
     <string name="weather_air_pressure">Tryck</string>
-    <string name="weather_details">DETALJER</string>
+    <string name="weather_details">Detaljer</string>
     <string name="weather_hourly_forecast">TIMVIS PROGNOS</string>
     <string name="weather_now">Nu</string>
     <string name="condition_clear_sky">Klart</string>
@@ -38,10 +38,10 @@
     <string name="condition_thunderstorm">Åska</string>
     <string name="condition_heavy_hail">Kraftigt hagel</string>
     <string name="condition_unknown">Okänd</string>
-    <string name="weather_daily_forecast">XXX</string>
-    <string name="chart_rain_amount">x</string>
-    <string name="chart_max_temp">x</string>
-    <string name="chart_min_temp">x</string>
-    <string name="settings_dark_theme">x</string>
-    <string name="weather_today">x</string>
+    <string name="weather_daily_forecast">Dagar</string>
+    <string name="chart_rain_amount">Regnmängd</string>
+    <string name="chart_max_temp">Max temp</string>
+    <string name="chart_min_temp">Min temp</string>
+    <string name="settings_dark_theme">Ljus - mörkt tema</string>
+    <string name="weather_today">I Dag</string>
 </resources>

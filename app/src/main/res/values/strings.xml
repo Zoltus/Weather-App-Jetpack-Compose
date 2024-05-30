@@ -5,8 +5,8 @@
     <string name="settings_apply">Apply</string>
     <string name="settings_cancel">Cancel</string>
     <string name="weather_last_updated">Updated</string>
-    <string name="weather_rain_chance">Rain chance</string>
-    <string name="weather_feels_like">Feels like</string>
+    <string name="weather_rain_chance">☔ Rain chance</string>
+    <string name="weather_feels_like">🕺 Feels like</string>
     <string name="lang_finnish">🇫🇮 Finnish</string>
     <string name="lang_english">🇬🇧 English</string>
     <string name="lang_swedish">🇸🇪 Swedish</string>
@@ -15,14 +15,14 @@
     <string name="permissions_open_settings">Open Settings</string>
     <string name="permissions_dismiss">Dismiss</string>
     <string name="weather_rain_amount">Rain</string>
-    <string name="weather_humidity">Humidity</string>
+    <string name="weather_humidity">💧 Humidity</string>
     <string name="weather_uv" translatable="false">UV</string>
     <string name="weather_sunrise">Sunrise</string>
     <string name="weather_wind_speed">Wind Speed</string>
     <string name="weather_visibility">TODO-----</string>
     <string name="weather_sunset">SunSet</string>
     <string name="weather_air_pressure">Pressure</string>
-    <string name="weather_details">DETAILS</string>
+    <string name="weather_details">Details</string>
     <string name="weather_hourly_forecast">HOURS</string>
     <string name="weather_now">Now</string>
     <string name="condition_clear_sky">Clear sky</string>
@@ -39,13 +39,13 @@
     <string name="condition_thunderstorm">Thunderstorm</string>
     <string name="condition_heavy_hail">Heavy hail</string>
     <string name="condition_unknown">Unknown</string>
-    <string name="weather_daily_forecast">DAYS</string>
+    <string name="weather_daily_forecast">Days</string>
     <string name="chart_rain_amount">Rain amount</string>
     <string name="chart_max_temp">Max temp</string>
     <string name="chart_min_temp">Min temp</string>
-    <string name="settings_dark_theme">Light/Dark Theme</string>
-    <string name="settings_fahrenheit" translatable="false">Celsius/Fahrenheit</string>
-    <string name="settings_miles" translatable="false">M/s / mph</string>
-    <string name="settings_inches" translatable="false">mm/inches</string>
+    <string name="settings_dark_theme">Light - Dark Theme</string>
+    <string name="settings_fahrenheit" translatable="false">Celsius - Fahrenheit</string>
+    <string name="settings_miles" translatable="false">M/s - mph</string>
+    <string name="settings_inches" translatable="false">mm - inches</string>
     <string name="weather_today">Today</string>
 </resources>
