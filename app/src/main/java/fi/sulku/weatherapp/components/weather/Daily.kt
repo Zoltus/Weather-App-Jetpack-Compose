@@ -12,23 +12,22 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableIntState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
 /**
  * Daily forecast component.
  * Displays the daily forecast for the next 14 days.
  *
  * @param weather The WeatherData to access the daily weather information.
- * @param selectedDay The selected day index.
  */
 @Composable
-fun Daily(weather: WeatherData, selectedDay: MutableIntState) {
+fun Daily(vm: WeatherViewModel, weather: WeatherData) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,7 +53,7 @@ fun Daily(weather: WeatherData, selectedDay: MutableIntState) {
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    DailyCards(weather, selectedDay)
+                    DailyCards(vm, weather)
                 }
                 WeatherChart(weather)
             }

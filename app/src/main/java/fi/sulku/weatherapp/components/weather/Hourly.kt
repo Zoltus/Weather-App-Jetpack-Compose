@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 
@@ -33,11 +34,13 @@ import java.time.format.TextStyle
  * @see HourlyCards
  */
 @Composable
-fun Hourly(weather: WeatherData, selectedDayIndex: Int) {
+fun Hourly(vm: WeatherViewModel, weather: WeatherData) {
+    val selectedDay by vm.selectedDay.collectAsState()
     val locale by SettingsRepository.selectedLocale.collectAsState()
     val now = LocalDateTime.now()
-    val adjustedDay = now.plusDays((selectedDayIndex - 1).toLong())
-    val day = if (adjustedDay == now) stringResource(id = R.string.weather_today) else adjustedDay.dayOfWeek.getDisplayName(TextStyle.FULL, locale)
+    val adjustedDay = now.plusDays((selectedDay - 1).toLong())
+    val day = if (adjustedDay == now) stringResource(id = R.string.weather_today)
+                else adjustedDay.dayOfWeek.getDisplayName(TextStyle.FULL, locale)
 
     Box(
         modifier = Modifier
@@ -59,7 +62,7 @@ fun Hourly(weather: WeatherData, selectedDayIndex: Int) {
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
             ) {
-                HourlyCards(weather, selectedDayIndex)
+                HourlyCards(weather, selectedDay)
             }
         }
     }

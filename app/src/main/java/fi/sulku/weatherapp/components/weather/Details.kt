@@ -22,6 +22,7 @@ import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.Utils.convertToClockTime
 import fi.sulku.weatherapp.models.Daily
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import java.time.LocalDateTime
 import java.time.format.TextStyle
 
@@ -31,12 +32,13 @@ import java.time.format.TextStyle
  * Creates Vertical Grid with 2 columns to display the weather details.
  * Half on the left and half on the right side.
  *
- * @param daily The Daily to access the daily weather information.
- * @param selectedDay The selected day index.
+ * @param vm ViewModel to access the weather information.
+ * @param daily The Daily to access the weather details.
  */
 @Composable
-fun Details(daily: Daily, selectedDay : Int) {
+fun Details(vm: WeatherViewModel, daily: Daily) {
     val context = LocalContext.current
+    val selectedDay by vm.selectedDay.collectAsState()
     val locale by SettingsRepository.selectedLocale.collectAsState()
     val isMiles by SettingsRepository.isMiles.collectAsState()
     val isInches by SettingsRepository.isInches.collectAsState()

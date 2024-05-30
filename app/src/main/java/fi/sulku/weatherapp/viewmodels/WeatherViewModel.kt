@@ -25,7 +25,9 @@ class WeatherViewModel : ViewModel() {
     private val _isLoading = MutableStateFlow(false)
     private val _selectedLocation = MutableStateFlow(SettingsRepository.lastSelectedLocation.value)
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
+    private val _selectedDay = MutableStateFlow(1)
 
+    val selectedDay = _selectedDay.asStateFlow()
     val selectedLocation = _selectedLocation.asStateFlow()
     val isLoading = _isLoading.asStateFlow()
     //Gets the weather data from the cache based on the selected location
@@ -47,6 +49,13 @@ class WeatherViewModel : ViewModel() {
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
         SettingsRepository.setLastLocation(loc)
         SettingsRepository.setLastWeather(data)
+    }
+
+    /**
+     * Select the day to display.
+     */
+    fun selectDay(day: Int) {
+        _selectedDay.value = day
     }
 
     /**
