@@ -1,13 +1,18 @@
 package fi.sulku.weatherapp.components.weather
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fi.sulku.weatherapp.Utils.getConvertedTemp
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 
 /**
@@ -15,19 +20,23 @@ import fi.sulku.weatherapp.viewmodels.SettingsRepository
  *
  * @param time The time for current hour.
  * @param temp The temperature of the hour.
- * @param icon The icon of the weather condition.
+ * @param iconId The icon of the weather condition.
  */
 @Composable
-fun HourlyCard(time: String, temp: Double, icon: Int) {
-    // Padding:
+fun WeatherCard(time: String, temp: Double, iconId: Int, onClick: () -> Unit = {}) {
     val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
-    val fahrenheit = isFahrenheit
+
     Column(
         modifier = Modifier
             .padding(start = 8.dp, end = 8.dp, top = 8.dp, bottom = 8.dp)
+            .clickable { onClick() }
     ) {
         Text(time)
-        Text("☀️")//${icon}
-        Text(SettingsRepository.getConvertedTemp(temp))
+        Image(
+            modifier = Modifier.size(52.dp),
+            painter = painterResource(id = iconId),
+            contentDescription = "Weather icon"
+        )
+        Text(getConvertedTemp(temp, isFahrenheit))
     }
 }

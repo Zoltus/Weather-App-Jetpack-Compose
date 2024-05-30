@@ -13,13 +13,15 @@ android {
         applicationId = "fi.sulku.weatherapp"
         minSdk = 30
         targetSdk = 34
-        versionCode = 3
-        versionName = "2.5"
+        versionCode = 4
+        versionName = "3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        // Set apikey from env
+        manifestPlaceholders["GoogleMapsApiKey"] = env.GOOGLE_MAPS_API_KEY.value
     }
 
     buildTypes {
@@ -42,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -51,8 +53,11 @@ android {
     }
 }
 
-
 dependencies {
+    implementation( "androidx.glance:glance-appwidget:1.1.0-rc01" )
+    implementation( "androidx.glance:glance-material3:1.1.0-rc01" )
+    implementation(libs.mpandroidchart)
+    implementation(libs.timber)
     implementation(libs.androidx.lifecycle.viewmodel)
     implementation(libs.kotlinx.coroutines.core)
     implementation(libs.ktor.client.core)
@@ -71,6 +76,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.play.services.location)
     implementation(libs.kotlinx.coroutines.play.services)
+    implementation(libs.play.services.maps)
+    implementation(libs.maps.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

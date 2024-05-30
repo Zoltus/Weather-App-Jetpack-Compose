@@ -18,6 +18,9 @@ import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.components.settings.SettingsDialog
 
+/**
+ * Button to open the settings dialog.
+ */
 @Composable
 fun SettingsButton() {
     val viewSettings = remember { mutableStateOf(false) }
@@ -31,7 +34,7 @@ fun SettingsButton() {
     ) {
         Icon(
             imageVector = Icons.Default.Settings,
-            contentDescription = stringResource(R.string.settings),
+            contentDescription = stringResource(R.string.settings_title),
             tint = Color.White,
         )
     }
@@ -39,4 +42,5 @@ fun SettingsButton() {
     if (viewSettings.value) {
         SettingsDialog(viewSettings)
     }
+
 }

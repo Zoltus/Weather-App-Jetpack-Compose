@@ -2,9 +2,16 @@ package fi.sulku.weatherapp.viewmodels
 
 import android.content.Context
 import android.content.SharedPreferences
+import fi.sulku.weatherapp.models.Location
+import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.services.LocationService
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -16,12 +23,17 @@ object SettingsRepository {
      * MUST BE INITIALIZED BEFORE USING THE SETTINGS REPOSITORY.
      */
     private lateinit var preferences: SharedPreferences
-
     // Dark theme setting, true if the dark theme is enabled, false otherwise.
     private val _isDarkTheme = MutableStateFlow(false)
-
     // Temperature unit, true to use Fahrenheit, false to use Celsius.
     private val _isFahrenheit = MutableStateFlow(false)
+    private val _isInches = MutableStateFlow(false)
+    private val _isMiles = MutableStateFlow(false)
+
+    // Default to tampere
+    private val defaultLocation = Location(61.4981, 23.7610)
+    private val _lastSelectedLocation: MutableStateFlow<Location> = MutableStateFlow(defaultLocation)
+    private val _lastSelectedWeather: MutableStateFlow<WeatherData?> = MutableStateFlow(null)
 
     private val _locales = listOf(
         Locale("en"),
@@ -38,12 +50,15 @@ object SettingsRepository {
     private val defaultLocale = locales[2]
 
     // Selected locale.
-    private val _locale = MutableStateFlow(defaultLocale)
+    private val _selectedLocale = MutableStateFlow(defaultLocale)
 
     // Selected locale accessor.
-    val locale = _locale.asStateFlow()
+    val selectedLocale = _selectedLocale.asStateFlow()
     val isFahrenheit = _isFahrenheit.asStateFlow()
     val isDarkTheme = _isDarkTheme.asStateFlow()
+    val isMiles = _isMiles.asStateFlow()
+    val isInches = _isInches.asStateFlow()
+    val lastSelectedLocation = _lastSelectedLocation.asStateFlow()
 
     /**
      * Initialize the settings repository.
@@ -54,13 +69,38 @@ object SettingsRepository {
      */
     fun initialize(preferences: SharedPreferences) {
         this.preferences = preferences
-        this._isDarkTheme.value = preferences.getBoolean("isDarkTheme", false)
         this._isFahrenheit.value = preferences.getBoolean("isFahrenheit", false)
-        this._locale.value =
+        this._isDarkTheme.value = preferences.getBoolean("isDarkTheme", false)
+        this._isInches.value = preferences.getBoolean("useInches", false)
+        this._isMiles.value = preferences.getBoolean("useMiles", false)
+        this._selectedLocale.value =
             Locale(preferences.getString("locale", defaultLocale.toString()) ?: defaultLocale.toString())
-
-        println("Locale: " + _locale.value)
+        val lat = preferences.getFloat("lastloc_lat", defaultLocation.latitude.toFloat())
+        val lon = preferences.getFloat("lastloc_lon", defaultLocation.longitude.toFloat())
+        this._lastSelectedLocation.value = Location(lat.toDouble(), lon.toDouble())
+        //Get old weatherData
+        val weatherJson = preferences.getString("lastweather", null)
+        // Load last weather data
+        if (weatherJson != null) {
+            val weatherData: WeatherData = Json.decodeFromString<WeatherData>(weatherJson)
+            this._lastSelectedWeather.value = weatherData
+        }
     }
+
+    /**
+     * Fetch the weather for the old location.
+     *
+     * @param weatherVm The WeatherViewModel to fetch the weather for the old location.
+     * @param scope The CoroutineScope to launch the coroutine in.
+     */
+    fun fetchOldLocation(weatherVm: WeatherViewModel, scope: CoroutineScope) {
+        // Fetch updates for the old/Default loc
+        scope.launch {
+            val loc = _lastSelectedLocation.value
+            weatherVm.selectLocation(loc.latitude, loc.longitude)
+        }
+    }
+
 
     /**
      * Set the dark theme setting.
@@ -78,11 +118,60 @@ object SettingsRepository {
      * @param locale The locale to set.
      */
     fun setLocale(locale: Locale) {
-        println("Set Locale: $locale")
-        println("Locale was: ${_locale.value}")
+        Timber.d("Setting locale to: $locale")
         LocationService.setLocale(locale)
-        _locale.value = locale
+        _selectedLocale.value = locale
         preferences.edit().putString("locale", locale.toString()).apply()
+    }
+
+    /**
+     * Set the temperature unit setting.
+     */
+    fun setFahrenheit(isFahrenheit: Boolean) {
+        Timber.d("Setting fahrenheit to: $isFahrenheit")
+        _isFahrenheit.value = isFahrenheit
+        preferences.edit().putBoolean("isFahrenheit", isFahrenheit).apply()
+    }
+
+    /**
+     * Set the inches/millis setting.
+     */
+    fun setInches(isInches: Boolean) {
+        Timber.d("Setting inches to: $isInches")
+        _isInches.value = isInches
+        preferences.edit().putBoolean("useInches", isInches).apply()
+    }
+
+    fun setMiles(isMiles: Boolean) {
+        Timber.d("Setting miles to: $isMiles")
+        _isMiles.value = isMiles
+        preferences.edit().putBoolean("useMiles", isMiles).apply()
+    }
+
+    /**
+     * Set the last location.
+     * Used when app first starts to show the last location.
+     *
+     * @param loc The location to set as the last location.
+     */
+    fun setLastLocation(loc: Location) {
+        Timber.d("Setting last location to: $loc")
+        _lastSelectedLocation.value = loc
+        preferences.edit().putFloat("lastloc_lat", loc.latitude.toFloat()).apply()
+        preferences.edit().putFloat("lastloc_lon", loc.longitude.toFloat()).apply()
+    }
+
+    /**
+     * Set the last weather.
+     * Used when app first starts to show the last weather.
+     *
+     * @param weatherData The weather data to set as the last weather.
+     */
+    fun setLastWeather(weatherData: WeatherData) {
+        Timber.d("Setting last weather to: $weatherData")
+        _lastSelectedWeather.value = weatherData
+        val weatherJson = Json.encodeToString(weatherData)
+        preferences.edit().putString("lastweather", weatherJson).apply()
     }
 
     /**
@@ -92,29 +181,14 @@ object SettingsRepository {
      * @param context The context to reload the configuration for.
      */
     fun reloadConfig(context: Context) {
+        Timber.d("Reloading configs")
         val configuration = context.resources.configuration
         val resources = context.resources
         context.resources.updateConfiguration(
             context.resources.configuration,
             context.resources.displayMetrics
         )
-        configuration.setLocale(_locale.value)
+        configuration.setLocale(_selectedLocale.value)
         resources.updateConfiguration(configuration, resources.displayMetrics)
-    }
-
-    /**
-     * Set the temperature unit setting.
-     */
-    fun setFahrenheit(isFahrenheit: Boolean) {
-        _isFahrenheit.value = isFahrenheit
-        preferences.edit().putBoolean("isFahrenheit", isFahrenheit).apply()
-    }
-
-    fun getConvertedTemp(temp: Double): String {
-        return if (_isFahrenheit.value) {
-            "${String.format(_locale.value,"%.1f", temp * 9 / 5 + 32)}°F" //Format
-        } else {
-            "$temp°C"
-        }
     }
 }

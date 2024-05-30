@@ -2,4 +2,5 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    id("co.uzzu.dotenv.gradle") version "4.0.0" // todo to toml
 }

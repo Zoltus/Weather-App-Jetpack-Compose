@@ -6,11 +6,11 @@ import android.content.pm.PackageManager
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
-import android.util.Log
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import fi.sulku.weatherapp.models.Location
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import java.util.Locale
 
 /**
@@ -59,10 +59,10 @@ object LocationService {
             ) == PackageManager.PERMISSION_GRANTED
         ) {
             val locationProvider = LocationServices.getFusedLocationProviderClient(app)
-            val location: android.location.Location = locationProvider.lastLocation.await()
-            Location(location.latitude.toFloat(), location.longitude.toFloat())
+            val location: android.location.Location? = locationProvider.lastLocation.await()
+            location?.let { Location(it.latitude, it.longitude) }
         } else {
-            Log.d("Location", "Not granted!")
+            Timber.d("Location", "Not granted!")
             null
         }
     }
@@ -75,7 +75,7 @@ object LocationService {
      */
     fun getCity(location: Location?): String? {
         return location?.let {
-            val address = getAddressFromLocation(it.latitude.toDouble(), it.longitude.toDouble())
+            val address = getAddressFromLocation(it.latitude, it.longitude)
             val city = address?.locality
             val country = city ?: address?.countryName
             return country
@@ -90,7 +90,7 @@ object LocationService {
      */
     fun getLocation(city: String): Location? {
         if (city.trim().isEmpty()) return null
-        return getAddressFromCity(city)?.let { Location(it.latitude.toFloat(), it.longitude.toFloat()) }
+        return getAddressFromCity(city)?.let { Location(it.latitude, it.longitude) }
     }
 
     /**

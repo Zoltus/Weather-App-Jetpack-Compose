@@ -1,25 +1,30 @@
 package fi.sulku.weatherapp.components.weather
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
-import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.Utils.convertToClockTime
+import fi.sulku.weatherapp.models.Daily
+import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
+import java.time.LocalDateTime
+import java.time.format.TextStyle
 
 /**
  * A component to display the weather details.
@@ -27,11 +32,26 @@ import fi.sulku.weatherapp.models.WeatherData
  * Creates Vertical Grid with 2 columns to display the weather details.
  * Half on the left and half on the right side.
  *
- * @param weather The WeatherData to access the weather details.
+ * @param vm ViewModel to access the weather information.
+ * @param daily The Daily to access the weather details.
  */
 @Composable
-fun Details(weather: WeatherData) {
+fun Details(vm: WeatherViewModel, daily: Daily) {
     val context = LocalContext.current
+    val selectedDay by vm.selectedDay.collectAsState()
+    val locale by SettingsRepository.selectedLocale.collectAsState()
+    val isMiles by SettingsRepository.isMiles.collectAsState()
+    val isInches by SettingsRepository.isInches.collectAsState()
+    // Convert rain amount to inches if needed
+    val rain = daily.rainAmount[selectedDay]
+    val rainAmount = if (!isInches) "$rain mm" else String.format(locale, "%.2f", rain* 0.0393701) + " in"
+    // Convert wind speed to mph if needed
+    val wind = daily.windSpeed[selectedDay]
+    val windSpeed = if (!isMiles) "$wind m/s" else String.format(locale, "%.2f", wind* 2.23694) + " mph"
+
+    val now = LocalDateTime.now()
+    val adjustedDay = now.plusDays((selectedDay - 1).toLong())
+    val day = if (adjustedDay == now) stringResource(id = R.string.weather_today) else adjustedDay.dayOfWeek.getDisplayName(TextStyle.FULL, locale)
 
     Box(
         modifier = Modifier
@@ -44,33 +64,26 @@ fun Details(weather: WeatherData) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(stringResource(id = R.string.weather_details), fontWeight = FontWeight.Bold)
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                contentPadding = PaddingValues(8.dp)
-            ) {
-                item {
+
+            Text(stringResource(id = R.string.weather_details) + " ($day)", fontWeight = FontWeight.Bold)
+            Column {
+                Row(
+                    Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
                     Column {
                         Text(stringResource(id = R.string.weather_rain_amount), fontWeight = FontWeight.Bold)
-                        Text(weather.daily.rainAmount[1].toString())
-                        Text(stringResource(id = R.string.weather_humidity), fontWeight = FontWeight.Bold)
-                        Text(weather.current.humidity.toString() + "%")
+                        Text(rainAmount)
                         Text(stringResource(id = R.string.weather_uv), fontWeight = FontWeight.Bold)
-                        Text(weather.daily.uv_index_max[1].toString())
+                        Text(daily.uvIndex[selectedDay].toString())
                         Text(stringResource(id = R.string.weather_sunrise), fontWeight = FontWeight.Bold)
-                        Text(weather.convertToClockTime(context, weather.daily.sunrise[1]))
+                        Text(convertToClockTime(context, daily.sunrise[selectedDay]))
                     }
-                }
-                item {
-                    Column(horizontalAlignment = Alignment.End) {
+                    Column {
                         Text(stringResource(id = R.string.weather_wind_speed), fontWeight = FontWeight.Bold)
-                        Text(weather.current.windSpeed.toString())
-                        //Text("Visibility")
-                        //Text("")
-                        Text(stringResource(id = R.string.weather_air_pressure), fontWeight = FontWeight.Bold)
-                        Text("${weather.current.pressure} hPa")
+                        Text(windSpeed)
                         Text(stringResource(id = R.string.weather_sunset), fontWeight = FontWeight.Bold)
-                        Text(weather.convertToClockTime(context, weather.daily.sunset[1]))
+                        Text(convertToClockTime(context, daily.sunset[selectedDay]))
                     }
                 }
             }

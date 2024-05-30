@@ -13,8 +13,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -25,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import timber.log.Timber
 
 /**
  * A dialog to display the settings.
@@ -41,9 +40,9 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
     //Settings
     val isDarkTheme = remember { mutableStateOf(settings.isDarkTheme.value) }
     val isFahrenheit = remember { mutableStateOf(settings.isFahrenheit.value) }
-    //Locales
-    val locale by settings.locale.collectAsState()
-    val selectedLocale = remember { mutableStateOf(locale) }
+    val useMiles = remember { mutableStateOf(settings.isMiles.value) }
+    val useInches = remember { mutableStateOf(settings.isInches.value) }
+    val selectedLocale = remember { mutableStateOf(settings.selectedLocale.value) }
 
     Dialog(onDismissRequest = { viewSettings.value = false }
     ) {
@@ -54,8 +53,10 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
             verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            SwitchSetting(text = "Dark Theme", isDarkTheme)
-            SwitchSetting(text = "Fahrenheit", isFahrenheit)
+            SwitchSetting(text = stringResource(id = R.string.settings_dark_theme), isDarkTheme)
+            SwitchSetting(text = stringResource(id = R.string.settings_fahrenheit), isFahrenheit)
+            SwitchSetting(text = stringResource(id = R.string.settings_miles), useMiles)
+            SwitchSetting(text = stringResource(id = R.string.settings_inches), useInches)
             LanguageDropdown(selectedLocale)
             Spacer(modifier = Modifier.padding(6.dp))
             // Apply & Cancel Buttons
@@ -64,17 +65,20 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(onClick = {
+                    Timber.d("Applying settings")
                     viewSettings.value = false
                     settings.setDarkTheme(isDarkTheme.value)
                     settings.setLocale(selectedLocale.value)
                     settings.setFahrenheit(isFahrenheit.value)
+                    settings.setMiles(useMiles.value)
+                    settings.setInches(useInches.value)
                     //Reload configs
                     settings.reloadConfig(context)
                 }) {
-                    Text(text = stringResource(R.string.apply))
+                    Text(text = stringResource(R.string.settings_apply))
                 }
                 Button(onClick = { viewSettings.value = false }) {
-                    Text(text = stringResource(R.string.cancel))
+                    Text(text = stringResource(R.string.settings_cancel))
                 }
             }
         }
@@ -82,6 +86,12 @@ fun SettingsDialog(viewSettings: MutableState<Boolean>) {
 }
 
 
+/**
+ * Dropdown to select the language.
+ *
+ * @param text The text to display.
+ * @param toggle The State to control the visibility of the dialog.
+ */
 @Composable
 private fun SwitchSetting(text: String, toggle: MutableState<Boolean>) {
     Row(

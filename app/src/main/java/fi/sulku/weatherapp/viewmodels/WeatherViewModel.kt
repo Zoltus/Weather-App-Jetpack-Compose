@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import timber.log.Timber
 
 /**
  * ViewModel for weather data.
@@ -21,30 +22,40 @@ import kotlinx.coroutines.flow.stateIn
  */
 class WeatherViewModel : ViewModel() {
     private val weatherApiService = WeatherApiService()
-
-    private val selectedLocation = MutableStateFlow<Location?>(null)
     private val _isLoading = MutableStateFlow(false)
-
-    //todo sure has locs only min 500m apart
+    private val _selectedLocation = MutableStateFlow(SettingsRepository.lastSelectedLocation.value)
     private val _weatherCache = MutableStateFlow<Map<Location, WeatherData>>(emptyMap())
+    private val _selectedDay = MutableStateFlow(1)
 
+    val selectedDay = _selectedDay.asStateFlow()
+    val selectedLocation = _selectedLocation.asStateFlow()
     val isLoading = _isLoading.asStateFlow()
-
     //Gets the weather data from the cache based on the selected location
-    val selectedWeather: StateFlow<WeatherData?> = selectedLocation
+    val selectedWeather: StateFlow<WeatherData?> = _selectedLocation
         .combine(_weatherCache) { loc, weatherCache -> weatherCache[loc] }
-        .stateIn(viewModelScope, SharingStarted.Lazily, null)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
 
     /**
      * Set the weather data to the cache.
      * If the location is already in the cache, update the data.
+     * Also used in glancewidget to set old weater data.
      *
      * @param loc Location of the weather data.
      * @param data Weather data to be set.
      */
     private fun setWeather(loc: Location, data: WeatherData) {
-        selectedLocation.value = loc //Set selected location to new location
+        Timber.d("Setting weather to $loc")
+        _selectedLocation.value = loc
         _weatherCache.value = _weatherCache.value.toMutableMap().also { it[loc] = data }
+        SettingsRepository.setLastLocation(loc)
+        SettingsRepository.setLastWeather(data)
+    }
+
+    /**
+     * Select the day to display.
+     */
+    fun selectDay(day: Int) {
+        _selectedDay.value = day
     }
 
     /**
@@ -53,22 +64,37 @@ class WeatherViewModel : ViewModel() {
      * @return City name of the selected location.
      */
     fun getCity(): String? {
-        return LocationService.getCity(selectedLocation.value)
+        return LocationService.getCity(_selectedLocation.value)
+    }
+
+
+    /**
+     * Select the city and fetch the weather data.
+     * If the weather data is already in the cache and it is up to date do nothing.
+     *
+     * @param city City to fetch the weather data for.
+     */
+    suspend fun selectCity(city: String) : WeatherData? {
+        val location: Location? = LocationService.getLocation(city)
+        return checkWeatherUpdates(location)
     }
 
     /**
-     * Update the weather data for the given city.
+     * Select the location and fetch the weather data.
+     *
+     * If the weather data is already in the cache and it is up to date do nothing.
+     *
+     * @param latitude Latitude of the location.
      */
-    suspend fun selectCity(city: String) {
-        val location: Location? = LocationService.getLocation(city)
-        checkWeatherUpdates(location)
+    suspend fun selectLocation(latitude: Double, longitude: Double) : WeatherData? {
+        return checkWeatherUpdates(Location(latitude, longitude))
     }
 
     /**
      * Update the weather data for the current location.
      */
-    suspend fun selectCurrentCity() {
-        checkWeatherUpdates(LocationService.getCurrentLocation())
+    suspend fun selectCurrentCity() : WeatherData? {
+        return checkWeatherUpdates(LocationService.getCurrentLocation())
     }
 
     /**
@@ -79,16 +105,23 @@ class WeatherViewModel : ViewModel() {
      *
      * @param loc Location to fetch the weather data for.
      */
-    private suspend fun checkWeatherUpdates(loc: Location?) {
-        if (loc == null) return
+    private suspend fun checkWeatherUpdates(loc: Location?) : WeatherData? {
+        Timber.d("Checking weather for $loc")
+        var weatherData: WeatherData?
+        if (loc == null) return null
         _isLoading.value = true
-        val weatherData: WeatherData? = _weatherCache.value[loc]
+        weatherData = _weatherCache.value[loc]
+        // Up to date
         if (weatherData != null && !weatherData.needsUpdate()) {
+            Timber.d("Weather is up to date for $loc")
             setWeather(loc, weatherData)
-        } else {
-            val newWeather = weatherApiService.fetchWeather(loc)
-            setWeather(loc, newWeather)
+        } else { // Updates weather data
+            Timber.d("Fetching new weather for $loc")
+            weatherData = weatherApiService.fetchWeather(loc)
+            setWeather(loc, weatherData)
+            Timber.d("Weather fetched for $loc")
         }
         _isLoading.value = false
+        return weatherData
     }
 }

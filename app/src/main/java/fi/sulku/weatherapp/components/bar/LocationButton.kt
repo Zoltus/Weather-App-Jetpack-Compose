@@ -11,10 +11,11 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.components.PermissionDialog
@@ -32,7 +33,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun LocationButton(vm: WeatherViewModel) {
     val scope = rememberCoroutineScope()
-    val showDialog: MutableState<Boolean> = remember { mutableStateOf(false) }
+    val showPermDialog = remember { mutableStateOf(false) }
+    val showMap = remember { mutableStateOf(false) }
+    var isChoosingLocation by remember { mutableStateOf(false) }
+    // Premissions
     val perms = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.ACCESS_COARSE_LOCATION
@@ -45,7 +49,7 @@ fun LocationButton(vm: WeatherViewModel) {
                 if (hasPermissions) {
                     vm.selectCurrentCity()
                 } else {
-                    showDialog.value = true
+                    showPermDialog.value = true
                 }
             }
         }
@@ -57,17 +61,42 @@ fun LocationButton(vm: WeatherViewModel) {
             .aspectRatio(1f),
         contentPadding = PaddingValues(0.dp),
         shape = RoundedCornerShape(10),
-        onClick = { permLauncher.launch(perms) }
+        onClick = {
+            if (isChoosingLocation) {
+                permLauncher.launch(perms)
+            }
+            isChoosingLocation = !isChoosingLocation
+        }
     ) {
-        Text("📍")
+        Text(if (isChoosingLocation) "\uD83D\uDCCD" else "\uD83C\uDF0D")
     }
 
-    if (showDialog.value) {
-        PermissionDialog(showDialog)
+    if (isChoosingLocation) {
+        Button(
+            modifier = Modifier
+                .fillMaxHeight()
+                .aspectRatio(1f),
+            contentPadding = PaddingValues(0.dp),
+            shape = RoundedCornerShape(10),
+            onClick = {
+                isChoosingLocation = !isChoosingLocation
+                showMap.value = true
+            },
+        ) {
+            Text("\uD83D\uDDFA\uFE0F")
+        }
+    }
+
+    if (showPermDialog.value) {
+        PermissionDialog(showPermDialog)
+    }
+    if (showMap.value) {
+        MapDialog(vm, scope, showMap)
     }
 
     LaunchedEffect(key1 = Unit) {
         permLauncher.launch(perms)
     }
+    // Long click detection
 }
 

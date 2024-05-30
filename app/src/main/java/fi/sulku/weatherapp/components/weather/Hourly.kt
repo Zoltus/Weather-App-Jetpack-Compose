@@ -15,15 +15,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.models.WeatherData
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
+import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 import java.time.LocalDateTime
+import java.time.format.TextStyle
 
 /**
  * Horizontal scrollable hourly forecast component.
@@ -31,62 +31,40 @@ import java.time.LocalDateTime
  * Displays the hourly forecast for the next 24 hours.
  *
  * @param weather The WeatherData to access the hourly weather information.
- * @see CreateHourlyCards
+ * @see HourlyCards
  */
 @Composable
-fun Hourly(weather: WeatherData) {
+fun Hourly(vm: WeatherViewModel, weather: WeatherData) {
+    val selectedDay by vm.selectedDay.collectAsState()
+    val locale by SettingsRepository.selectedLocale.collectAsState()
+    val now = LocalDateTime.now()
+    val adjustedDay = now.plusDays((selectedDay - 1).toLong())
+    val day = if (adjustedDay == now) stringResource(id = R.string.weather_today)
+                else adjustedDay.dayOfWeek.getDisplayName(TextStyle.FULL, locale)
+
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .background(
                 color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(16.dp) // Rounded corners
+                shape = RoundedCornerShape(16.dp)
             )
     ) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                stringResource(id = R.string.weather_hourly_forecast),
+                stringResource(id = R.string.weather_hourly_forecast) + " ($day)",
                 fontWeight = FontWeight.Bold
             )
-
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
             ) {
-                CreateHourlyCards(weather)
+                HourlyCards(weather, selectedDay)
             }
         }
     }
 }
 
-/**
- * Create hourly cards for the hourly forecast.
- *
- * Filters the hourly weather information to display only the next 24 hours
- * and then creates a HourlyCard for each hour.
- *
- * @param weather The WeatherData to access the hourly weather information.
- * @see HourlyCard
- */
-@Composable
-fun CreateHourlyCards(weather: WeatherData) {
-    val context = LocalContext.current
-    val currentTime = LocalDateTime.now().minusHours(1)
-    val nextDayTime = currentTime.plusDays(1)
-
-    List(weather.hourly.temps.size) {
-        val time = LocalDateTime.parse(weather.hourly.time[it])
-        //start from current hours and end 24h after:
-        if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
-            val timeString = weather.convertToClockTime(context, weather.hourly.time[it])
-            HourlyCard(
-                time = timeString,
-                temp = weather.hourly.temps[it],
-                icon = weather.hourly.weather_code[it]
-            )
-        }
-    }
-}

@@ -5,13 +5,13 @@ import android.net.Uri
 import android.provider.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fi.sulku.weatherapp.R
+import timber.log.Timber
 
 /**
  * A dialog that informs the user that the app needs location permissions
@@ -27,22 +27,23 @@ fun PermissionDialog(permissionDialog: MutableState<Boolean>) {
 
     AlertDialog(
         onDismissRequest = { permissionDialog.value = false },
-        title = { Text(stringResource(id = R.string.permission_required)) },
-        text = { Text(stringResource(id = R.string.permission_message)) },
+        title = { Text(stringResource(id = R.string.settings_permission_required)) },
+        text = { Text(stringResource(id = R.string.permissions_message)) },
         confirmButton = {
             Button(onClick = {
+                Timber.d("Directing user to app settings.")
                 permissionDialog.value = false
                 val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 val uri: Uri = Uri.fromParts("package", context.packageName, null)
                 intent.data = uri
                 context.startActivity(intent)
             }) {
-                Text(stringResource(id = R.string.open_settings))
+                Text(stringResource(id = R.string.permissions_open_settings))
             }
         },
         dismissButton = {
             Button(onClick = { permissionDialog.value = false }) {
-                Text(stringResource(id = R.string.dismiss))
+                Text(stringResource(id = R.string.permissions_dismiss))
             }
         }
     )

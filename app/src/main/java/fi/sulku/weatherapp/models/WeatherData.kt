@@ -2,10 +2,9 @@ package fi.sulku.weatherapp.models
 
 import android.content.Context
 import fi.sulku.weatherapp.R
-import fi.sulku.weatherapp.viewmodels.SettingsRepository
-import fi.sulku.weatherapp.viewmodels.SettingsRepository.isFahrenheit
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import timber.log.Timber
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -81,23 +80,36 @@ data class WeatherData(
     }
 
     /**
-     * Convert the given time to a clock time.
-     * If the time is the same as the current hour, return "Now".
-     * Otherwise, return the time in HH:mm format.
-     *
-     * @param time The time to convert.
-     * @return The time in clock time format.
+     * Get the weather condition icon id.
      */
-    fun convertToClockTime(context: Context, time: String): String {
-        val currentTime = LocalDateTime.now()
-        val date = LocalDateTime.parse(time)
-        val isSameHour = currentTime.hour == date.hour
+    fun getConditionIconId(): Int {
+        return getConditionIconId(current.weather_code)
+    }
 
-        return if (isSameHour) {
-            context.getString(R.string.weather_now)
-        } else {
-            val formatter = DateTimeFormatter.ofPattern("HH:mm")
-            date.format(formatter)
+    /**
+     * Get the weather condition icon id for the given weather code.
+     *
+     * @return The weather condition icon id.
+     */
+    fun getConditionIconId(weatherCode: Int): Int {
+        return when (weatherCode) {
+            0 -> R.drawable.condition_clear_sky
+            in 1..3 -> R.drawable.condition_partly_cloudy
+            in 45..48 -> R.drawable.condition_fog
+            in 51..55 -> R.drawable.condition_drizzle
+            in 56..57 -> R.drawable.condition_freezing_drizzle
+            in 61..65 -> R.drawable.condition_rain
+            in 66..67 -> R.drawable.condition_freezing_rain
+            in 71..75 -> R.drawable.condition_snow
+            77 -> R.drawable.condition_snow_grains
+            in 80..82 -> R.drawable.condition_rain_showers
+            in 85..86 -> R.drawable.condition_snow_showers
+            in 95..96 -> R.drawable.condition_thunderstorm
+            99 -> R.string.condition_heavy_hail
+            else ->  {
+                Timber.w("Unknown weather code: $weatherCode")
+                R.string.condition_unknown
+            }
         }
     }
 }
@@ -139,30 +151,34 @@ data class Current(
  * Contains the daily weather information for the next 14 days.
  *
  * @property time The time of the weather data.
- * @property weather_code The weather condition code.
+ * @property weatherCode The weather condition code.
  * @property maxTemps The maximum temperature in Celsius.
  * @property minTemps The minimum temperature in Celsius.
  * @property sunrise The sunrise time.
  * @property sunset The sunset time.
- * @property uv_index_max The maximum UV index.
+ * @property uvIndex The maximum UV index.
  * @property rainAmount The precipitation amount in mm.
  * @property rainChance The precipitation probability in percentage.
  */
 @Serializable
 data class Daily(
     val time: List<String>,
-    val weather_code: List<Int>,
+    @SerialName("weather_code")
+    val weatherCode: List<Int>,
     @SerialName("temperature_2m_max")
     val maxTemps: List<Double>,
     @SerialName("temperature_2m_min")
     val minTemps: List<Double>,
     val sunrise: List<String>,
     val sunset: List<String>,
-    val uv_index_max: List<Double>,
+    @SerialName("uv_index_max")
+    val uvIndex: List<Double>,
     @SerialName("precipitation_sum")
     val rainAmount: List<Double>,
-    @SerialName("precipitation_probability_max") //Todo if its right
-    val rainChance: List<Int>
+    @SerialName("precipitation_probability_max")
+    val rainChance: List<Int>,
+    @SerialName("wind_speed_10m_max")
+    val windSpeed: List<Double>
 )
 
 /**
@@ -173,7 +189,7 @@ data class Daily(
  * @property time The time of the weather data.
  * @property temps The temperature in Celsius.
  * @property feelsLike The apparent temperature in Celsius.
- * @property weather_code The weather condition code.
+ * @property weatherCode The weather condition code.
  */
 @Serializable
 data class Hourly(
@@ -182,5 +198,6 @@ data class Hourly(
     val temps: List<Double>,
     @SerialName("apparent_temperature")
     val feelsLike: List<Double>,
-    val weather_code: List<Int>
+    @SerialName("weather_code")
+    val weatherCode: List<Int>
 )
