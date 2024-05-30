@@ -16,7 +16,7 @@ import java.time.LocalDateTime
  * @see WeatherCard
  */
 @Composable
-fun HourlyCards(weather: WeatherData, dayIndex: Int) { // todo index day
+fun HourlyCards(weather: WeatherData, dayIndex: Int) {
     val context = LocalContext.current
     var currentTime = LocalDateTime.now().minusHours(1).plusDays(dayIndex.toLong() - 1)
     val nextDayTime = currentTime.plusDays(1)

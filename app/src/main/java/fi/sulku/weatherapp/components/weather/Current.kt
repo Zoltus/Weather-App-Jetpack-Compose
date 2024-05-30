@@ -48,7 +48,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column { //Left side
-                Text("\uD83D\uDCCD${vm.getCity()}", fontWeight = FontWeight.Bold) //todo change getcity method
+                Text("\uD83D\uDCCD${vm.getCity()}", fontWeight = FontWeight.Bold)
                 Text("${stringResource(R.string.weather_last_updated)}: ${weather.getLastUpdated()}")
                 Spacer(modifier = Modifier.height(20.dp))
                 Image(

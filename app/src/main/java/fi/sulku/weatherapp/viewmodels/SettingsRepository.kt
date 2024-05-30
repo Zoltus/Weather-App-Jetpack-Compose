@@ -155,7 +155,6 @@ object SettingsRepository {
      * @param loc The location to set as the last location.
      */
     fun setLastLocation(loc: Location) {
-        //todo serialization
         Timber.d("Setting last location to: $loc")
         _lastSelectedLocation.value = loc
         preferences.edit().putFloat("lastloc_lat", loc.latitude.toFloat()).apply()

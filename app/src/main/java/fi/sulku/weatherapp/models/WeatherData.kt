@@ -175,7 +175,7 @@ data class Daily(
     val uvIndex: List<Double>,
     @SerialName("precipitation_sum")
     val rainAmount: List<Double>,
-    @SerialName("precipitation_probability_max") //Todo if its right
+    @SerialName("precipitation_probability_max")
     val rainChance: List<Int>,
     @SerialName("wind_speed_10m_max")
     val windSpeed: List<Double>
