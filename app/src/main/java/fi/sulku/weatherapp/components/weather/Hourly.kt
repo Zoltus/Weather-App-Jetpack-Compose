@@ -35,9 +35,11 @@ import java.time.format.TextStyle
  * @see CreateHourlyCards
  */
 @Composable
-fun Hourly(weather: WeatherData, dayIndex: Int) {
+fun Hourly(weather: WeatherData, selectedDayIndex: Int) {
     val locale by SettingsRepository.selectedLocale.collectAsState()
-    val day = LocalDateTime.now().plusDays((dayIndex - 1).toLong()).dayOfWeek.getDisplayName(TextStyle.FULL, locale)
+    val now = LocalDateTime.now()
+    val adjustedDay = now.plusDays((selectedDayIndex - 1).toLong())
+    val day = if (adjustedDay == now) stringResource(id = R.string.weather_today) else adjustedDay.dayOfWeek.getDisplayName(TextStyle.FULL, locale)
 
     Box(
         modifier = Modifier
@@ -59,7 +61,7 @@ fun Hourly(weather: WeatherData, dayIndex: Int) {
                     .fillMaxWidth()
                     .horizontalScroll(rememberScrollState())
             ) {
-                CreateHourlyCards(weather, dayIndex)
+                CreateHourlyCards(weather, selectedDayIndex)
             }
         }
     }

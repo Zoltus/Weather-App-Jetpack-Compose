@@ -46,7 +46,9 @@ fun Details(daily: Daily, selectedDay : Int) {
     val wind = daily.windSpeed[selectedDay]
     val windSpeed = if (!isMiles) "$wind m/s" else String.format(locale, "%.2f", wind* 2.23694) + " mph"
 
-    val day = LocalDateTime.now().plusDays((selectedDay - 1).toLong()).dayOfWeek.getDisplayName(TextStyle.FULL, locale)
+    val now = LocalDateTime.now()
+    val adjustedDay = now.plusDays((selectedDay - 1).toLong())
+    val day = if (adjustedDay == now) stringResource(id = R.string.weather_today) else adjustedDay.dayOfWeek.getDisplayName(TextStyle.FULL, locale)
 
     Box(
         modifier = Modifier
