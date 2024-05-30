@@ -21,7 +21,7 @@ android {
             useSupportLibrary = true
         }
         // Set apikey from env
-        manifestPlaceholders["GoogleMapsApiKey"] = env.GOOGLE_MAPS_API_KEY
+        manifestPlaceholders["GoogleMapsApiKey"] = env.GOOGLE_MAPS_API_KEY.value
     }
 
     buildTypes {
