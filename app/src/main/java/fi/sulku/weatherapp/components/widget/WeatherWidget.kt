@@ -28,6 +28,9 @@ import androidx.glance.text.Text
 import fi.sulku.weatherapp.Utils.getConvertedTemp
 import fi.sulku.weatherapp.models.Location
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.models.getConditionIconId
+import fi.sulku.weatherapp.models.getCurrentCondition
+import fi.sulku.weatherapp.models.getLastUpdated
 import fi.sulku.weatherapp.services.LocationService
 import fi.sulku.weatherapp.services.WeatherApiService
 import fi.sulku.weatherapp.viewmodels.SettingsRepository

@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import fi.sulku.weatherapp.Utils
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.models.getConditionIconId
 import java.time.LocalDateTime
 
 /**
@@ -26,7 +27,7 @@ fun HourlyCards(weather: WeatherData, dayIndex: Int) {
 
     List(weather.hourly.temps.size) {
         val time = LocalDateTime.parse(weather.hourly.time[it])
-        val iconCode = weather.getConditionIconId(weather.hourly.weatherCode[it])
+        val iconCode = getConditionIconId(weather.hourly.weatherCode[it])
         //start from current hours and end 24h after:
         if (time.isAfter(currentTime) && time.isBefore(nextDayTime)) {
             val timeString = Utils.convertToClockTime(context, weather.hourly.time[it])

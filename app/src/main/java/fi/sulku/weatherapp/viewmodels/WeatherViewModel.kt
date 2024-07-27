@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import fi.sulku.weatherapp.models.Location
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.models.needsUpdate
 import fi.sulku.weatherapp.services.LocationService
 import fi.sulku.weatherapp.services.WeatherApiService
 import kotlinx.coroutines.flow.MutableStateFlow

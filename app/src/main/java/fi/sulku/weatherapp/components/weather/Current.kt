@@ -23,6 +23,9 @@ import androidx.compose.ui.unit.sp
 import fi.sulku.weatherapp.R
 import fi.sulku.weatherapp.Utils.getConvertedTemp
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.models.getConditionIconId
+import fi.sulku.weatherapp.models.getCurrentCondition
+import fi.sulku.weatherapp.models.getLastUpdated
 import fi.sulku.weatherapp.viewmodels.SettingsRepository
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 

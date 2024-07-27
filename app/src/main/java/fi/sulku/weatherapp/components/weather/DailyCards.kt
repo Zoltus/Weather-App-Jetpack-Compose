@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import fi.sulku.weatherapp.Utils
 import fi.sulku.weatherapp.models.WeatherData
+import fi.sulku.weatherapp.models.getConditionIconId
 import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 
 /**
@@ -18,7 +19,7 @@ import fi.sulku.weatherapp.viewmodels.WeatherViewModel
 fun DailyCards(vm: WeatherViewModel, weather: WeatherData) {
     val context = LocalContext.current
     List(weather.daily.maxTemps.size) {
-        val iconCode = weather.getConditionIconId(weather.daily.weatherCode[it])
+        val iconCode = getConditionIconId(weather.daily.weatherCode[it])
         val timeString = Utils.convertDateToDay(context, weather.daily.time[it])
         WeatherCard(
             time = timeString,

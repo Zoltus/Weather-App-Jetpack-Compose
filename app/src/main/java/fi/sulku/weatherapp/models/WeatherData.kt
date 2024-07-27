@@ -22,98 +22,8 @@ import java.time.format.DateTimeFormatter
 data class WeatherData(
     val daily: Daily,
     val current: Current,
-    val hourly: Hourly,
-) {
-    /**
-     * Checks if weather data needs to be updated.
-     *
-     * @return True if 15 minutes have passed since the last update.
-     */
-    fun needsUpdate(): Boolean {
-        val date = LocalDateTime.parse(current.time).plusMinutes(15)
-        val now: LocalDateTime = LocalDateTime.now()
-        return now.isAfter(date)
-    }
-
-    /**
-     * Get weathers last updated time.
-     *
-     * @return The time of the last update in HH:mm format.
-     */
-    fun getLastUpdated(): String {
-        val date = LocalDateTime.parse(current.time)
-        return date.format(DateTimeFormatter.ofPattern("HH:mm"))
-    }
-
-    /**
-     * Get the current weather condition.
-     *
-     * @return The current weather condition text.
-     */
-    fun getCurrentCondition(context: Context): String {
-        return getCondition(context, current.weather_code)
-    }
-
-    /**
-     * Get the weather condition for the given weather code.
-     *
-     * @return The weather condition text.
-     */
-    private fun getCondition(context: Context, weatherCode: Int): String {
-        val translationId = when (weatherCode) {
-            0 -> R.string.condition_clear_sky
-            in 1..3 -> R.string.condition_partly_cloudy
-            in 45..48 -> R.string.condition_fog
-            in 51..55 -> R.string.condition_drizzle
-            in 56..57 -> R.string.condition_freezing_drizzle
-            in 61..65 -> R.string.condition_rain
-            in 66..67 -> R.string.condition_freezing_rain
-            in 71..75 -> R.string.condition_snow
-            77 -> R.string.condition_snow_grains
-            in 80..82 -> R.string.condition_rain_showers
-            in 85..86 -> R.string.condition_snow_showers
-            in 95..96 -> R.string.condition_thunderstorm
-            99 -> R.string.condition_heavy_hail
-            else -> R.string.condition_unknown
-        }
-        return context.getString(translationId)
-    }
-
-    /**
-     * Get the weather condition icon id.
-     */
-    fun getConditionIconId(): Int {
-        return getConditionIconId(current.weather_code)
-    }
-
-    /**
-     * Get the weather condition icon id for the given weather code.
-     *
-     * @return The weather condition icon id.
-     */
-    fun getConditionIconId(weatherCode: Int): Int {
-        return when (weatherCode) {
-            0 -> R.drawable.condition_clear_sky
-            in 1..3 -> R.drawable.condition_partly_cloudy
-            in 45..48 -> R.drawable.condition_fog
-            in 51..55 -> R.drawable.condition_drizzle
-            in 56..57 -> R.drawable.condition_freezing_drizzle
-            in 61..65 -> R.drawable.condition_rain
-            in 66..67 -> R.drawable.condition_freezing_rain
-            in 71..75 -> R.drawable.condition_snow
-            77 -> R.drawable.condition_snow_grains
-            in 80..82 -> R.drawable.condition_rain_showers
-            in 85..86 -> R.drawable.condition_snow_showers
-            in 95..96 -> R.drawable.condition_thunderstorm
-            99 -> R.string.condition_heavy_hail
-            else ->  {
-                Timber.w("Unknown weather code: $weatherCode")
-                R.string.condition_unknown
-            }
-        }
-    }
-}
-
+    val hourly: Hourly
+)
 
 /**
  * Ktor serializable class for the weather data.
@@ -124,7 +34,7 @@ data class WeatherData(
  * @property humidity The relative humidity in percentage.
  * @property feelsLike The apparent temperature in Celsius.
  * @property precipitation The precipitation amount in mm.
- * @property weather_code The weather condition code.
+ * @property weatherCode The weather condition code.
  * @property windSpeed The wind speed in m/s.
  * @property pressure The surface pressure in hPa.
  */
@@ -138,7 +48,8 @@ data class Current(
     @SerialName("apparent_temperature")
     val feelsLike: Double,
     val precipitation: Double,
-    val weather_code: Int,
+    @SerialName("weather_code")
+    val weatherCode: Int,
     @SerialName("wind_speed_10m")
     val windSpeed: Double,
     @SerialName("surface_pressure")
@@ -201,3 +112,96 @@ data class Hourly(
     @SerialName("weather_code")
     val weatherCode: List<Int>
 )
+
+/*
+ EXTENSIONS
+*/
+
+/**
+ * Checks if weather data needs to be updated.
+ *
+ * @return True if 15 minutes have passed since the last update.
+ */
+fun WeatherData.needsUpdate(): Boolean {
+    val date = LocalDateTime.parse(current.time).plusMinutes(15)
+    val now: LocalDateTime = LocalDateTime.now()
+    return now.isAfter(date)
+}
+
+/**
+ * Get weathers last updated time.
+ *
+ * @return The time of the last update in HH:mm format.
+ */
+fun WeatherData.getLastUpdated(): String {
+    val date = LocalDateTime.parse(current.time)
+    return date.format(DateTimeFormatter.ofPattern("HH:mm"))
+}
+
+/**
+ * Get the current weather condition.
+ *
+ * @return The current weather condition text.
+ */
+fun WeatherData.getCurrentCondition(context: Context): String {
+    return getCondition(context, current.weatherCode)
+}
+
+/**
+ * Get the weather condition for the given weather code.
+ *
+ * @return The weather condition text.
+ */
+private fun getCondition(context: Context, weatherCode: Int): String {
+    val translationId = when (weatherCode) {
+        0 -> R.string.condition_clear_sky
+        in 1..3 -> R.string.condition_partly_cloudy
+        in 45..48 -> R.string.condition_fog
+        in 51..55 -> R.string.condition_drizzle
+        in 56..57 -> R.string.condition_freezing_drizzle
+        in 61..65 -> R.string.condition_rain
+        in 66..67 -> R.string.condition_freezing_rain
+        in 71..75 -> R.string.condition_snow
+        77 -> R.string.condition_snow_grains
+        in 80..82 -> R.string.condition_rain_showers
+        in 85..86 -> R.string.condition_snow_showers
+        in 95..96 -> R.string.condition_thunderstorm
+        99 -> R.string.condition_heavy_hail
+        else -> R.string.condition_unknown
+    }
+    return context.getString(translationId)
+}
+
+/**
+ * Get the weather condition icon id.
+ */
+fun WeatherData.getConditionIconId(): Int {
+    return getConditionIconId(current.weatherCode)
+}
+
+/**
+ * Get the weather condition icon id for the given weather code.
+ *
+ * @return The weather condition icon id.
+ */
+fun getConditionIconId(weatherCode: Int): Int {
+    return when (weatherCode) {
+        0 -> R.drawable.condition_clear_sky
+        in 1..3 -> R.drawable.condition_partly_cloudy
+        in 45..48 -> R.drawable.condition_fog
+        in 51..55 -> R.drawable.condition_drizzle
+        in 56..57 -> R.drawable.condition_freezing_drizzle
+        in 61..65 -> R.drawable.condition_rain
+        in 66..67 -> R.drawable.condition_freezing_rain
+        in 71..75 -> R.drawable.condition_snow
+        77 -> R.drawable.condition_snow_grains
+        in 80..82 -> R.drawable.condition_rain_showers
+        in 85..86 -> R.drawable.condition_snow_showers
+        in 95..96 -> R.drawable.condition_thunderstorm
+        99 -> R.string.condition_heavy_hail
+        else ->  {
+            Timber.w("Unknown weather code: $weatherCode")
+            R.string.condition_unknown
+        }
+    }
+}
