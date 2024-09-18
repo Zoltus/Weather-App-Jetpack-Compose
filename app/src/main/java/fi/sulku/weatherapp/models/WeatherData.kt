@@ -123,7 +123,8 @@ data class Hourly(
  * @return True if 15 minutes have passed since the last update.
  */
 fun WeatherData.needsUpdate(): Boolean {
-    val date = LocalDateTime.parse(current.time).plusMinutes(15)
+    val fetchCoolDownMinutes: Long = 1
+    val date = LocalDateTime.parse(current.time).plusMinutes(fetchCoolDownMinutes)
     val now: LocalDateTime = LocalDateTime.now()
     return now.isAfter(date)
 }
