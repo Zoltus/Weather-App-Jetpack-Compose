@@ -13,8 +13,8 @@ android {
         applicationId = "fi.sulku.weatherapp"
         minSdk = 30
         targetSdk = 34
-        versionCode = 4
-        versionName = "3"
+        versionCode = 5
+        versionName = "3.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
