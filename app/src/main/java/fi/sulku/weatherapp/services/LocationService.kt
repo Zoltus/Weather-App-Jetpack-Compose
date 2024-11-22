@@ -9,6 +9,7 @@ import android.os.Build
 import androidx.core.content.ContextCompat
 import com.google.android.gms.location.LocationServices
 import fi.sulku.weatherapp.models.Location
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import java.util.Locale
@@ -73,7 +74,7 @@ object LocationService {
      * @param location Location to get the city name from.
      * @return City name of the location.
      */
-    fun getCity(location: Location?): String? {
+    suspend fun getCity(location: Location?): String? {
         return location?.let {
             val address = getAddressFromLocation(it.latitude, it.longitude)
             val city = address?.locality
@@ -88,7 +89,7 @@ object LocationService {
      * @param city City name to get the location from.
      * @return Location object of the city.
      */
-    fun getLocation(city: String): Location? {
+    suspend fun getLocation(city: String): Location? {
         if (city.trim().isEmpty()) return null
         return getAddressFromCity(city)?.let { Location(it.latitude, it.longitude) }
     }
@@ -101,10 +102,11 @@ object LocationService {
      * @param longitude Longitude of the location.
      * @return Address object of the location.
      */
-    private fun getAddressFromLocation(latitude: Double, longitude: Double): Address? {
+    private suspend fun getAddressFromLocation(latitude: Double, longitude: Double): Address? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            var address: Address? = null
-            geocoder.getFromLocation(latitude, longitude, 1) { address = it.firstOrNull() }
+            val deferredResult = CompletableDeferred<Address?>()
+            geocoder.getFromLocation(latitude, longitude, 1) { deferredResult.complete(it.firstOrNull()) }
+            val address: Address? = deferredResult.await()
             return address
         } else {
             @Suppress("deprecation")
@@ -119,13 +121,14 @@ object LocationService {
      * @param city City name to get the location from.
      * @return Address object of the location.
      */
-    private fun getAddressFromCity(city: String): Address? {
+    private suspend fun getAddressFromCity(city: String): Address? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            var address: Address? = null
-            geocoder.getFromLocationName(city, 1) { address = it.firstOrNull() }
+            val deferredResult = CompletableDeferred<Address?>()
+            geocoder.getFromLocationName(city, 1) { deferredResult.complete(it.firstOrNull()) }
+            val address: Address? = deferredResult.await()
             return address
         } else { //Older android
-           geocoder.getFromLocationName(city, 1)?.firstOrNull()
+            geocoder.getFromLocationName(city, 1)?.firstOrNull()
         }
     }
 }

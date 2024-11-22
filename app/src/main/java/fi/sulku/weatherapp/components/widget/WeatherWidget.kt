@@ -71,7 +71,8 @@ class WeatherWidget : GlanceAppWidget() {
     private fun ContentView(firstLoc: Location?, firstWeather: WeatherData?, context: Context) {
         val scope = rememberCoroutineScope()
         var location by remember { mutableStateOf(firstLoc) }
-        var weather by remember { mutableStateOf(firstWeather) }
+        var weather: WeatherData? by remember { mutableStateOf(firstWeather) }
+        var city by remember { mutableStateOf<String?>(null) }
         var isLoading by remember { mutableStateOf(false) }
 
         Column(
@@ -82,6 +83,10 @@ class WeatherWidget : GlanceAppWidget() {
                         isLoading = true
                         location = LocationService.getCurrentLocation()
                         weather = location?.let { weatherApiService.fetchWeather(it) }
+                        //Fetch city if weather found
+                        if (weather != null) {
+                            city = LocationService.getCity(location)
+                        }
                         isLoading = false
                     }
                 },
@@ -91,7 +96,7 @@ class WeatherWidget : GlanceAppWidget() {
             weather?.let { weather ->
                 val current = weather.current
                 val isFahrenheit by SettingsRepository.isFahrenheit.collectAsState()
-                val city = LocationService.getCity(location)
+
 
                 if (isLoading) {
                     CircularProgressIndicator(

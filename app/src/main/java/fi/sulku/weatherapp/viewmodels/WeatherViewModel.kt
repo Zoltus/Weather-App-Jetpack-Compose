@@ -64,7 +64,7 @@ class WeatherViewModel : ViewModel() {
      *
      * @return City name of the selected location.
      */
-    fun getCity(): String? {
+    suspend fun getCity(): String? {
         return LocationService.getCity(_selectedLocation.value)
     }
 
