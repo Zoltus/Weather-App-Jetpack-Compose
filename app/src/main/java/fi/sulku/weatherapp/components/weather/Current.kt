@@ -94,7 +94,7 @@ fun Current(vm: WeatherViewModel, weather: WeatherData) {
                     }"
                 )
                 Text(
-                    stringResource(id = R.string.weather_humidity) + weather.current.humidity.toString() + "%"
+                    stringResource(id = R.string.weather_humidity) + ": " + weather.current.humidity.toString() + "%"
                 )
             }
         }
