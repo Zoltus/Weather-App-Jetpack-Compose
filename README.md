@@ -1,6 +1,3 @@
-Screencast:
-https://youtu.be/GkWCqLvEGGU
-
 # WeatherApp
 
 Best weather app there is for android!
